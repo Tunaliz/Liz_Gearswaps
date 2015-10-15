@@ -550,26 +550,6 @@ function get_sets()
         feet=""
     }
       
-    -- Elemental Siphon, eg, Tatsumaki Thingies, Esper Stone, etc
-    sets.precast.siphon = set_combine(sets.avatar.skill,{
-        main="",
-        sub="",
-        ranged="",
-        ammo="",
-        head="",
-        neck="",
-        lear="",
-        rear="",
-        body="",
-        hands="",
-        lring="",
-        rring="",
-        back="",
-        waist="",
-        legs="",
-        feet=""
-    })
-      
     ----------
     -- Midcast
     ----------
@@ -635,7 +615,26 @@ function get_sets()
         legs="",
         feet=""
     })
-      
+    -- Elemental Siphon, eg, Tatsumaki Thingies, Esper Stone, etc
+    sets.midcast.siphon = set_combine(sets.avatar.skill,{
+        main="",
+        sub="",
+        ranged="",
+        ammo="",
+        head="",
+        neck="",
+        lear="",
+        rear="",
+        body="",
+        hands="",
+        lring="",
+        rring="",
+        back="",
+        waist="",
+        legs="",
+        feet=""
+    }
+        
     -- Cure Potency
     sets.midcast.cure = set_combine(sets.midcast.casting,{
         main="",
