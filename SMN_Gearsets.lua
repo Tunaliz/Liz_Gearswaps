@@ -633,7 +633,7 @@ function get_sets()
         waist="",
         legs="",
         feet=""
-    }
+    })
         
     -- Cure Potency
     sets.midcast.cure = set_combine(sets.midcast.casting,{
