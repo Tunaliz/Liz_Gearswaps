@@ -2,9 +2,9 @@
 Gearswap SMN template
 
 *Features*
-All the nifty things in the OP: http://www.ffxiah.com/forum/topic/47412/barebones-summoner-gearswap/
+All the nifty things based off Aeyela's: http://www.ffxiah.com/forum/topic/47412/barebones-summoner-gearswap/
 
-Includes all the bug fixes found in the thread previously.
+Includes all the bug fixes found in the above thread previously.
 Keybind and support for cycling through avatar modes with 1 key.
 Keybind for toggling autoBP
 Keybind for toggling melee weapon lock
