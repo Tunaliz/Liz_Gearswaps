@@ -27,7 +27,7 @@
         ['Fenrir']='Ecliptic Growl', ['Shiva']='Crystal Blessing'}
     pacts.buffdefense = {['Carbuncle']='Shining Ruby', ['Shiva']='Frost Armor', ['Garuda']='Aerial Armor', ['Titan']='Earthen Ward',
         ['Ramuh']='Lightning Armor', ['Fenrir']='Ecliptic Howl', ['Diabolos']='Noctoshield', ['Cait Sith']='Reraise II'}
-    pacts.buffspecial = {['Ifrit']='Inferno Howl', ['Garuda']='Fleet Wind', ['Titan']='Earthen Armor', ['Diabolos']='Dream Shroud',
+    pacts.buffspecial = {['Ifrit']=' <staff_and_grip Howl', ['Garuda']='Fleet Wind', ['Titan']='Earthen Armor', ['Diabolos']='Dream Shroud',
         ['Carbuncle']='Soothing Ruby', ['Fenrir']='Heavenward Howl', ['Cait Sith']='Raise II'}
     pacts.debuff1 = {['Shiva']='Diamond Storm', ['Ramuh']='Shock Squall', ['Leviathan']='Tidal Roar', ['Fenrir']='Lunar Cry',
         ['Diabolos']='Pavor Nocturnus', ['Cait Sith']='Eerie Eye'}
@@ -93,6 +93,7 @@ set_macros(1,2) -- Sheet, Book
 meleeing = false
 autobp = false
 favor = false
+mBurst = false
 mode = "perp"
 savedMode = "perp"
  
@@ -198,7 +199,7 @@ function midcast(spell)
     if spell.type == 'WhiteMagic' or spell.type == 'BlackMagic' then
         if spell.name == 'Stoneskin' then
             equip(sets.midcast.stoneskin)
-        elseif spell.name:match('Cure') or spell.name:match('Cura') then
+        elseif spell.name:match('Cure') or spell.name:match('Cura') or spell.name:match('Regen')then
             equip(sets.midcast.cure)
         elseif spell.skill == 'Enhancing Magic' then
             equip(sets.midcast.enhancing)
@@ -267,9 +268,10 @@ function pet_midcast(spell)
              
         elseif bp_magical:contains(spell.name) then
          
-            equip(sets.avatar.mab)
-            if pet.name == 'Ifrit' then
-                equip({rring="Fervor Ring"})--[[Change rring to lring if you put Evoker's on your right hand]]
+            if mBurst then
+                equip(sets.avatar.mb)
+			else
+				equip(sets.avatar.mab)
             end
  
         elseif bp_debuff:contains(spell.name) then
@@ -306,7 +308,100 @@ function pet_aftercast(spell)
     end
     
     idle(pet)
-     
+    -- Add to Chat rules for buffs with variable values.
+	if (spell.english=="Ecliptic Howl") then
+		if (world.moon_pct>89) then
+				add_to_chat(104,"[Ecliptic Howl] Accuracy 25 - Evasion 1")
+		elseif (world.moon_pct>74) then
+				add_to_chat(104,"[Ecliptic Howl] Accuracy 21 - Evasion 5")
+		elseif (world.moon_pct>59) then
+				add_to_chat(104,"[Ecliptic Howl] Accuracy 17 - Evasion 9")
+		elseif (world.moon_pct>39) then
+				add_to_chat(104,"[Ecliptic Howl] Accuracy 13 - Evasion 13")
+		elseif (world.moon_pct>24) then
+				add_to_chat(104,"[Ecliptic Howl] Accuracy 9 - Evasion 17")
+		elseif (world.moon_pct>9) then
+				add_to_chat(104,"[Ecliptic Howl] Accuracy 5 - Evasion 21")
+		else
+				add_to_chat(104,"[Ecliptic Howl] Accuracy 1 - Evasion 25")
+		end
+	elseif (spell.english=="Ecliptic Growl") then
+		if (world.moon_pct>89) then
+				add_to_chat(104,"[Ecliptic Growl] STR/DEX/VIT 7 - INT/MND/CHR/AGI 1")
+		elseif (world.moon_pct>74) then
+				add_to_chat(104,"[Ecliptic Growl] STR/DEX/VIT 6 - INT/MND/CHR/AGI 2")
+		elseif (world.moon_pct>59) then
+				add_to_chat(104,"[Ecliptic Growl] STR/DEX/VIT 5 - INT/MND/CHR/AGI 3")
+		elseif (world.moon_pct>39) then
+				add_to_chat(104,"[Ecliptic Growl] STR/DEX/VIT 4 - INT/MND/CHR/AGI 4")
+		elseif (world.moon_pct>24) then
+				add_to_chat(104,"[Ecliptic Growl] STR/DEX/VIT 3 - INT/MND/CHR/AGI 5")
+		elseif (world.moon_pct>9) then
+				add_to_chat(104,"[Ecliptic Growl] STR/DEX/VIT 2 - INT/MND/CHR/AGI 6")
+		else
+				add_to_chat(104,"[Ecliptic Growl] STR/DEX/VIT 1 - INT/MND/CHR/AGI 7")
+		end
+	elseif (spell.english=="Lunar Cry") then
+		if (world.moon_pct>89) then
+				add_to_chat(104,"[Lunar Cry] Enemy Acc Down 31 - Enemy Eva Down 1")
+		elseif (world.moon_pct>74) then
+				add_to_chat(104,"[Lunar Cry] Enemy Acc Down 26 - Enemy Eva Down 6")
+		elseif (world.moon_pct>59) then
+				add_to_chat(104,"[Lunar Cry] Enemy Acc Down 21 - Enemy Eva Down 11")
+		elseif (world.moon_pct>39) then
+				add_to_chat(104,"[Lunar Cry] Enemy Acc Down 16 - Enemy Eva Down 16")
+		elseif (world.moon_pct>24) then
+				add_to_chat(104,"[Lunar Cry] Enemy Acc Down 11 - Enemy Eva Down 21")
+		elseif (world.moon_pct>9) then
+				add_to_chat(104,"[Lunar Cry] Enemy Acc Down 6 - Enemy Eva Down 26")
+		else
+				add_to_chat(104,"[Lunar Cry] Enemy Acc Down 1 - Enemy Eva Down 31")
+		end
+	elseif (spell.english=="Heavenward Howl") then
+		if (world.moon_pct>89) then
+				add_to_chat(104,"[Heavenward Howl] Moon Phase Full moon - Endrain 15%")
+		elseif (world.moon_pct>73) then
+				add_to_chat(104,"[Heavenward Howl] Moon phase 74~90% {Endrain 12%")
+		elseif (world.moon_pct>56) then
+				add_to_chat(104,"[Heavenward Howl] Moon phase 57~73% {Endrain 8%}")
+		elseif (world.moon_pct>39) then
+				add_to_chat(104,"[Heavenward Howl] Moon phase 40~56% {First Quarter Moon - Endrain 5% | Last Quarter - moon Enaspir 1%}" )
+		elseif (world.moon_pct>24) then
+				add_to_chat(104,"[Heavenward Howl] Moon phase 25~39% {Enaspir 2%}")
+		elseif (world.moon_pct>9) then
+				add_to_chat(104,"[Heavenward Howl] Moon phase 10~24% {Enaspir 4%}")
+		else
+				add_to_chat(104,"[Heavenward Howl] Moon Phase New Moon - Enaspir 5%")
+		end     
+	elseif (spell.english=="Dream Shroud") then
+		if (world.time >= 0 and world.time < 1*60) then
+				add_to_chat(104,"[Dream Shroud] MAB 13 - MDB 1")
+		elseif (world.time >= 1*60 and world.time < 2*60) or (world.time >= 23*60 and world.time <= 23*60+59) then
+				add_to_chat(104,"[Dream Shroud] MAB 12 - MDB 2")
+		elseif (world.time >= 2*60 and world.time < 3*60) or (world.time >= 22*60 and world.time < 23*60) then
+				add_to_chat(104,"[Dream Shroud] MAB 11 - MDB 3")
+		elseif (world.time >= 3*60 and world.time < 4*60) or (world.time >= 21*60 and world.time < 22*60) then
+				add_to_chat(104,"[Dream Shroud] MAB 10 - MDB 4")
+		elseif (world.time >= 4*60 and world.time < 5*60) or (world.time >= 20*60 and world.time < 21*60) then
+				add_to_chat(104,"[Dream Shroud] MAB 9 - MDB 5")
+		elseif (world.time >= 5*60 and world.time < 6*60) or (world.time >= 19*60 and world.time < 20*60) then
+				add_to_chat(104,"[Dream Shroud] MAB 8 - MDB 6")
+		elseif (world.time >= 6*60 and world.time < 7*60) or (world.time >= 18*60 and world.time < 19*60) then
+				add_to_chat(104,"[Dream Shroud] MAB 7 - MDB 7")
+		elseif (world.time >= 7*60 and world.time < 8*60) or (world.time >= 17*60 and world.time < 18*60) then
+				add_to_chat(104,"[Dream Shroud] MAB 6 - MDB 8")
+		elseif (world.time >= 8*60 and world.time < 9*60) or (world.time >= 16*60 and world.time < 17*60) then
+				add_to_chat(104,"[Dream Shroud] MAB 5 - MDB 9")
+		elseif (world.time >= 9*60 and world.time < 10*60) or (world.time >= 15*60 and world.time < 16*60) then
+				add_to_chat(104,"[Dream Shroud] MAB 4 - MDB 10")
+		elseif (world.time >= 10*60 and world.time < 11*60) or (world.time >= 14*60 and world.time < 15*60) then
+				add_to_chat(104,"[Dream Shroud] MAB 3 - MDB 11")
+		elseif (world.time >= 11*60 and world.time < 12*60) or (world.time >= 13*60 and world.time < 14*60) then
+				add_to_chat(104,"[Dream Shroud] MAB 2 - MDB 12")
+		else
+				add_to_chat(104,"[Dream Shroud] MAB 1 - MDB 13")
+		end
+	end 
 end
  
 function idle(pet)
@@ -356,7 +451,7 @@ function pet_change(pet,gain)
  
     -- When we summon or release an avatar
     idle(pet)
- 
+	windower.add_to_chat(8,'----- Avatar set to '..mode..' mode! -----')
 end
  
  
@@ -430,7 +525,17 @@ function self_command(command)
                     favor = true
                     windower.add_to_chat(8,"----- Avatar's Favor Mode ON -----")
                 end
-                 
+            elseif commandArgs[2] == 'mb' then
+                     
+                -- //gs c toggle mb will toggle mb mode on and off.
+                -- You need to toggle prioritisation yourself
+                if mBurst then
+                    mBurst = false
+                    windower.add_to_chat(8,"----- Avatar's MB Mode OFF -----")
+                else
+                    mBurst = true
+                    windower.add_to_chat(8,"----- Avatar's MB Mode ON -----")
+                end
             end
 		-- Handles executing blood pacts in a generic, avatar-agnostic way.
 		-- //gs c pact [pacttype]
