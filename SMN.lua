@@ -94,6 +94,7 @@ meleeing = false
 autobp = false
 favor = false
 mBurst = false
+macc = false
 mode = "perp"
 savedMode = "perp"
  
@@ -269,7 +270,9 @@ function pet_midcast(spell)
         elseif bp_magical:contains(spell.name) then
          
             if mBurst then
-                equip(sets.avatar.mb)
+                equip(sets.avatar.mb)			
+			elseif macc then
+                equip(sets.avatar.macc)
 			else
 				equip(sets.avatar.mab)
             end
@@ -540,6 +543,18 @@ function self_command(command)
                 else
                     mBurst = true
                     windower.add_to_chat(8,"----- Avatar's MB Mode ON -----")
+                end
+            end
+			elseif commandArgs[2] == 'macc' then
+                     
+                -- //gs c toggle mb will toggle mb mode on and off.
+                -- You need to toggle prioritisation yourself
+                if macc then
+                    mBurst = false
+                    windower.add_to_chat(8,"----- Avatar's MACC Mode OFF -----")
+                else
+                    macc = true
+                    windower.add_to_chat(8,"----- Avatar's MACC Mode ON -----")
                 end
             end
 		-- Handles executing blood pacts in a generic, avatar-agnostic way.
