@@ -424,6 +424,11 @@ function idle(pet)
         -- We have a pet out but we're not meleeing, set the right idle set
         equip(sets.avatar[mode])
  
+    elseif pet.isvalid and pet.name == 'Alexander' then
+         
+        -- We have a pet out but we're not meleeing, set the right idle set
+        equip(sets.avatar.skill)
+ 
     else
      
         -- We're not meleeing and we have no pet out
