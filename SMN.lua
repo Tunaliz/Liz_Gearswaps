@@ -20,7 +20,7 @@
             astralflow
 --]]
 
-    pacts = {}
+	pacts = {}
     pacts.cure = {['Carbuncle']='Healing Ruby'}
     pacts.curaga = {['Carbuncle']='Healing Ruby II', ['Garuda']='Whispering Wind', ['Leviathan']='Spring Water'}
     pacts.buffoffense = {['Carbuncle']='Glittering Ruby', ['Ifrit']='Crimson Howl', ['Garuda']='Hastega II', ['Ramuh']='Rolling Thunder',
@@ -300,6 +300,9 @@ function pet_midcast(spell)
             equip(sets.avatar.skill)
              
         end
+		if pet.name == 'Carbuncle' or pet.name == 'Cait Sith' then
+			equip(sets.me[pet.name])
+		end
     end 
 end
  
@@ -414,32 +417,26 @@ function idle(pet)
     -- This function is called after every action, and handles which set to equip depending on what we're doing
     -- We check if we're meleeing because we don't want to idle in melee gear when we're only engaged for trusts
      
-    if favor and pet.isvalid then
-     
+    if favor and pet.isvalid then   
         -- Avatar's favor takes priority!
-        equip(sets.avatar.favor)
-         
-    elseif meleeing and player.status=='Engaged' then
-     
+        equip(sets.avatar.favor)       
+    elseif meleeing and player.status=='Engaged' then   
         -- We're both engaged and meleeing
-        equip(sets.me.melee)
-         
-    elseif pet.isvalid then
-         
+        equip(sets.me.melee)        
+    elseif pet.isvalid then        
         -- We have a pet out but we're not meleeing, set the right idle set
         equip(sets.avatar[mode])
- 
-    elseif pet.isvalid and pet.name == 'Alexander' then
-         
+    elseif pet.name == 'Alexander' then       
         -- We have a pet out but we're not meleeing, set the right idle set
-        equip(sets.avatar.skill)
- 
+        equip(sets.avatar.skill)	
     else
-     
         -- We're not meleeing and we have no pet out
-        equip(sets.me.idle)
-         
+        equip(sets.me.idle)     
     end
+	-- If we have cait or carbie  we switch to hands.
+	if pet.name == 'Carbuncle' or pet.name == 'Cait Sith' then
+			equip(sets.me[pet.name])
+	end
 end
  
 function status_change(new,old)
