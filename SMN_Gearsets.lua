@@ -1,4 +1,5 @@
 -- Setup your Key Bindings here:  
+	windower.send_command('bind f6 gs c toggle macc') 
     windower.send_command('bind f7 gs c toggle mb')
     windower.send_command('bind f9 gs c avatar mode')
     windower.send_command('bind f10 gs c toggle auto')
