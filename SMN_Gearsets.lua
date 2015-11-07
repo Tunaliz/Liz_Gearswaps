@@ -1,5 +1,4 @@
 -- Setup your Key Bindings here:  
-	windower.send_command('bind f6 gs c toggle macc') 
     windower.send_command('bind f7 gs c toggle mb')
     windower.send_command('bind f9 gs c avatar mode')
     windower.send_command('bind f10 gs c toggle auto')
@@ -194,6 +193,24 @@ function get_sets()
       
     -- Physical damage
     sets.avatar.atk = set_combine(sets.avatar.skill,{
+        main="",
+        sub="",
+        ranged="",
+        ammo="",
+        head="",
+        neck="",
+        lear="",
+        rear="",
+        body="",
+        hands="",
+        lring="",
+        rring="",
+        back="",
+        waist="",
+        legs="",
+        feet=""
+    })
+    sets.avatar.pacc = set_combine(sets.avatar.atk,{
         main="",
         sub="",
         ranged="",
