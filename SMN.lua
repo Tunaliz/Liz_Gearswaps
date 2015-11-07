@@ -271,10 +271,10 @@ function pet_midcast(spell)
              
         elseif bp_magical:contains(spell.name) then
          
-            if mBurst then
-                equip(sets.avatar.mb)			
-			elseif macc then
+			if mode == 'acc' then
                 equip(sets.avatar.macc)
+			elseif mBurst then
+                equip(sets.avatar.mb)			
 			else
 				equip(sets.avatar.mab)
             end
