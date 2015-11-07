@@ -81,8 +81,8 @@ function get_sets()
   
     -- The following sets base off of perpetuation, so you can consider them idle sets.
     -- Set the relevant gear, bearing in mind it will overwrite the perpetuation item for that slot!
-    set.avatar["Carbuncle"] = {hands="Asteria Mitts +1"}
-    set.avatar["Cait Sith"] = {hands="Lamassu Mitts +1"}
+    sets.avatar["Carbuncle"] = {hands="Asteria Mitts +1"}
+    sets.avatar["Cait Sith"] = {hands="Lamassu Mitts +1"}
     -- When we want our avatar to stay alive
     sets.avatar.tank = set_combine(sets.avatar.perp,{
         main="",
