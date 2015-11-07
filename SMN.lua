@@ -257,9 +257,11 @@ function pet_midcast(spell)
         -- We're going to check the lists in global.lua for matches and equip the relevant sets
          
         if bp_physical:contains(spell.name) then
-         
-            equip(sets.avatar.atk)
-             
+            if mode == 'acc' then
+                equip(sets.avatar.pacc)		
+			else
+				equip(sets.avatar.atk)
+            end
         elseif bp_hybrid:contains(spell.name) then
          
             equip(sets.avatar.hybrid)
@@ -543,18 +545,6 @@ function self_command(command)
                 else
                     mBurst = true
                     windower.add_to_chat(8,"----- Avatar's MB Mode ON -----")
-                end
-            end
-			elseif commandArgs[2] == 'macc' then
-                     
-                -- //gs c toggle mb will toggle mb mode on and off.
-                -- You need to toggle prioritisation yourself
-                if macc then
-                    mBurst = false
-                    windower.add_to_chat(8,"----- Avatar's MACC Mode OFF -----")
-                else
-                    macc = true
-                    windower.add_to_chat(8,"----- Avatar's MACC Mode ON -----")
                 end
             end
 		-- Handles executing blood pacts in a generic, avatar-agnostic way.
