@@ -1,4 +1,5 @@
--- Setup your Key Bindings here:    
+-- Setup your Key Bindings here:  
+    windower.send_command('bind f7 gs c toggle mb')
     windower.send_command('bind f9 gs c avatar mode')
     windower.send_command('bind f10 gs c toggle auto')
     windower.send_command('bind f12 gs c toggle melee')
@@ -229,7 +230,7 @@ function get_sets()
         legs="",
         feet=""
     })
-  
+    sets.avatar.mb = set_combine(sets.avatar.mab,{hands="Glyphic Bracers +1"})
     -- Hybrid
     sets.avatar.hybrid = set_combine(sets.avatar.skill,{
         main="",
