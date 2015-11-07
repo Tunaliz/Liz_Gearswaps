@@ -19,8 +19,8 @@
 			bp99
             astralflow
 --]]
-	windower.send_command('bind f9 gs c avatar mode')
-	pacts = {}
+
+    pacts = {}
     pacts.cure = {['Carbuncle']='Healing Ruby'}
     pacts.curaga = {['Carbuncle']='Healing Ruby II', ['Garuda']='Whispering Wind', ['Leviathan']='Spring Water'}
     pacts.buffoffense = {['Carbuncle']='Glittering Ruby', ['Ifrit']='Crimson Howl', ['Garuda']='Hastega II', ['Ramuh']='Rolling Thunder',
