@@ -301,7 +301,7 @@ function pet_midcast(spell)
              
         end
 		if pet.name == 'Carbuncle' or pet.name == 'Cait Sith' then
-			equip(sets.me[pet.name])
+			equip(sets.avatar[pet.name])
 		end
     end 
 end
@@ -435,7 +435,7 @@ function idle(pet)
     end
 	-- If we have cait or carbie  we switch to hands.
 	if pet.name == 'Carbuncle' or pet.name == 'Cait Sith' then
-			equip(sets.me[pet.name])
+			equip(sets.avatar[pet.name])
 	end
 end
  
