@@ -423,12 +423,12 @@ function idle(pet)
     elseif meleeing and player.status=='Engaged' then   
         -- We're both engaged and meleeing
         equip(sets.me.melee)        
-    elseif pet.isvalid then        
-        -- We have a pet out but we're not meleeing, set the right idle set
-        equip(sets.avatar[mode])
     elseif pet.name == 'Alexander' then       
         -- We have a pet out but we're not meleeing, set the right idle set
         equip(sets.avatar.skill)	
+	elseif pet.isvalid then        
+        -- We have a pet out but we're not meleeing, set the right idle set
+        equip(sets.avatar[mode])
     else
         -- We're not meleeing and we have no pet out
         equip(sets.me.idle)     
