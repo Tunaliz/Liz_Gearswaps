@@ -317,55 +317,8 @@ function pet_aftercast(spell)
     
     idle(pet)
     -- Add to Chat rules for buffs with variable values.
-	if (spell.english=="Ecliptic Howl") then
-		if (world.moon_pct>89) then
-				add_to_chat(104,"[Ecliptic Howl] Accuracy 25 - Evasion 1")
-		elseif (world.moon_pct>74) then
-				add_to_chat(104,"[Ecliptic Howl] Accuracy 21 - Evasion 5")
-		elseif (world.moon_pct>59) then
-				add_to_chat(104,"[Ecliptic Howl] Accuracy 17 - Evasion 9")
-		elseif (world.moon_pct>39) then
-				add_to_chat(104,"[Ecliptic Howl] Accuracy 13 - Evasion 13")
-		elseif (world.moon_pct>24) then
-				add_to_chat(104,"[Ecliptic Howl] Accuracy 9 - Evasion 17")
-		elseif (world.moon_pct>9) then
-				add_to_chat(104,"[Ecliptic Howl] Accuracy 5 - Evasion 21")
-		else
-				add_to_chat(104,"[Ecliptic Howl] Accuracy 1 - Evasion 25")
-		end
-	elseif (spell.english=="Ecliptic Growl") then
-		if (world.moon_pct>89) then
-				add_to_chat(104,"[Ecliptic Growl] STR/DEX/VIT 7 - INT/MND/CHR/AGI 1")
-		elseif (world.moon_pct>74) then
-				add_to_chat(104,"[Ecliptic Growl] STR/DEX/VIT 6 - INT/MND/CHR/AGI 2")
-		elseif (world.moon_pct>59) then
-				add_to_chat(104,"[Ecliptic Growl] STR/DEX/VIT 5 - INT/MND/CHR/AGI 3")
-		elseif (world.moon_pct>39) then
-				add_to_chat(104,"[Ecliptic Growl] STR/DEX/VIT 4 - INT/MND/CHR/AGI 4")
-		elseif (world.moon_pct>24) then
-				add_to_chat(104,"[Ecliptic Growl] STR/DEX/VIT 3 - INT/MND/CHR/AGI 5")
-		elseif (world.moon_pct>9) then
-				add_to_chat(104,"[Ecliptic Growl] STR/DEX/VIT 2 - INT/MND/CHR/AGI 6")
-		else
-				add_to_chat(104,"[Ecliptic Growl] STR/DEX/VIT 1 - INT/MND/CHR/AGI 7")
-		end
-	elseif (spell.english=="Lunar Cry") then
-		if (world.moon_pct>89) then
-				add_to_chat(104,"[Lunar Cry] Enemy Acc Down 31 - Enemy Eva Down 1")
-		elseif (world.moon_pct>74) then
-				add_to_chat(104,"[Lunar Cry] Enemy Acc Down 26 - Enemy Eva Down 6")
-		elseif (world.moon_pct>59) then
-				add_to_chat(104,"[Lunar Cry] Enemy Acc Down 21 - Enemy Eva Down 11")
-		elseif (world.moon_pct>39) then
-				add_to_chat(104,"[Lunar Cry] Enemy Acc Down 16 - Enemy Eva Down 16")
-		elseif (world.moon_pct>24) then
-				add_to_chat(104,"[Lunar Cry] Enemy Acc Down 11 - Enemy Eva Down 21")
-		elseif (world.moon_pct>9) then
-				add_to_chat(104,"[Lunar Cry] Enemy Acc Down 6 - Enemy Eva Down 26")
-		else
-				add_to_chat(104,"[Lunar Cry] Enemy Acc Down 1 - Enemy Eva Down 31")
-		end
-	elseif (spell.english=="Heavenward Howl") then
+	buffs_to_chat(spell)
+	if (spell.english=="Heavenward Howl") then
 		if (world.moon_pct>89) then
 				add_to_chat(104,"[Heavenward Howl] Moon Phase Full moon - Endrain 15%")
 		elseif (world.moon_pct>73) then
@@ -381,37 +334,87 @@ function pet_aftercast(spell)
 		else
 				add_to_chat(104,"[Heavenward Howl] Moon Phase New Moon - Enaspir 5%")
 		end     
-	elseif (spell.english=="Dream Shroud") then
-		if (world.time >= 0 and world.time < 1*60) then
-				add_to_chat(104,"[Dream Shroud] MAB 13 - MDB 1")
-		elseif (world.time >= 1*60 and world.time < 2*60) or (world.time >= 23*60 and world.time <= 23*60+59) then
-				add_to_chat(104,"[Dream Shroud] MAB 12 - MDB 2")
-		elseif (world.time >= 2*60 and world.time < 3*60) or (world.time >= 22*60 and world.time < 23*60) then
-				add_to_chat(104,"[Dream Shroud] MAB 11 - MDB 3")
-		elseif (world.time >= 3*60 and world.time < 4*60) or (world.time >= 21*60 and world.time < 22*60) then
-				add_to_chat(104,"[Dream Shroud] MAB 10 - MDB 4")
-		elseif (world.time >= 4*60 and world.time < 5*60) or (world.time >= 20*60 and world.time < 21*60) then
-				add_to_chat(104,"[Dream Shroud] MAB 9 - MDB 5")
-		elseif (world.time >= 5*60 and world.time < 6*60) or (world.time >= 19*60 and world.time < 20*60) then
-				add_to_chat(104,"[Dream Shroud] MAB 8 - MDB 6")
-		elseif (world.time >= 6*60 and world.time < 7*60) or (world.time >= 18*60 and world.time < 19*60) then
-				add_to_chat(104,"[Dream Shroud] MAB 7 - MDB 7")
-		elseif (world.time >= 7*60 and world.time < 8*60) or (world.time >= 17*60 and world.time < 18*60) then
-				add_to_chat(104,"[Dream Shroud] MAB 6 - MDB 8")
-		elseif (world.time >= 8*60 and world.time < 9*60) or (world.time >= 16*60 and world.time < 17*60) then
-				add_to_chat(104,"[Dream Shroud] MAB 5 - MDB 9")
-		elseif (world.time >= 9*60 and world.time < 10*60) or (world.time >= 15*60 and world.time < 16*60) then
-				add_to_chat(104,"[Dream Shroud] MAB 4 - MDB 10")
-		elseif (world.time >= 10*60 and world.time < 11*60) or (world.time >= 14*60 and world.time < 15*60) then
-				add_to_chat(104,"[Dream Shroud] MAB 3 - MDB 11")
-		elseif (world.time >= 11*60 and world.time < 12*60) or (world.time >= 13*60 and world.time < 14*60) then
-				add_to_chat(104,"[Dream Shroud] MAB 2 - MDB 12")
-		else
-				add_to_chat(104,"[Dream Shroud] MAB 1 - MDB 13")
-		end
 	end 
 end
- 
+
+function buffs_to_chat(spell)
+	-- Add to Chat rules for buffs with variable values
+	-- table of tables: spell = T{ "stat_a", "stat_b", step}
+	buff_chat_values = {
+		['Ecliptic Howl'] = T{"Accuracy","Evasion",4},
+		['Ecliptic Growl'] = T{"STR/DEX/VIT","INT/MND/CHR/AGI",1},
+		['Lunar Cry'] = T{"Enemy Acc Down","Enemy Eva Down",1},
+	}
+	if buff_chat_values[spell.english] then
+		-- calc value of stat_a: 1 + (the moon phase value * step value)
+		local val_a = 1 + (Moon() * buff_chat_values[spell.english][3])
+		-- calc value of stat_b: (2 - (6 * step value)) - val_a
+		local val_b = (2 + (6 * buff_chat_values[spell.english][3])) - val_a
+		-- concatenate all that together
+		add_to_chat(104,"["..spell.english.."] "..buff_chat_values[spell.english][1].." "..tostring(val_a).." - "..buff_chat_values[spell.english][2].." "..tostring(val_b))
+	-- Dream Shroud is based on time not moon phase
+	elseif (spell.english=="Dream Shroud") then
+		-- get the hour in 24h format
+		local hour24 = math.floor(world.time/60)
+		if hour24 < 13 then
+			add_to_chat(104,"[Dream Shroud] MAB "..tostring(13-hour24).." - MDB "..tostring(hour24+1))
+		else
+			add_to_chat(104,"[Dream Shroud] MAB "..tostring(1+(hour24-12)).." - MDB "..tostring(13-(hour24-12)))
+		end
+	end
+end
+
+function Moon()
+	-- Assume bonus to effects is symmetrical around New Moon or Full Moon
+	-- Actually Phase 0/11 in 12 phase Full Cycle
+	-- Originally written for Artemis' Medal
+	-- See http://www.ffxiah.com/screenshots/51600
+	if world.moon == "New Moon" then
+		return 0
+	-- Check for Waxing Moon
+	elseif world.moon == "Waxing Crescent" then
+		-- If %MOONPCT < 24% we know it's Early, rather than Late
+		if world.moon_pct < 24 then
+			return 1
+		else
+			return 2
+		end
+	elseif world.moon == "First Quarter Moon" then
+		return 3
+	elseif world.moon == "Waxing Gibbous" then
+		-- If %MOONPCT < 74% we know it's Early, rather than Late
+		if world.moon_pct < 74 then
+			return 4
+		else
+			return 5
+		end
+	elseif world.moon == "Full Moon" then
+		return 6
+	-- Check for Waning Moon
+	elseif world.moon == "Waning Gibbous" then
+		-- If %MOONPCT > 76% we know it's Early, rather than Late
+		if world.moon_pct > 76 then
+			-- Actually Phase 7 in Full Cycle
+			return 5
+		else
+			-- Actually Phase 8 in Full Cycle
+			return 4
+		end	
+	elseif world.moon == "Last Quarter Moon" then
+		-- Actually Phase 9 in Full Cycle
+		return 3
+	elseif world.moon == "Waning Gibbous" then
+		-- If %MOONPCT > 26% we know it's Early, rather than Late
+		if world.moon_pct > 26 then
+			-- Actually Phase 10 in Full Cycle
+			return 2
+		else
+			-- Actually Phase 11 in Full Cycle
+			return 1
+		end
+	end
+end
+
 function idle(pet)
  
     -- This function is called after every action, and handles which set to equip depending on what we're doing
