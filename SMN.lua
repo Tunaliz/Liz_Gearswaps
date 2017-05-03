@@ -403,7 +403,7 @@ function Moon()
 	elseif world.moon == "Last Quarter Moon" then
 		-- Actually Phase 9 in Full Cycle
 		return 3
-	elseif world.moon == "Waning Gibbous" then
+	elseif world.moon == "Waning Crescent" then
 		-- If %MOONPCT > 26% we know it's Early, rather than Late
 		if world.moon_pct > 26 then
 			-- Actually Phase 10 in Full Cycle
@@ -478,17 +478,14 @@ function self_command(command)
 				if mode == 'mode' then
 					if savedMode == 'perp' then
 					   mode = 'tank'
-					   savedMode = 'tank'
 					elseif savedMode == 'tank' then
 					   mode = 'melee'
-					   savedMode = 'melee'
 					elseif savedMode == 'melee' then
 					   mode = 'acc'
-					   savedMode = 'acc'
 					elseif savedMode == 'acc' then
 					   mode = 'perp'
-					   savedMode = 'perp'
 					end
+					savedMode = mode
 				end    
 				equip(sets.avatar[mode])
 				windower.add_to_chat(8,'----- Avatar set to '..mode..' mode! -----')
