@@ -8,7 +8,7 @@ Includes all the bug fixes found in the above thread previously.
 Keybind and support for cycling through avatar modes with 1 key.
 Keybind for toggling autoBP
 Keybind for toggling melee weapon lock
-Avatar-agnostic Blood Pacts handling. (need the shortcuts add-on)
+Avatar-agnostic Blood Pacts handling. (NEED SHORTCUTS ADDON)
 
 Don't modify any of the SMN.lua if you don't know what you are doing and why you are doing it. Reason is, the complicated code is in this file and none of the gearsets are. This way, if something doesn't work, it's either a bug (blame me!) or something wrong with your sets...
 
