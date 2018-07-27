@@ -92,7 +92,7 @@ set_macros(1,2) -- Sheet, Book
 -- Required variables and  their initial value
 meleeing = false
 autobp = false
-favor = false
+favor = true
 mBurst = false
 macc = false
 mode = "perp"
@@ -265,10 +265,7 @@ function pet_midcast(spell)
         elseif bp_hybrid:contains(spell.name) then
          
             equip(sets.avatar.hybrid)
-            if pet.name == 'Ifrit' then
-                equip({rring="Fervor Ring"})--[[Change rring to lring if you put Evoker's on your right hand]]
-            end
-             
+
         elseif bp_magical:contains(spell.name) then
          
 			if mode == 'acc' then
@@ -403,7 +400,7 @@ function Moon()
 	elseif world.moon == "Last Quarter Moon" then
 		-- Actually Phase 9 in Full Cycle
 		return 3
-	elseif world.moon == "Waning Gibbous" then
+	elseif world.moon == "Waning Crescent" then
 		-- If %MOONPCT > 26% we know it's Early, rather than Late
 		if world.moon_pct > 26 then
 			-- Actually Phase 10 in Full Cycle
@@ -478,17 +475,14 @@ function self_command(command)
 				if mode == 'mode' then
 					if savedMode == 'perp' then
 					   mode = 'tank'
-					   savedMode = 'tank'
 					elseif savedMode == 'tank' then
 					   mode = 'melee'
-					   savedMode = 'melee'
 					elseif savedMode == 'melee' then
 					   mode = 'acc'
-					   savedMode = 'acc'
 					elseif savedMode == 'acc' then
 					   mode = 'perp'
-					   savedMode = 'perp'
 					end
+					savedMode = mode
 				end    
 				equip(sets.avatar[mode])
 				windower.add_to_chat(8,'----- Avatar set to '..mode..' mode! -----')
