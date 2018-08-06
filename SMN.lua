@@ -312,26 +312,40 @@ function pet_aftercast(spell)
         return
     end
     
-    idle(pet)
-    -- Add to Chat rules for buffs with variable values.
-	buffs_to_chat(spell)
-	if (spell.english=="Heavenward Howl") then
-		if (world.moon_pct>89) then
-				add_to_chat(104,"[Heavenward Howl] Moon Phase Full moon - Endrain 15%")
-		elseif (world.moon_pct>73) then
-				add_to_chat(104,"[Heavenward Howl] Moon phase 74~90% {Endrain 12%")
-		elseif (world.moon_pct>56) then
-				add_to_chat(104,"[Heavenward Howl] Moon phase 57~73% {Endrain 8%}")
-		elseif (world.moon_pct>39) then
-				add_to_chat(104,"[Heavenward Howl] Moon phase 40~56% {First Quarter Moon - Endrain 5% | Last Quarter - moon Enaspir 1%}" )
-		elseif (world.moon_pct>24) then
-				add_to_chat(104,"[Heavenward Howl] Moon phase 25~39% {Enaspir 2%}")
-		elseif (world.moon_pct>9) then
-				add_to_chat(104,"[Heavenward Howl] Moon phase 10~24% {Enaspir 4%}")
-		else
-				add_to_chat(104,"[Heavenward Howl] Moon Phase New Moon - Enaspir 5%")
-		end     
-	end 
+function idle(pet)
+ 
+    -- This function is called after every action, and handles which set to equip depending on what we're doing
+    -- We check if we're meleeing because we don't want to idle in melee gear when we're only engaged for trusts
+     
+    if meleeing and player.status=='Engaged' then   
+        -- We're both engaged and meleeing, meleeing priority over all.
+        equip(sets.me.melee)     
+	elseif pet.isvalid then
+		if pet.name == 'Alexander' then       
+			-- We have Alexander so we want idle in max skill instead.
+			equip(sets.avatar.skill)	
+		elseif pet.name == 'Carbuncle' or pet.name == 'Cait Sith' then
+			-- If we have cait or carbie  we switch hands to those things.
+			equip(sets.avatar[pet.name])
+		else 
+			-- We have a non-Alexander, non-carby, non-caithy pet out but we're not meleeing, set the right idle set
+			equip(sets.avatar[mode])
+		end
+		
+		if favor then
+			-- Avatar's favor set just, or should just swap to beckoner's horn +1 for head.
+			--[[ 
+				Assuming your favor set is this:
+				sets.avatar.favor = set_combine(sets.avatar.perp,{
+					head="Beckoner's Horn +1",
+				})
+			--]]
+			equip(sets.avatar.favor)
+		end
+    else
+        -- We're not meleeing and we have no pet out
+        equip(sets.me.idle)     
+    end
 end
 
 function buffs_to_chat(spell)
