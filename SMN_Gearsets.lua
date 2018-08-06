@@ -105,9 +105,9 @@ function get_sets()
     })
       
     -- When Avatar's Favor is active
-    sets.avatar.favor = set_combine(sets.avatar.perp,{
+    sets.avatar.favor = {
 		head="Beckoner's Horn +1",
-    })
+    }
       
     ----------------------------
     -- Summoning Skill Related
