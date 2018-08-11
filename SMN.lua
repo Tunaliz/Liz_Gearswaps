@@ -424,14 +424,14 @@ function idle(pet)
 		if pet.name == 'Alexander' then       
 			-- We have Alexander so we want idle in max skill instead.
 			equip(sets.avatar.skill)	
-		elseif pet.name == 'Carbuncle' or pet.name == 'Cait Sith' then
-			-- If we have cait or carbie  we switch hands to those things.
-			equip(sets.avatar[pet.name])
 		else 
-			-- We have a non-Alexander, non-carby, non-caithy pet out but we're not meleeing, set the right idle set
+			-- We have a non-Alexander pet out but we're not meleeing, set the right idle set
 			equip(sets.avatar[mode])
 		end
-		
+		if pet.name == 'Carbuncle' or pet.name == 'Cait Sith' then
+			-- If we have cait or carbie  we switch hands to those things.
+			equip(sets.avatar[pet.name])		
+		end
 		if favor then
 			-- Avatar's favor set just, or should just swap to beckoner's horn +1 for head.
 			--[[ 
