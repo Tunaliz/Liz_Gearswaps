@@ -5,7 +5,7 @@ Don't modify any of the JOB.lua if you don't know what you are doing and why you
 You will also need the files named as JOB_Gearsets.lua. This file is where your sets are, so you can modify this to create the sets you need without breaking the actual code. This is also where you can chose different keybinds than me. (I use f9-f10-f12)
 
 ### Gearswap SMN template
-*Requires Shortcut Add-On
+*Requires Shortcut Add-On*
 
 *Notable Features*
 
@@ -19,7 +19,7 @@ This Lua branched off Aeyela's and included the following:
 * Avatar-agnostic Blood Pacts handling.
 
 ### Gearswap SCH template
-*Requires Shortcut Add-On
+*Requires Shortcut Add-On*
 
 *Notable Features*
 
