@@ -1,4 +1,4 @@
-
+ 
 --[[
         Custom commands:
         Shorthand versions for each strategem type that uses the version appropriate for
@@ -15,26 +15,26 @@
         gs c scholar enmity             Tranquility             Equanimity
         gs c scholar skillchain                                 Immanence
         gs c scholar addendum           Addendum: White         Addendum: Black
-	
-		Toggle Function: 
-		gs c toggle melee 				Toggle Melee mode on / off and locking of weapons
-		gs c toggle mb					Toggles Magic Burst Mode on / off.
-		gs c toggle runspeed			Toggles locking on / off Herald's Gaiters
-		gs c toggle idlemode			Toggles between Refresh and DT mode for idle set		
-		
-		Casting functions:
-		these are to set fewer macros (1 cycle, 5 cast) to save macro space when playing lazily with controler
-		
-		gs c nuke element 				Cycles element type for nuking & SC
-		gs c nuke t1					Cast tier 1 nuke of saved element 
-		gs c nuke t2					Cast tier 2 nuke of saved element 
-		gs c nuke t3					Cast tier 3 nuke of saved element 
-		gs c nuke t4					Cast tier 4 nuke of saved element 
-		gs c nuke t5					Cast tier 5 nuke of saved element 
-		gs c nuke helix					Cast helix2 nuke of saved element 
-		
-		gs c sc tier					Cycles SC Tier (1 & 2)
-		gs c sc castsc					Cast All the stuff to create a SC burstable by the nuke element set with '/console gs c nuke element'.
+    
+        Toggle Function: 
+        gs c toggle melee               Toggle Melee mode on / off and locking of weapons
+        gs c toggle mb                  Toggles Magic Burst Mode on / off.
+        gs c toggle runspeed            Toggles locking on / off Herald's Gaiters
+        gs c toggle idlemode            Toggles between Refresh and DT mode for idle set        
+        
+        Casting functions:
+        these are to set fewer macros (1 cycle, 5 cast) to save macro space when playing lazily with controler
+        
+        gs c nuke element               Cycles element type for nuking & SC
+        gs c nuke t1                    Cast tier 1 nuke of saved element 
+        gs c nuke t2                    Cast tier 2 nuke of saved element 
+        gs c nuke t3                    Cast tier 3 nuke of saved element 
+        gs c nuke t4                    Cast tier 4 nuke of saved element 
+        gs c nuke t5                    Cast tier 5 nuke of saved element 
+        gs c nuke helix                 Cast helix2 nuke of saved element 
+        
+        gs c sc tier                    Cycles SC Tier (1 & 2)
+        gs c sc castsc                  Cast All the stuff to create a SC burstable by the nuke element set with '/console gs c nuke element'.
 --]]
 
 -------------------------------------------------------------------------------------------------------------------
@@ -111,7 +111,8 @@ function set_macros(sheet,book)
 	send_command('bind ^` input /ma Stun <t>')
 end
 
-include('SCH_Gearsets.lua')
+ include('SCH_Gearsets.lua')
+
 -- Required variables and  their initial value
 
 nukes = {}
@@ -189,15 +190,13 @@ end
  
  
 function precast(spell)
-
-	-- Auto use Echo Drops if you are trying to cast while silenced --    
-	if spell.action_type == 'Magic' and buffactive['Silence'] then 
-		cancel_spell()
+    -- Auto use Echo Drops if you are trying to cast while silenced --    
+    if spell.action_type == 'Magic' and buffactive['Silence'] then 
+        cancel_spell()
         send_command('input /item "Echo Drops" <me>')     
-		add_to_chat(123, '****** ['..spell.name..' CANCELED - Using Echo Drops] ******')		
-    end
-	
-	-- Moving on to other types of magic
+        add_to_chat(123, '****** ['..spell.name..' CANCELED - Using Echo Drops] ******')        
+    end         
+    -- Moving on to other types of magic
     if spell.type == 'WhiteMagic' or spell.type == 'BlackMagic' then
      
         -- Stoneskin Precast
@@ -226,7 +225,7 @@ function precast(spell)
              
         end
          
-    -- Scholar Abilities
+    -- Job Abilities
     -- We use a catch all here, if the set exists for an ability, use it
     -- This way we don't need to write a load of different code for different abilities, just make a set
      
@@ -254,12 +253,10 @@ function midcast(spell)
 			equip(sets.midcast.regen)
 		elseif spell.name:match('Aquaveil') then
 			equip(sets.midcast.aquaveil)
-		elseif spell.name:match('Stoneskin') then
-			equip(sets.midcast.stoneskin)
-		end
-	elseif spell.skill == 'Enfeebling Magic' and spell.type == 'BlackMagic' then 
+        end
+	elseif spell.skill == 'Enfeebling Magic' and spell.type == 'BlackMagic' then -- to do: better rule for this.
 		equip(sets.midcast.IntEnfeebling)
-	elseif spell.skill == 'Enfeebling Magic' and spell.type == 'WhiteMagic' then 
+	elseif spell.skill == 'Enfeebling Magic' and spell.type == 'WhiteMagic' then -- to do: better rule for this.
 		equip(sets.midcast.MndEnfeebling)
 	elseif spell.type == 'BlackMagic' then
 		if mBurst then
@@ -267,6 +264,7 @@ function midcast(spell)
 		else
 			equip(sets.midcast.nuking)
 		end
+	-- casting is basically enfeeble set.
 	else
 		equip(sets.midcast.casting)
 	end
@@ -287,16 +285,17 @@ function midcast(spell)
 	end
 
 	-- Obi up for matching weather / day
-	if spell.element == world.weather_element and spellMap ~= 'Helix' then
+	if spell.element == world.weather_element and spellMap ~= 'Helix'then
 		equip(sets.midcast.Obi)
 	end
-	if spell.element == world.day_element and spellMap ~= 'Helix' then
+	if spell.element == world.day_element and spellMap ~= 'Helix'then
 		equip(sets.midcast.Obi)
 	end
-	
-	-- Dark based Helix gets "pixie hairpin +1" + "Refoccilation Stone" 
-	-- It was easier to add the belt in dark helix set than to make add another condition to the above.
-    if spellMap == 'DarkHelix' then
+    if spell.name:match('Stoneskin') then
+        equip(sets.midcast.stoneskin)
+    end
+	-- Dark based Helix gets "pixie hairpin +1"
+    if spellMap == 'DarkHelix'then
         equip(sets.midcast.DarkHelix)
     end
     if spellMap == 'Helix' then
@@ -316,11 +315,11 @@ function idle()
         -- We're engaged and meleeing
         equip(sets.me.melee)        	
     else
-		if idleMode == 'refresh' then
-			equip(sets.me.idle)
-		elseif idleMode == 'DT' then
-			equip(sets.me.idleDT)  			
-		end
+        if idleMode == 'refresh' then
+            equip(sets.me.idle)
+        elseif idleMode == 'DT' then
+            equip(sets.me.idleDT)           
+        end
     end
 	-- Checks MP for Fucho-no-Obi
     if player.mpp < 51 then
@@ -350,7 +349,7 @@ function self_command(command)
      
     if #commandArgs:split(' ') >= 2 then
         commandArgs = T(commandArgs:split(' '))
-		if commandArgs[1] == 'toggle' then
+        if commandArgs[1] == 'toggle' then
             if commandArgs[2] == 'melee' then
              
                 -- //gs c toggle melee will toggle melee mode on and off.
@@ -379,29 +378,29 @@ function self_command(command)
                     mBurst = true
                     windower.add_to_chat(8,"----- Nuking MB Mode ON -----")
                 end
-			elseif commandArgs[2] == 'runspeed' then
-				if runspeed then
-					runspeed = false
-				    windower.add_to_chat(8,"----- Taking Off Herald's Gaiters -----")	
-					enable('feet')
+            elseif commandArgs[2] == 'runspeed' then
+                if runspeed then
+                    runspeed = false
+                    windower.add_to_chat(8,"----- Taking Off Herald's Gaiters -----")   
+                    enable('feet')
                     idle()
-				else
-					runspeed = true	
-				    windower.add_to_chat(8,"----- Locking On Herald's Gaiters -----")
-					equip({feet="Herald's Gaiters"})
-					disable('feet')					
-				end
-			elseif commandArgs[2] == 'idlemode' then
-				if idleMode == 'refresh' then
-					idleMode = 'DT'
-				    windower.add_to_chat(8,"----- Idle Mode now focus on DT -----")	
+                else
+                    runspeed = true 
+                    windower.add_to_chat(8,"----- Locking On Herald's Gaiters -----")
+                    equip({feet="Herald's Gaiters"})
+                    disable('feet')                 
+                end
+            elseif commandArgs[2] == 'idlemode' then
+                if idleMode == 'refresh' then
+                    idleMode = 'DT'
+                    windower.add_to_chat(8,"----- Idle Mode now focus on DT -----") 
                     idle()
-				elseif idleMode == 'DT' then
-					idleMode = 'refresh'
-				    windower.add_to_chat(8,"----- Idle Mode now focus on Refresh -----")
-                    idle()				
-				end
-			end
+                elseif idleMode == 'DT' then
+                    idleMode = 'refresh'
+                    windower.add_to_chat(8,"----- Idle Mode now focus on Refresh -----")
+                    idle()              
+                end
+            end
         end
 		
 		if commandArgs[1]:lower() == 'scholar' then
@@ -414,28 +413,28 @@ function self_command(command)
 			end
 			
 			local nuke = commandArgs[2]:lower()
-			if nuke == 'element' then
+			if nuke == 'cycle' then
 				if savedElement == 'Earth' then
-					element = 'Water'
-					if scTier == 'Level 1' then
-						wantedSc = 'Reverberation'
-					else
-						wantedSc = 'Distortion'
-					end
+					element = 'Lightning'
+                    if scTier == 'Level 1' then
+                        wantedSc = 'Impaction'
+                    else
+                        wantedSc = 'Fragmentation'
+                    end
+                elseif savedElement == 'Lightning' then
+                    element = 'Water'
+                    if scTier == 'Level 1' then
+                        wantedSc = 'Reverberation'
+                    else
+                        wantedSc = 'Distortion'
+                    end
 				elseif savedElement == 'Water' then
-					element = 'Air'
-					if scTier == 'Level 1' then
-						wantedSc = 'Detonation'
-					else
-						wantedSc = 'Fragmentation'
-					end
-				elseif savedElement == 'Air' then
 					element = 'Fire'
-					if scTier == 'Level 1' then
-						wantedSc = 'Liquefaction'
-					else
-						wantedSc = 'Fusion'
-					end
+                    if scTier == 'Level 1' then
+                        wantedSc = 'Liquefaction'
+                    else
+                        wantedSc = 'Fusion'
+                    end
 				elseif savedElement == 'Fire' then
 					element = 'Ice'
 					if scTier == 'Level 1' then
@@ -444,14 +443,14 @@ function self_command(command)
 						wantedSc = 'Distortion'
 					end
 				elseif savedElement == 'Ice' then
-					element = 'Lightning'
-					if scTier == 'Level 1' then
-						wantedSc = 'Impaction'
-					else
-						wantedSc = 'Fragmentation'
-					end
-				elseif savedElement == 'Lightning' then
-					element = 'Dark'
+                    element = 'Air'
+                    if scTier == 'Level 1' then
+                        wantedSc = 'Detonation'
+                    else
+                        wantedSc = 'Fragmentation'
+                    end
+                elseif savedElement == 'Air' then
+                    element = 'Dark'
 					if scTier == 'Level 1' then
 						wantedSc = 'Compression'
 					else
@@ -553,8 +552,8 @@ function self_command(command)
 				elseif wantedSc == 'Gravitation' then
 					send_command('input /p Opening SC: Gravitation  MB: Dark / Stone; wait .1; input /ja "Immanence" <me>; wait 1.5; input /ma "Aero" <t>; wait 4.0; input /ja "Immanence" <me>; wait 1.5; input /p Closing SC: Gravitation  MB: Dark / Stone; input /ma "Noctohelix" <t>')					
 				elseif wantedSc == 'Transfixion' then
-					send_command('input /p Opening SC: Transfixion  MB: Light; wait .1; input /ja "Immanence" <me>; wait 1.5; input /ma "Noctohelix" <t>; wait 4.0; input /ja "Immanence" <me>; wait 1.5; input /p Closing SC: Transfixion  MB: Light; input /ma "Luminohelix" <t>')					
-				end
+                    send_command('input /p Opening SC: Transfixion  MB: Light; wait .1; input /ja "Immanence" <me>; wait 1.5; input /ma "Noctohelix" <t>; wait 4.0; input /ja "Immanence" <me>; wait 1.5; input /p Closing SC: Transfixion  MB: Light; input /ma "Luminohelix" <t>')
+                end
 			end
 		end
     end
