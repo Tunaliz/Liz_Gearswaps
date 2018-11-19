@@ -6,13 +6,12 @@ You will also need the files named as JOB_Gearsets.lua. This file is where your 
 
 ### Gearswap SMN template
 
-*Features*
+*Notable Features*
 
 All the nifty things found in Aeyela's thread: http://www.ffxiah.com/forum/topic/47412/barebones-summoner-gearswap/
 
 This Lua branched off Aeyela's and included the following:
 
-* All the bug fixes found in the above thread previously.
 * Keybind and support for cycling through avatar modes with 1 key.
 * Keybind for toggling autoBP
 * Keybind for toggling melee weapon lock
@@ -20,7 +19,7 @@ This Lua branched off Aeyela's and included the following:
 
 ### Gearswap SCH template
 
-*Features*
+*Notable Features*
 
 * Keybind support for various commands
 * Grimoire agnostic stratagem (so you can make 1 macro that works in both arts)
