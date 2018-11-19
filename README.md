@@ -22,10 +22,22 @@ This Lua branched off Aeyela's and included the following:
 
 *Features*
 
-Keybind support for various commands
+* Keybind support for various commands
 * Grimoire agnostic stratagem (so you can make 1 macro that works in both arts)
+  - macro: /console gs c scholar aoe
+    - will cast Accession in LA or Manifestation in DA, etc.
+  - See SCH_Gearsets.lua for the list of commands.
 * Auto Echo drops
 * Refresh or DT toggle for idle set
-* Cycle function to go through and save an Element - All nuke/helix macro will cast saved element
-* All in one SC function - Sc based on saved Element, toggle function for SC level 1 or 2
+* Cycle function to go through and save an Element 
+  - All nuke/helix macro will cast saved element
+  - Example Macro: /console gs c nuke t5
+    - Cast tier 5 nuke of saved element
+    - Support t1 to t5 and helix
+* All in one SC function 
+  - Sc based on saved Element, toggle function for SC level 1 or 2
+  - Macro: /console gs c sc castsc
+    - Cast a SC burstable by saved element
+  - Macro: /console gs c sc tier
+    - Changes between T1 or T2 SC
 
