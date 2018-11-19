@@ -1,5 +1,4 @@
- include('SCH_Gearsets.lua')
- 
+
 --[[
         Custom commands:
         Shorthand versions for each strategem type that uses the version appropriate for
@@ -111,8 +110,8 @@ function set_macros(sheet,book)
     send_command('@input /macro set '..tostring(sheet))
 	send_command('bind ^` input /ma Stun <t>')
 end
-set_macros(1,17) -- Sheet, Book
 
+include('SCH_Gearsets.lua')
 -- Required variables and  their initial value
 
 nukes = {}
