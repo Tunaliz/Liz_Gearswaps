@@ -92,9 +92,9 @@ function get_sets()
     sets.me.latent_refresh = {waist="Fucho-no-obi"}     
     -- Combat Related Sets
 
-    sets.me.melee = {
+    sets.me.melee = set_combine(sets.me.idle,{
 
-    }
+    })
       
     -- Weapon Skills sets just add them by name.
     sets.me["Shattersoul"] = {
