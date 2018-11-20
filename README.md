@@ -21,6 +21,8 @@ This Lua branched off Aeyela's and included the following:
 ### Gearswap SCH template
 *Requires Shortcuts Add-On*
 
+More info: https://www.ffxiah.com/node/352
+
 *Notable Features*
 
 * Keybind support for various commands
