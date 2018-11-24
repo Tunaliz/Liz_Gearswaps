@@ -25,7 +25,7 @@
         Casting functions:
         these are to set fewer macros (1 cycle, 5 cast) to save macro space when playing lazily with controler
         
-        gs c nuke element               Cycles element type for nuking & SC
+        gs c nuke cycle               	Cycles element type for nuking & SC
         gs c nuke t1                    Cast tier 1 nuke of saved element 
         gs c nuke t2                    Cast tier 2 nuke of saved element 
         gs c nuke t3                    Cast tier 3 nuke of saved element 
