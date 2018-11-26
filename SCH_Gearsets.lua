@@ -43,7 +43,7 @@
 
 
 -- Setup your Key Bindings here:  
-    windower.send_command('bind f9 gs c nuke cycle')		-- Cycles element type for nuking & SC	
+    windower.send_command('bind f9 gs c nuke cycle')		-- F9 Cycles element type for nuking & SC	
     windower.send_command('bind f10 gs c toggle mb')		-- F10 toggles Magic Burst Mode on / off.
     windower.send_command('bind f12 gs c toggle melee')		-- F12 Toggle Melee mode on / off and locking of weapons
     windower.send_command('bind !` input /ma Stun <t>') 	-- Alt-` Quick Stun Shortcut.
