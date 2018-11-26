@@ -109,7 +109,7 @@ function get_sets()
     sets.me.latent_refresh = {waist="Fucho-no-obi"}     
     
 	-- Combat Related Sets
-    sets.me.melee = set_combine(sets.me.idle.refresh,{
+    sets.me.melee = set_combine(sets.me.idle[idleMode],{
 
     })
       
