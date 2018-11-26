@@ -125,12 +125,6 @@ nukes.t5 = {['Earth']="Stone V", 	['Water']="Water V", 	['Air']="Aero V", 	['Fir
 nukes.helix = {['Earth']="Geohelix II",  ['Water']="Hydrohelix II", ['Air']="Anomehelix II",['Fire']="Pyrohelix II", ['Ice']="Cryohelix II", ['Lightning']="Ionohelix II", 	  ['Light']="Luminohelix II", ['Dark']="Noctohelix II"}
 nukes.storm = {['Earth']="Sandstorm II", ['Water']="Rainstorm II", 	['Air']="Windstorm II",	['Fire']="Firestorm II", ['Ice']="Hailstorm II", ['Lightning']="Thunderstorm II", ['Light']="Aurorastorm II", ['Dark']="Voidstorm II"}
 
-sc = {}
-sc.t1 = {"Scission", "Reverberation", "Detonation", "Liquefaction", "Induration", "Impaction", "Compression"}
-sc.t2 = {"Gravitation", "Distortion", "Fragmentation", "Fusion"}
-	--Reference for future dev...
-	--windower.send_command('bind f6 input /echo hi me; wait .1; input /echo this is line 2; wait .1; input /echo [ end of line ]')	
-
 elements = 	{'Ice', 'Air', 'Dark', 'Light', 'Earth', 'Lightning', 'Water', 'Fire'}
 tier1sc = 	{'Induration', 'Detonation', 'Compression', 'Transfixion', 'Scission', 'Impaction', 'Reverberation', 'Liquefaction'}
 tier2sc = 	{'Distortion', 'Fragmentation', 'Gravitation', 'Fusion', 'Gravitation', 'Fragmentation', 'Distortion', 'Fusion'}
