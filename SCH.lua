@@ -20,19 +20,23 @@
         gs c toggle melee               Toggle Melee mode on / off and locking of weapons
         gs c toggle mb                  Toggles Magic Burst Mode on / off.
         gs c toggle runspeed            Toggles locking on / off Herald's Gaiters
-        gs c toggle idlemode            Toggles between Refresh and DT mode for idle set        
-        
+        gs c toggle idlemode            Toggles between Refresh and DT idle mode. Activating Sublimation JA will auto replace refresh set for sublimation set. DT set will superceed both.        
+        gs c toggle regenmode           Toggles between Hybrid, Duration and Potency mode for regen set  
+        gs c toggle nukemode           	Toggles between Normal and Accuracy mode for midcast Nuking sets (MB included)  
+		
         Casting functions:
         these are to set fewer macros (1 cycle, 5 cast) to save macro space when playing lazily with controler
         
-        gs c nuke cycle               	Cycles element type for nuking & SC
+        gs c nuke cycle              	Cycles element type for nuking & SC
         gs c nuke t1                    Cast tier 1 nuke of saved element 
         gs c nuke t2                    Cast tier 2 nuke of saved element 
         gs c nuke t3                    Cast tier 3 nuke of saved element 
         gs c nuke t4                    Cast tier 4 nuke of saved element 
         gs c nuke t5                    Cast tier 5 nuke of saved element 
         gs c nuke helix                 Cast helix2 nuke of saved element 
-        
+        gs c nuke storm                 Cast Storm II buff of saved element  
+
+ 
         gs c sc tier                    Cycles SC Tier (1 & 2)
         gs c sc castsc                  Cast All the stuff to create a SC burstable by the nuke element set with '/console gs c nuke element'.
 --]]
@@ -108,10 +112,7 @@ function set_macros(sheet,book)
         return
     end
     send_command('@input /macro set '..tostring(sheet))
-	send_command('bind ^` input /ma Stun <t>')
 end
-
- include('SCH_Gearsets.lua')
 
 -- Required variables and  their initial value
 
@@ -121,7 +122,8 @@ nukes.t2 = {['Earth']="Stone II", 	['Water']="Water II", 	['Air']="Aero II", 	['
 nukes.t3 = {['Earth']="Stone III", 	['Water']="Water III", 	['Air']="Aero III", ['Fire']="Fire III",['Ice']="Blizzard III", ['Lightning']="Thunder III", ['Light']="Thunder III", ['Dark']="Blizzard III"}
 nukes.t4 = {['Earth']="Stone IV", 	['Water']="Water IV", 	['Air']="Aero IV", 	['Fire']="Fire IV", ['Ice']="Blizzard IV", 	['Lightning']="Thunder IV", ['Light']="Thunder IV", ['Dark']="Blizzard IV"}
 nukes.t5 = {['Earth']="Stone V", 	['Water']="Water V", 	['Air']="Aero V", 	['Fire']="Fire V", 	['Ice']="Blizzard V", 	['Lightning']="Thunder V", ['Light']="Thunder V", ['Dark']="Blizzard V"}
-nukes.helix = {['Earth']="Geohelix II", 	['Water']="Hydrohelix II", 	['Air']="Anomehelix II", 	['Fire']="Pyrohelix II", 	['Ice']="Cryohelix II", 	['Lightning']="Ionohelix II", ['Light']="Luminohelix II", ['Dark']="Noctohelix II"}
+nukes.helix = {['Earth']="Geohelix II",  ['Water']="Hydrohelix II", ['Air']="Anomehelix II",['Fire']="Pyrohelix II", ['Ice']="Cryohelix II", ['Lightning']="Ionohelix II", 	  ['Light']="Luminohelix II", ['Dark']="Noctohelix II"}
+nukes.storm = {['Earth']="Sandstorm II", ['Water']="Rainstorm II", 	['Air']="Windstorm II",	['Fire']="Firestorm II", ['Ice']="Hailstorm II", ['Lightning']="Thunderstorm II", ['Light']="Aurorastorm II", ['Dark']="Voidstorm II"}
 
 sc = {}
 sc.t1 = {"Scission", "Reverberation", "Detonation", "Liquefaction", "Induration", "Impaction", "Compression"}
@@ -129,15 +131,31 @@ sc.t2 = {"Gravitation", "Distortion", "Fragmentation", "Fusion"}
 	--Reference for future dev...
 	--windower.send_command('bind f6 input /echo hi me; wait .1; input /echo this is line 2; wait .1; input /echo [ end of line ]')	
 
-element = 'Ice'
-savedElement = 'Ice'
-wantedSc = 'Induration'
-savedSc = 'Induration'
+elements = 	{'Ice', 'Air', 'Dark', 'Light', 'Earth', 'Lightning', 'Water', 'Fire'}
+tier1sc = 	{'Induration', 'Detonation', 'Compression', 'Transfixion', 'Scission', 'Impaction', 'Reverberation', 'Liquefaction'}
+tier2sc = 	{'Distortion', 'Fragmentation', 'Gravitation', 'Fusion', 'Gravitation', 'Fragmentation', 'Distortion', 'Fusion'}
+elemId = 1
+element = elements[elemId]
+wantedSc = tier1sc[elemId]
+
 scTier = 'Level 1'
 meleeing = false
 mBurst = false
 runspeed = false
 idleMode = 'refresh'
+regenMode = 'regen'
+nukeMode = 'normal'
+
+-- Spam Chat to alert the user of what modes things are by default. 
+windower.add_to_chat(211,'Welcome back to your SCH.lua')	
+windower.add_to_chat(211,'Nuke now set to element type: '..tostring(element))	
+windower.add_to_chat(211,'SC now set to: '..tostring(wantedSc))		
+windower.add_to_chat(211,'Idle mode now set to: '..tostring(idleMode))	
+windower.add_to_chat(211,'Regen mode now set to: '..tostring(regenMode))	
+windower.add_to_chat(211,'Nuke mode now set to: '..tostring(nukeMode))	
+
+
+include('SCH_Gearsets.lua')
 
 
 Buff = 
@@ -250,7 +268,7 @@ function midcast(spell)
 		elseif spell.name:match('Refresh') then
 			equip(sets.midcast.refresh)
 		elseif spell.name:match('Regen') then
-			equip(sets.midcast.regen)
+			equip(sets.midcast[regenMode])
 		elseif spell.name:match('Aquaveil') then
 			equip(sets.midcast.aquaveil)
         end
@@ -260,9 +278,9 @@ function midcast(spell)
 		equip(sets.midcast.MndEnfeebling)
 	elseif spell.type == 'BlackMagic' then
 		if mBurst then
-			equip(sets.midcast.MB)
+			equip(sets.midcast.MB[nukeMode])
 		else
-			equip(sets.midcast.nuking)
+			equip(sets.midcast.nuking[nukeMode])
 		end
 	-- casting is basically enfeeble set.
 	else
@@ -309,24 +327,28 @@ function aftercast(spell)
 end
 
 function idle()
+    update_active_strategems()
+    update_sublimation()
     -- This function is called after every action, and handles which set to equip depending on what we're doing
     -- We check if we're meleeing because we don't want to idle in melee gear when we're only engaged for trusts
 	if meleeing and player.status=='Engaged' then   
         -- We're engaged and meleeing
         equip(sets.me.melee)        	
     else
-        if idleMode == 'refresh' then
-            equip(sets.me.idle)
-        elseif idleMode == 'DT' then
-            equip(sets.me.idleDT)           
-        end
+		-- If we are building sublimation and don't idle in DT set then we swap refresh to sublimation style idle.
+		if Buff['Sublimation: Activated'] and idleMode ~= 'dt' then
+			equip(sets.me.idle.sublimation)
+			windower.add_to_chat(3,"----- Idle mode Now focus on: Sublimation")
+		-- We either are in DT set or we don't have sublimation ticking.
+		else
+			equip(sets.me.idle[idleMode])
+			windower.add_to_chat(4,"----- Idle mode Now focus on: "..tostring(idleMode))
+		end
     end
 	-- Checks MP for Fucho-no-Obi
     if player.mpp < 51 then
         equip(sets.me.latent_refresh)
     end
-    update_active_strategems()
-    update_sublimation()
 end
  
 function status_change(new,old)
@@ -342,7 +364,7 @@ function status_change(new,old)
 		idle()
     end
 end
- 
+
 function self_command(command)
  
     local commandArgs = command
@@ -392,15 +414,32 @@ function self_command(command)
                 end
             elseif commandArgs[2] == 'idlemode' then
                 if idleMode == 'refresh' then
-                    idleMode = 'DT'
-                    windower.add_to_chat(8,"----- Idle Mode now focus on DT -----") 
+                    idleMode = 'dt'
                     idle()
-                elseif idleMode == 'DT' then
+                elseif idleMode == 'dt' then
                     idleMode = 'refresh'
-                    windower.add_to_chat(8,"----- Idle Mode now focus on Refresh -----")
-                    idle()              
+                    idle()                         
                 end
-            end
+            elseif commandArgs[2] == 'regenmode' then
+                if regenMode == 'regen' then
+                    regenMode = 'regenduration'
+                    windower.add_to_chat(8,"----- Regen Mode now focus on Duration -----") 
+                elseif regenMode == 'regenduration' then
+                    regenMode = 'regenpotency'
+                    windower.add_to_chat(8,"----- Regen Mode now focus on Potency -----")        
+                elseif regenMode == 'regenpotency' then
+                    regenMode = 'regen'
+                    windower.add_to_chat(8,"----- Regen Mode now focus on Hybrid -----")            
+                end
+            elseif commandArgs[2] == 'nukemode' then
+                if nukeMode == 'normal' then
+                    nukeMode = 'acc'
+                    windower.add_to_chat(8,"----- Nuking Mode is now Accuracy -----") 
+                elseif nukeMode == 'acc' then
+                    nukeMode = 'normal'
+                    windower.add_to_chat(8,"----- Nuking Mode is now Normal -----")                       
+                end
+			end
         end
 		
 		if commandArgs[1]:lower() == 'scholar' then
@@ -414,70 +453,20 @@ function self_command(command)
 			
 			local nuke = commandArgs[2]:lower()
 			if nuke == 'cycle' then
-				if savedElement == 'Earth' then
-					element = 'Lightning'
-                    if scTier == 'Level 1' then
-                        wantedSc = 'Impaction'
-                    else
-                        wantedSc = 'Fragmentation'
-                    end
-                elseif savedElement == 'Lightning' then
-                    element = 'Water'
-                    if scTier == 'Level 1' then
-                        wantedSc = 'Reverberation'
-                    else
-                        wantedSc = 'Distortion'
-                    end
-				elseif savedElement == 'Water' then
-					element = 'Fire'
-                    if scTier == 'Level 1' then
-                        wantedSc = 'Liquefaction'
-                    else
-                        wantedSc = 'Fusion'
-                    end
-				elseif savedElement == 'Fire' then
-					element = 'Ice'
-					if scTier == 'Level 1' then
-						wantedSc = 'Induration'
-					else
-						wantedSc = 'Distortion'
-					end
-				elseif savedElement == 'Ice' then
-                    element = 'Air'
-                    if scTier == 'Level 1' then
-                        wantedSc = 'Detonation'
-                    else
-                        wantedSc = 'Fragmentation'
-                    end
-                elseif savedElement == 'Air' then
-                    element = 'Dark'
-					if scTier == 'Level 1' then
-						wantedSc = 'Compression'
-					else
-						wantedSc = 'Gravitation'
-					end
-				elseif savedElement == 'Dark' then
-					element = 'Light'
-					if scTier == 'Level 1' then
-						wantedSc = 'Transfixion'
-					else
-						wantedSc = 'Fusion'
-					end
-				elseif savedElement == 'Light' then
-					element = 'Earth'
-					if scTier == 'Level 1' then
-						wantedSc = 'Scission'
-					else
-						wantedSc = 'Gravitation'
-					end
-				end
-				savedElement = element
-				savedSc = wantedSc
+				elemId = elemId+1
+				elemId = elemId % 8
+				elemId = elemId+1
+				element = elements[elemId]
 				windower.add_to_chat(211,'Nuke now set to element type: '..tostring(element))	
+				if scTier == 'Level 2' then
+					wantedSc = tier2sc[elemId]
+				elseif scTier == 'Level 1' then
+					wantedSc = tier1sc[elemId]
+				end
 				windower.add_to_chat(211,'SC now set to: '..tostring(wantedSc))				
 			elseif not nukes[nuke] then
 				windower.add_to_chat(123,'Unknown element type: '..tostring(nuke))
-				return
+				return				
 			else		
 				-- Leave out target; let Shortcuts auto-determine it.
 				send_command('@input /ma "'..nukes[nuke][element]..'"')		
@@ -492,38 +481,12 @@ function self_command(command)
 			if arg == 'tier' then
 				if scTier == 'Level 1' then
 					scTier = 'Level 2'
-					if savedElement == 'Earth' or savedElement == 'Dark' then
-						wantedSc = 'Gravitation'
-					elseif savedElement == 'Fire' or savedElement == 'Light' then
-						wantedSc = 'Fusion'
-					elseif savedElement == 'Air' or savedElement == 'Lightning' then
-						wantedSc = 'Fragmentation'
-					elseif savedElement == 'Water' or savedElement == 'Ice' then
-						wantedSc = 'Distortion'
-					end
-					savedSc = wantedSc
+					wantedSc = tier2sc[elemId]
 					windower.add_to_chat(211,'SC Tier now set to: '..tostring(scTier))
 					windower.add_to_chat(211,'SC now set to: '..tostring(wantedSc))		
 				elseif scTier == 'Level 2' then
-					scTier = 'Level 1'
-					if savedElement == 'Earth' then
-						wantedSc = 'Scission'					
-					elseif savedElement == 'Dark' then
-						wantedSc = 'Compression'
-					elseif savedElement == 'Fire' then
-						wantedSc = 'Liquefaction'					
-					elseif savedElement == 'Light' then
-						wantedSc = 'Transfixion'
-					elseif savedElement == 'Air' then
-						wantedSc = 'Detonation'					
-					elseif savedElement == 'Lightning' then
-						wantedSc = 'Impaction'
-					elseif savedElement == 'Water' then
-						wantedSc = 'Reverberation'					
-					elseif savedElement == 'Ice' then
-						wantedSc = 'Induration'
-					end
-					savedSc = wantedSc					
+					scTier = 'Level 1'	
+					wantedSc = tier1sc[elemId]
 					windower.add_to_chat(211,'SC Tier now set to: '..tostring(scTier))
 					windower.add_to_chat(211,'SC now set to: '..tostring(wantedSc))		
 				end
