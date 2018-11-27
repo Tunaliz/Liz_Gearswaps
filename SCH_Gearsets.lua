@@ -93,14 +93,14 @@ function get_sets()
     sets.me.idle.refresh = {
 
     }
-    -- Your idle Sublimation set combine from refresh or DT depening on mode.
+    -- Your idle Sublimation set combine from refresh
     sets.me.idle.sublimation = set_combine(sets.me.idle.refresh,{
 
     })   
-    -- Your idle DT set
+    -- Your idle DT set, combine from either of the above depening on your current mode
     sets.me.idle.dt = set_combine(sets.me.idle[refreshType],{
 
-    })  
+    }) 
     
 	-- Your MP Recovered Whilst Resting Set
     sets.me.resting = { 
