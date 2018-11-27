@@ -2,7 +2,7 @@
 
 Don't modify any of the JOB.lua if you don't know what you are doing and why you are doing it. Reason is, the complicated code is in this file and none of the gearsets are. This way, if something doesn't work, it's either a bug (blame me!) or something wrong with your sets...
 
-You will also need the files named as JOB_Gearsets.lua. This file is where your sets are, so you can modify this to create the sets you need without breaking the actual code. This is also where you can chose different keybinds than me. (I use f9-f10-f12)
+You will also need the files named as JOB_Gearsets.lua. This file is where your sets are, so you can modify this to create the sets you need without breaking the actual code. This is also where you can chose different keybinds than me.
 
 ### Gearswap GEO template
 *Requires Shortcuts Add-On*
