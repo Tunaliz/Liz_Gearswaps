@@ -8,6 +8,7 @@ You will also need the files named as JOB_Gearsets.lua. This file is where your 
 *Requires Shortcuts Add-On*
 
 This Lua branched off Aeyela's.
+
 More Info: http://www.ffxiah.com/forum/topic/47412/barebones-summoner-gearswap/
 
 *Notable Features*
