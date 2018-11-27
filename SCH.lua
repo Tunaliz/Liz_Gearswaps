@@ -194,11 +194,6 @@ function update_sublimation()
     else
         refreshType = "refresh"
     end
-    if midaction() then
-        return
-    else
-        idle()
-    end
 end
 
 function buff_refresh(name,buff_details)
