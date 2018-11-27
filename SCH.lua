@@ -22,13 +22,13 @@
         gs c toggle runspeed            Toggles locking on / off Herald's Gaiters
         gs c toggle idlemode            Toggles between Refresh and DT idle mode. Activating Sublimation JA will auto replace refresh set for sublimation set. DT set will superceed both.        
         gs c toggle regenmode           Toggles between Hybrid, Duration and Potency mode for regen set  
-        gs c toggle nukemode           	Toggles between Normal and Accuracy mode for midcast Nuking sets (MB included)  
-		
+        gs c toggle nukemode            Toggles between Normal and Accuracy mode for midcast Nuking sets (MB included)  
+        
         Casting functions:
         these are to set fewer macros (1 cycle, 5 cast) to save macro space when playing lazily with controler
         
-        gs c nuke cycle              	Cycles element type for nuking & SC
-	gs c nuke cycledown		Cycles element type for nuking & SC in reverse order	
+        gs c nuke cycle                 Cycles element type for nuking & SC
+    gs c nuke cycledown     Cycles element type for nuking & SC in reverse order    
         gs c nuke t1                    Cast tier 1 nuke of saved element 
         gs c nuke t2                    Cast tier 2 nuke of saved element 
         gs c nuke t3                    Cast tier 3 nuke of saved element 
@@ -99,13 +99,13 @@ spell_maps = {
     ['Enlight']='Enlight',['Enlight II']='Enlight',['Endark']='Endark',['Endark II']='Endark',
     ['Burn']='ElementalEnfeeble',['Frost']='ElementalEnfeeble',['Choke']='ElementalEnfeeble',['Rasp']='ElementalEnfeeble',['Shock']='ElementalEnfeeble',['Drown']='ElementalEnfeeble',
     ['Pyrohelix']='Helix',['Cryohelix']='Helix',['Anemohelix']='Helix',['Geohelix']='Helix',['Ionohelix']='Helix',['Hydrohelix']='Helix',['Luminohelix']='Helix',['Noctohelix']='DarkHelix',
-	['Pyrohelix II']='Helix',['Cryohelix II']='Helix',['Anemohelix II']='Helix',['Geohelix II']='Helix',['Ionohelix II']='Helix',['Hydrohelix II']='Helix',['Luminohelix II']='Helix',['Noctohelix II']='DarkHelix',
+    ['Pyrohelix II']='Helix',['Cryohelix II']='Helix',['Anemohelix II']='Helix',['Geohelix II']='Helix',['Ionohelix II']='Helix',['Hydrohelix II']='Helix',['Luminohelix II']='Helix',['Noctohelix II']='DarkHelix',
     ['Firestorm']='Storm',['Hailstorm']='Storm',['Windstorm']='Storm',['Sandstorm']='Storm',['Thunderstorm']='Storm',['Rainstorm']='Storm',['Aurorastorm']='Storm',['Voidstorm']='Storm',
-	['Firestorm II']='Storm',['Hailstorm II']='Storm',['Windstorm II']='Storm',['Sandstorm II']='Storm',['Thunderstorm II']='Storm',['Rainstorm II']='Storm',['Aurorastorm II']='Storm',['Voidstorm II']='Storm',
+    ['Firestorm II']='Storm',['Hailstorm II']='Storm',['Windstorm II']='Storm',['Sandstorm II']='Storm',['Thunderstorm II']='Storm',['Rainstorm II']='Storm',['Aurorastorm II']='Storm',['Voidstorm II']='Storm',
     ['Fire Maneuver']='Maneuver',['Ice Maneuver']='Maneuver',['Wind Maneuver']='Maneuver',['Earth Maneuver']='Maneuver',['Thunder Maneuver']='Maneuver',
     ['Water Maneuver']='Maneuver',['Light Maneuver']='Maneuver',['Dark Maneuver']='Maneuver',
 }
-				
+                
 -- Set Macros for your SCH's macro page, book.
 function set_macros(sheet,book)
     if book then 
@@ -118,17 +118,17 @@ end
 -- Required variables and  their initial value
 
 nukes = {}
-nukes.t1 = {['Earth']="Stone", 		['Water']="Water", 		['Air']="Aero", 	['Fire']="Fire", 	['Ice']="Blizzard", 	['Lightning']="Thunder", ['Light']="Thunder", ['Dark']="Blizzard"}
-nukes.t2 = {['Earth']="Stone II", 	['Water']="Water II", 	['Air']="Aero II", 	['Fire']="Fire II", ['Ice']="Blizzard II", 	['Lightning']="Thunder II", ['Light']="Thunder II", ['Dark']="Blizzard II"}
-nukes.t3 = {['Earth']="Stone III", 	['Water']="Water III", 	['Air']="Aero III", ['Fire']="Fire III",['Ice']="Blizzard III", ['Lightning']="Thunder III", ['Light']="Thunder III", ['Dark']="Blizzard III"}
-nukes.t4 = {['Earth']="Stone IV", 	['Water']="Water IV", 	['Air']="Aero IV", 	['Fire']="Fire IV", ['Ice']="Blizzard IV", 	['Lightning']="Thunder IV", ['Light']="Thunder IV", ['Dark']="Blizzard IV"}
-nukes.t5 = {['Earth']="Stone V", 	['Water']="Water V", 	['Air']="Aero V", 	['Fire']="Fire V", 	['Ice']="Blizzard V", 	['Lightning']="Thunder V", ['Light']="Thunder V", ['Dark']="Blizzard V"}
-nukes.helix = {['Earth']="Geohelix II",  ['Water']="Hydrohelix II", ['Air']="Anomehelix II",['Fire']="Pyrohelix II", ['Ice']="Cryohelix II", ['Lightning']="Ionohelix II", 	  ['Light']="Luminohelix II", ['Dark']="Noctohelix II"}
-nukes.storm = {['Earth']="Sandstorm II", ['Water']="Rainstorm II", 	['Air']="Windstorm II",	['Fire']="Firestorm II", ['Ice']="Hailstorm II", ['Lightning']="Thunderstorm II", ['Light']="Aurorastorm II", ['Dark']="Voidstorm II"}
+nukes.t1 = {['Earth']="Stone",      ['Water']="Water",      ['Air']="Aero",     ['Fire']="Fire",    ['Ice']="Blizzard",     ['Lightning']="Thunder", ['Light']="Thunder", ['Dark']="Blizzard"}
+nukes.t2 = {['Earth']="Stone II",   ['Water']="Water II",   ['Air']="Aero II",  ['Fire']="Fire II", ['Ice']="Blizzard II",  ['Lightning']="Thunder II", ['Light']="Thunder II", ['Dark']="Blizzard II"}
+nukes.t3 = {['Earth']="Stone III",  ['Water']="Water III",  ['Air']="Aero III", ['Fire']="Fire III",['Ice']="Blizzard III", ['Lightning']="Thunder III", ['Light']="Thunder III", ['Dark']="Blizzard III"}
+nukes.t4 = {['Earth']="Stone IV",   ['Water']="Water IV",   ['Air']="Aero IV",  ['Fire']="Fire IV", ['Ice']="Blizzard IV",  ['Lightning']="Thunder IV", ['Light']="Thunder IV", ['Dark']="Blizzard IV"}
+nukes.t5 = {['Earth']="Stone V",    ['Water']="Water V",    ['Air']="Aero V",   ['Fire']="Fire V",  ['Ice']="Blizzard V",   ['Lightning']="Thunder V", ['Light']="Thunder V", ['Dark']="Blizzard V"}
+nukes.helix = {['Earth']="Geohelix II",  ['Water']="Hydrohelix II", ['Air']="Anomehelix II",['Fire']="Pyrohelix II", ['Ice']="Cryohelix II", ['Lightning']="Ionohelix II",    ['Light']="Luminohelix II", ['Dark']="Noctohelix II"}
+nukes.storm = {['Earth']="Sandstorm II", ['Water']="Rainstorm II",  ['Air']="Windstorm II", ['Fire']="Firestorm II", ['Ice']="Hailstorm II", ['Lightning']="Thunderstorm II", ['Light']="Aurorastorm II", ['Dark']="Voidstorm II"}
 
-elements = 	{'Ice', 'Air', 'Dark', 'Light', 'Earth', 'Lightning', 'Water', 'Fire'}
-tier1sc = 	{'Induration', 'Detonation', 'Compression', 'Transfixion', 'Scission', 'Impaction', 'Reverberation', 'Liquefaction'}
-tier2sc = 	{'Distortion', 'Fragmentation', 'Gravitation', 'Fusion', 'Gravitation', 'Fragmentation', 'Distortion', 'Fusion'}
+elements =  {'Ice', 'Air', 'Dark', 'Light', 'Earth', 'Lightning', 'Water', 'Fire'}
+tier1sc =   {'Induration', 'Detonation', 'Compression', 'Transfixion', 'Scission', 'Impaction', 'Reverberation', 'Liquefaction'}
+tier2sc =   {'Distortion', 'Fragmentation', 'Gravitation', 'Fusion', 'Gravitation', 'Fragmentation', 'Distortion', 'Fusion'}
 elemId = 0
 elemId = elemId % 8
 element = elements[elemId+1]
@@ -143,31 +143,31 @@ regenMode = 'regen'
 nukeMode = 'normal'
 
 -- Spam Chat to alert the user of what modes things are by default. 
-windower.add_to_chat(211,'Welcome back to your SCH.lua')	
-windower.add_to_chat(211,'Nuke now set to element type: '..tostring(element))	
-windower.add_to_chat(211,'SC now set to: '..tostring(wantedSc))		
-windower.add_to_chat(211,'Idle mode now set to: '..tostring(idleMode))	
-windower.add_to_chat(211,'Regen mode now set to: '..tostring(regenMode))	
-windower.add_to_chat(211,'Nuke mode now set to: '..tostring(nukeMode))	
+windower.add_to_chat(211,'Welcome back to your SCH.lua')    
+windower.add_to_chat(211,'Nuke now set to element type: '..tostring(element))   
+windower.add_to_chat(211,'SC now set to: '..tostring(wantedSc))     
+windower.add_to_chat(211,'Idle mode now set to: '..tostring(idleMode))  
+windower.add_to_chat(211,'Regen mode now set to: '..tostring(regenMode))    
+windower.add_to_chat(211,'Nuke mode now set to: '..tostring(nukeMode))  
 
 
 include('SCH_Gearsets.lua')
 
 
 Buff = 
-	{
-		['Ebullience'] = false, 
-		['Rapture'] = false, 
-		['Perpetuance'] = false,
-		['Immanence'] = false,
-		['Penury'] = false,
-		['Parsimony'] = false,
-		['Celerity'] = false,
-		['Alacrity'] = false,
-		['Klimaform'] = false,
-		['Sublimation: Activated'] = false
-	}
-	
+    {
+        ['Ebullience'] = false, 
+        ['Rapture'] = false, 
+        ['Perpetuance'] = false,
+        ['Immanence'] = false,
+        ['Penury'] = false,
+        ['Parsimony'] = false,
+        ['Celerity'] = false,
+        ['Alacrity'] = false,
+        ['Klimaform'] = false,
+        ['Sublimation: Activated'] = false
+    }
+    
 -- Get a spell mapping for the spell.
 function get_spell_map(spell)
     return spell_maps[spell.name]
@@ -191,13 +191,13 @@ function update_sublimation()
 end
 
 function buff_refresh(name,buff_details)
-	-- Update SCH statagems when a buff refreshes.
+    -- Update SCH statagems when a buff refreshes.
     update_active_strategems()
     update_sublimation()
 end
 
 function buff_change(name,gain,buff_details)
-	-- Update SCH statagems when a buff is gained or lost.
+    -- Update SCH statagems when a buff is gained or lost.
     update_active_strategems()
     update_sublimation()
 end
@@ -250,65 +250,65 @@ function precast(spell)
 end
  
 function midcast(spell)
-  	-- Get the spell mapping, since we'll be passing it to various functions and checks.
-	local spellMap = get_spell_map(spell)    
+    -- Get the spell mapping, since we'll be passing it to various functions and checks.
+    local spellMap = get_spell_map(spell)    
     -- No need to annotate all this, it's fairly logical. Just equips the relevant sets for the relevant magic
-	if spell.name:match('Cure') or spell.name:match('Cura') then
-		equip(sets.midcast.cure)
-	elseif spell.skill == 'Enhancing Magic' then
-		equip(sets.midcast.enhancing)
-		if spellMap == 'Storm' then
-			equip(sets.midcast.storm)
-		elseif spell.name:match('Protect') or spell.name:match('Shell') then
-			equip({rring="Sheltered Ring"})
-		elseif spell.name:match('Refresh') then
-			equip(sets.midcast.refresh)
-		elseif spell.name:match('Regen') then
-			equip(sets.midcast[regenMode])
-		elseif spell.name:match('Aquaveil') then
-			equip(sets.midcast.aquaveil)
+    if spell.name:match('Cure') or spell.name:match('Cura') then
+        equip(sets.midcast.cure)
+    elseif spell.skill == 'Enhancing Magic' then
+        equip(sets.midcast.enhancing)
+        if spellMap == 'Storm' then
+            equip(sets.midcast.storm)
+        elseif spell.name:match('Protect') or spell.name:match('Shell') then
+            equip({rring="Sheltered Ring"})
+        elseif spell.name:match('Refresh') then
+            equip(sets.midcast.refresh)
+        elseif spell.name:match('Regen') then
+            equip(sets.midcast[regenMode])
+        elseif spell.name:match('Aquaveil') then
+            equip(sets.midcast.aquaveil)
         end
-	elseif spell.skill == 'Enfeebling Magic' and spell.type == 'BlackMagic' then -- to do: better rule for this.
-		equip(sets.midcast.IntEnfeebling)
-	elseif spell.skill == 'Enfeebling Magic' and spell.type == 'WhiteMagic' then -- to do: better rule for this.
-		equip(sets.midcast.MndEnfeebling)
-	elseif spell.type == 'BlackMagic' then
-		if mBurst then
-			equip(sets.midcast.MB[nukeMode])
-		else
-			equip(sets.midcast.nuking[nukeMode])
-		end
-	-- casting is basically enfeeble set.
-	else
-		equip(sets.midcast.casting)
-	end
+    elseif spell.skill == 'Enfeebling Magic' and spell.type == 'BlackMagic' then -- to do: better rule for this.
+        equip(sets.midcast.IntEnfeebling)
+    elseif spell.skill == 'Enfeebling Magic' and spell.type == 'WhiteMagic' then -- to do: better rule for this.
+        equip(sets.midcast.MndEnfeebling)
+    elseif spell.type == 'BlackMagic' then
+        if mBurst then
+            equip(sets.midcast.MB[nukeMode])
+        else
+            equip(sets.midcast.nuking[nukeMode])
+        end
+    -- casting is basically enfeeble set.
+    else
+        equip(sets.midcast.casting)
+    end
     -- And our catch all, if a set exists for this spell name, use it
     if sets.midcast[spell.name] then
         equip(sets.midcast[spell.name])
-	-- Catch all for tiered spells (use mapping), basically if no set for spell name, check set for spell mapping. AKA Drain works for all Drain tiers.
+    -- Catch all for tiered spells (use mapping), basically if no set for spell name, check set for spell mapping. AKA Drain works for all Drain tiers.
     elseif sets.midcast[spellMap] then
         equip(sets.midcast[spellMap])
     -- Remember those WS Sets we defined? :) sets.me["Insert Weaponskill"] are basically how I define any non-magic spells sets, aka, WS, JA, Idles, etc.
     elseif sets.me[spell.name] then
         equip(sets.me[spell.name])
     end
-	
-	-- Put the JSE in place.
+    
+    -- Put the JSE in place.
     if spell.action_type == 'Magic' then
         apply_grimoire_bonuses(spell, action, spellMap)
-	end
+    end
 
-	-- Obi up for matching weather / day
-	if spell.element == world.weather_element and spellMap ~= 'Helix'then
-		equip(sets.midcast.Obi)
-	end
-	if spell.element == world.day_element and spellMap ~= 'Helix'then
-		equip(sets.midcast.Obi)
-	end
+    -- Obi up for matching weather / day
+    if spell.element == world.weather_element and spellMap ~= 'Helix'then
+        equip(sets.midcast.Obi)
+    end
+    if spell.element == world.day_element and spellMap ~= 'Helix'then
+        equip(sets.midcast.Obi)
+    end
     if spell.name:match('Stoneskin') then
         equip(sets.midcast.stoneskin)
     end
-	-- Dark based Helix gets "pixie hairpin +1"
+    -- Dark based Helix gets "pixie hairpin +1"
     if spellMap == 'DarkHelix'then
         equip(sets.midcast.DarkHelix)
     end
@@ -327,21 +327,21 @@ function idle()
     update_sublimation()
     -- This function is called after every action, and handles which set to equip depending on what we're doing
     -- We check if we're meleeing because we don't want to idle in melee gear when we're only engaged for trusts
-	if meleeing and player.status=='Engaged' then   
+    if meleeing and player.status=='Engaged' then   
         -- We're engaged and meleeing
-        equip(sets.me.melee)        	
+        equip(sets.me.melee)            
     else
-		-- If we are building sublimation and don't idle in DT set then we swap refresh to sublimation style idle.
-		if Buff['Sublimation: Activated'] and idleMode ~= 'dt' then
-			equip(sets.me.idle.sublimation)
-			windower.add_to_chat(3,"----- Idle mode Now focus on: Sublimation")
-		-- We either are in DT set or we don't have sublimation ticking.
-		else
-			equip(sets.me.idle[idleMode])
-			windower.add_to_chat(4,"----- Idle mode Now focus on: "..tostring(idleMode))
-		end
+        -- If we are building sublimation, then we swap refresh to sublimation style idle.
+        if Buff['Sublimation: Activated'] then
+            equip(sets.me.idle.sublimation)
+            windower.add_to_chat(3,"----- Idle mode Now focus on: Sublimation")
+        -- We don't have sublimation ticking.
+        else
+            equip(sets.me.idle[idleMode])
+            windower.add_to_chat(4,"----- Idle mode Now focus on: "..tostring(idleMode))
+        end
     end
-	-- Checks MP for Fucho-no-Obi
+    -- Checks MP for Fucho-no-Obi
     if player.mpp < 51 then
         equip(sets.me.latent_refresh)
     end
@@ -356,8 +356,8 @@ function status_change(new,old)
      
         -- We're resting
         equip(sets.me.resting)
-	else
-		idle()
+    else
+        idle()
     end
 end
 
@@ -435,96 +435,98 @@ function self_command(command)
                     nukeMode = 'normal'
                     windower.add_to_chat(8,"----- Nuking Mode is now Normal -----")                       
                 end
-			end
+            end
         end
-		
-		if commandArgs[1]:lower() == 'scholar' then
-			handle_strategems(commandArgs)
+        
+        if commandArgs[1]:lower() == 'scholar' then
+            handle_strategems(commandArgs)
 
-		elseif commandArgs[1]:lower() == 'nuke' then
-			if not commandArgs[2] then
-				windower.add_to_chat(123,'No element type given.')
-				return
-			end
-			
-			local nuke = commandArgs[2]:lower()
-			if nuke == 'cycle' then
-				elemId = elemId+1
-				elemId = elemId % 8
-				element = elements[elemId+1]
-				windower.add_to_chat(211,'Nuke now set to element type: '..tostring(element))	
-				if scTier == 'Level 2' then
-					wantedSc = tier2sc[elemId+1]
-				elseif scTier == 'Level 1' then
-					wantedSc = tier1sc[elemId+1]
-				end
-				windower.add_to_chat(211,'SC now set to: '..tostring(wantedSc))
-			elseif nuke == 'cycledown' then
-				elemId = elemId-1
-				elemId = elemId % 8
-				element = elements[elemId+1]
-				windower.add_to_chat(211,'Nuke now set to element type: '..tostring(element))	
-				if scTier == 'Level 2' then
-					wantedSc = tier2sc[elemId+1]
-				elseif scTier == 'Level 1' then
-					wantedSc = tier1sc[elemId+1]
-				end
-				windower.add_to_chat(211,'SC now set to: '..tostring(wantedSc))
-			elseif not nukes[nuke] then
-				windower.add_to_chat(123,'Unknown element type: '..tostring(nuke))
-				return				
-			else		
-				-- Leave out target; let Shortcuts auto-determine it.
-				send_command('@input /ma "'..nukes[nuke][element]..'"')		
-			end
-		elseif commandArgs[1]:lower() == 'sc' then
-			if not commandArgs[2] then
-				windower.add_to_chat(123,'No element type given.')
-				return
-			end
-			
-			local arg = commandArgs[2]:lower()
-			if arg == 'tier' then
-				if scTier == 'Level 1' then
-					scTier = 'Level 2'
-					wantedSc = tier2sc[elemId]
-					windower.add_to_chat(211,'SC Tier now set to: '..tostring(scTier))
-					windower.add_to_chat(211,'SC now set to: '..tostring(wantedSc))		
-				elseif scTier == 'Level 2' then
-					scTier = 'Level 1'	
-					wantedSc = tier1sc[elemId]
-					windower.add_to_chat(211,'SC Tier now set to: '..tostring(scTier))
-					windower.add_to_chat(211,'SC now set to: '..tostring(wantedSc))		
-				end
-			end
-			if arg == 'castsc' then
-				if wantedSc == 'Scission' then
-					send_command('input /p Opening SC: Scission  MB: Stone; wait .1; input /ja "Immanence" <me>; wait 1.5; input /ma "Fire" <t>; wait 4.0; input /ja "Immanence" <me>; wait 1.5; input /p Closing SC: Scission  MB: Stone; input /ma "Stone" <t>')			
-				elseif wantedSc == 'Reverberation' then
-					send_command('input /p Opening SC: Reverberation  MB: Water; wait .1; input /ja "Immanence" <me>; wait 1.5; input /ma "Stone" <t>; wait 4.0; input /ja "Immanence" <me>; wait 1.5; input /p Closing SC: Reverberation  MB: Water; input /ma "Water" <t>')		
-				elseif wantedSc == 'Detonation' then
-					send_command('input /p Opening SC: Detonation  MB: Air; wait .1; input /ja "Immanence" <me>; wait 1.5; input /ma "Thunder" <t>; wait 4.0; input /ja "Immanence" <me>; wait 1.5; input /p Closing SC: Detonation  MB: Air; input /ma "Aero" <t>')	
-				elseif wantedSc == 'Liquefaction' then
-					send_command('input /p Opening SC: Liquefaction  MB: Fire; wait .1; input /ja "Immanence" <me>; wait 1.5; input /ma "Thunder" <t>; wait 4.0; input /ja "Immanence" <me>; wait 1.5; input /p Closing SC: Liquefaction  MB: Fire; input /ma "Fire" <t>')					
-				elseif wantedSc == 'Induration' then
-					send_command('input /p Opening SC: Induration  MB: Ice; wait .1; input /ja "Immanence" <me>; wait 1.5; input /ma "Water" <t>; wait 4.0; input /ja "Immanence" <me>; wait 1.5; input /p Closing SC: Induration  MB: Ice; input /ma "Blizzard" <t>')					
-				elseif wantedSc == 'Impaction' then
-					send_command('input /p Opening SC: Impaction  MB: Lightning; wait .1; input /ja "Immanence" <me>; wait 1.5; input /ma "Blizzard" <t>; wait 4.0; input /ja "Immanence" <me>; wait 1.5; input /p Closing SC: Impaction  MB: Lightning; input /ma "Thunder" <t>')					
-				elseif wantedSc == 'Compression' then
-					send_command('input /p Opening SC: Compression  MB: Dark; wait .1; input /ja "Immanence" <me>; wait 1.5; input /ma "Blizzard" <t>; wait 4.0; input /ja "Immanence" <me>; wait 1.5; input /p Closing SC: Compression  MB: Dark; input /ma "Noctohelix" <t>')					
-				elseif wantedSc == 'Distortion' then
-					send_command('input /p Opening SC: Distortion  MB: Water / Ice; wait .1; input /ja "Immanence" <me>; wait 1.5; input /ma "Luminohelix" <t>; wait 6.0; input /ja "Immanence" <me>; wait 1.5; input /p Closing SC: Distortion  MB: Water / Ice; input /ma "Stone" <t>')					
-				elseif wantedSc == 'Fragmentation' then
-					send_command('input /p Opening SC: Fragmentation  MB: Lightning / Wind; wait .1; input /ja "Immanence" <me>; wait 1.5; input /ma "Blizzard" <t>; wait 4.0; input /ja "Immanence" <me>; wait 1.5; input /p Closing SC: Fragmentation  MB: Wind / Lightning; input /ma "Water" <t>')					
-				elseif wantedSc == 'Fusion' then
-					send_command('input /p Opening SC: Fusion  MB: Light / Fire; wait .1; input /ja "Immanence" <me>; wait 1.5; input /ma "Fire" <t>; wait 4.0; input /ja "Immanence" <me>; wait 1.5; input /p Closing SC: Fusion  MB: Light / Fire; input /ma "Thunder" <t>')					
-				elseif wantedSc == 'Gravitation' then
-					send_command('input /p Opening SC: Gravitation  MB: Dark / Stone; wait .1; input /ja "Immanence" <me>; wait 1.5; input /ma "Aero" <t>; wait 4.0; input /ja "Immanence" <me>; wait 1.5; input /p Closing SC: Gravitation  MB: Dark / Stone; input /ma "Noctohelix" <t>')					
-				elseif wantedSc == 'Transfixion' then
+        elseif commandArgs[1]:lower() == 'nuke' then
+            if not commandArgs[2] then
+                windower.add_to_chat(123,'No element type given.')
+                return
+            end
+            
+            local nuke = commandArgs[2]:lower()
+            if nuke == 'cycle' then
+                elemId = elemId+1
+                elemId = elemId % 8
+                element = elements[elemId+1]
+                windower.add_to_chat(211,'Nuke now set to element type: '..tostring(element))   
+                if scTier == 'Level 2' then
+                    elemId = elemId % 8
+                    wantedSc = tier2sc[elemId+1]
+                elseif scTier == 'Level 1' then
+                    elemId = elemId % 8
+                    wantedSc = tier1sc[elemId+1]
+                end
+                windower.add_to_chat(211,'SC now set to: '..tostring(wantedSc))
+            elseif nuke == 'cycledown' then
+                elemId = elemId-1
+                elemId = elemId % 8
+                element = elements[elemId+1]
+                windower.add_to_chat(211,'Nuke now set to element type: '..tostring(element))   
+                if scTier == 'Level 2' then
+                    wantedSc = tier2sc[elemId+1]
+                elseif scTier == 'Level 1' then
+                    wantedSc = tier1sc[elemId+1]
+                end
+                windower.add_to_chat(211,'SC now set to: '..tostring(wantedSc))
+            elseif not nukes[nuke] then
+                windower.add_to_chat(123,'Unknown element type: '..tostring(nuke))
+                return              
+            else        
+                -- Leave out target; let Shortcuts auto-determine it.
+                send_command('@input /ma "'..nukes[nuke][element]..'"')     
+            end
+        elseif commandArgs[1]:lower() == 'sc' then
+            if not commandArgs[2] then
+                windower.add_to_chat(123,'No element type given.')
+                return
+            end
+            
+            local arg = commandArgs[2]:lower()
+            if arg == 'tier' then
+                if scTier == 'Level 1' then
+                    scTier = 'Level 2'
+                    wantedSc = tier2sc[elemId]
+                    windower.add_to_chat(211,'SC Tier now set to: '..tostring(scTier))
+                    windower.add_to_chat(211,'SC now set to: '..tostring(wantedSc))     
+                elseif scTier == 'Level 2' then
+                    scTier = 'Level 1'  
+                    wantedSc = tier1sc[elemId]
+                    windower.add_to_chat(211,'SC Tier now set to: '..tostring(scTier))
+                    windower.add_to_chat(211,'SC now set to: '..tostring(wantedSc))     
+                end
+            end
+            if arg == 'castsc' then
+                if wantedSc == 'Scission' then
+                    send_command('input /p Opening SC: Scission  MB: Stone; wait .1; input /ja "Immanence" <me>; wait 1.5; input /ma "Fire" <t>; wait 4.0; input /ja "Immanence" <me>; wait 1.5; input /p Closing SC: Scission  MB: Stone; input /ma "Stone" <t>')          
+                elseif wantedSc == 'Reverberation' then
+                    send_command('input /p Opening SC: Reverberation  MB: Water; wait .1; input /ja "Immanence" <me>; wait 1.5; input /ma "Stone" <t>; wait 4.0; input /ja "Immanence" <me>; wait 1.5; input /p Closing SC: Reverberation  MB: Water; input /ma "Water" <t>')       
+                elseif wantedSc == 'Detonation' then
+                    send_command('input /p Opening SC: Detonation  MB: Air; wait .1; input /ja "Immanence" <me>; wait 1.5; input /ma "Thunder" <t>; wait 4.0; input /ja "Immanence" <me>; wait 1.5; input /p Closing SC: Detonation  MB: Air; input /ma "Aero" <t>')    
+                elseif wantedSc == 'Liquefaction' then
+                    send_command('input /p Opening SC: Liquefaction  MB: Fire; wait .1; input /ja "Immanence" <me>; wait 1.5; input /ma "Thunder" <t>; wait 4.0; input /ja "Immanence" <me>; wait 1.5; input /p Closing SC: Liquefaction  MB: Fire; input /ma "Fire" <t>')                  
+                elseif wantedSc == 'Induration' then
+                    send_command('input /p Opening SC: Induration  MB: Ice; wait .1; input /ja "Immanence" <me>; wait 1.5; input /ma "Water" <t>; wait 4.0; input /ja "Immanence" <me>; wait 1.5; input /p Closing SC: Induration  MB: Ice; input /ma "Blizzard" <t>')                  
+                elseif wantedSc == 'Impaction' then
+                    send_command('input /p Opening SC: Impaction  MB: Lightning; wait .1; input /ja "Immanence" <me>; wait 1.5; input /ma "Blizzard" <t>; wait 4.0; input /ja "Immanence" <me>; wait 1.5; input /p Closing SC: Impaction  MB: Lightning; input /ma "Thunder" <t>')                  
+                elseif wantedSc == 'Compression' then
+                    send_command('input /p Opening SC: Compression  MB: Dark; wait .1; input /ja "Immanence" <me>; wait 1.5; input /ma "Blizzard" <t>; wait 4.0; input /ja "Immanence" <me>; wait 1.5; input /p Closing SC: Compression  MB: Dark; input /ma "Noctohelix" <t>')                 
+                elseif wantedSc == 'Distortion' then
+                    send_command('input /p Opening SC: Distortion  MB: Water / Ice; wait .1; input /ja "Immanence" <me>; wait 1.5; input /ma "Luminohelix" <t>; wait 6.0; input /ja "Immanence" <me>; wait 1.5; input /p Closing SC: Distortion  MB: Water / Ice; input /ma "Stone" <t>')                   
+                elseif wantedSc == 'Fragmentation' then
+                    send_command('input /p Opening SC: Fragmentation  MB: Lightning / Wind; wait .1; input /ja "Immanence" <me>; wait 1.5; input /ma "Blizzard" <t>; wait 4.0; input /ja "Immanence" <me>; wait 1.5; input /p Closing SC: Fragmentation  MB: Wind / Lightning; input /ma "Water" <t>')                  
+                elseif wantedSc == 'Fusion' then
+                    send_command('input /p Opening SC: Fusion  MB: Light / Fire; wait .1; input /ja "Immanence" <me>; wait 1.5; input /ma "Fire" <t>; wait 4.0; input /ja "Immanence" <me>; wait 1.5; input /p Closing SC: Fusion  MB: Light / Fire; input /ma "Thunder" <t>')                  
+                elseif wantedSc == 'Gravitation' then
+                    send_command('input /p Opening SC: Gravitation  MB: Dark / Stone; wait .1; input /ja "Immanence" <me>; wait 1.5; input /ma "Aero" <t>; wait 4.0; input /ja "Immanence" <me>; wait 1.5; input /p Closing SC: Gravitation  MB: Dark / Stone; input /ma "Noctohelix" <t>')                 
+                elseif wantedSc == 'Transfixion' then
                     send_command('input /p Opening SC: Transfixion  MB: Light; wait .1; input /ja "Immanence" <me>; wait 1.5; input /ma "Noctohelix" <t>; wait 4.0; input /ja "Immanence" <me>; wait 1.5; input /p Closing SC: Transfixion  MB: Light; input /ma "Luminohelix" <t>')
                 end
-			end
-		end
+            end
+        end
     end
 end
 
