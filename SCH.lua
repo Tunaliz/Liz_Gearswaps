@@ -28,6 +28,7 @@
         these are to set fewer macros (1 cycle, 5 cast) to save macro space when playing lazily with controler
         
         gs c nuke cycle              	Cycles element type for nuking & SC
+	gs c nuke cycledown		Cycles element type for nuking & SC in reverse order	
         gs c nuke t1                    Cast tier 1 nuke of saved element 
         gs c nuke t2                    Cast tier 2 nuke of saved element 
         gs c nuke t3                    Cast tier 3 nuke of saved element 
@@ -447,14 +448,25 @@ function self_command(command)
 			
 			local nuke = commandArgs[2]:lower()
 			if nuke == 'cycle' then
-				elemId = elemId % 8
 				elemId = elemId+1
-				element = elements[elemId]
+				elemId = elemId % 8
+				element = elements[elemId+1]
 				windower.add_to_chat(211,'Nuke now set to element type: '..tostring(element))	
 				if scTier == 'Level 2' then
-					wantedSc = tier2sc[elemId]
+					wantedSc = tier2sc[elemId+1]
 				elseif scTier == 'Level 1' then
-					wantedSc = tier1sc[elemId]
+					wantedSc = tier1sc[elemId+1]
+				end
+				windower.add_to_chat(211,'SC now set to: '..tostring(wantedSc))
+			elseif nuke == 'cycledown' then
+				elemId = elemId-1
+				elemId = elemId % 8
+				element = elements[elemId+1]
+				windower.add_to_chat(211,'Nuke now set to element type: '..tostring(element))	
+				if scTier == 'Level 2' then
+					wantedSc = tier2sc[elemId+1]
+				elseif scTier == 'Level 1' then
+					wantedSc = tier1sc[elemId+1]
 				end
 				windower.add_to_chat(211,'SC now set to: '..tostring(wantedSc))
 			elseif not nukes[nuke] then
