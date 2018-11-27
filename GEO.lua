@@ -406,22 +406,22 @@ function self_command(command)
 				geoId = geoId+1
 				geoId = geoId % 30
 				geoSpell = geomancy.geo[geoId+1]
-				windower.add_to_chat(211,'Nuke now set to element type: '..tostring(geoSpell))	
+				windower.add_to_chat(211,'Geo Spell now set to : '..tostring(geoSpell))	
 			elseif geo == 'geocycledown' then
 				geoId = geoId-1
 				geoId = geoId % 30
 				geoSpell = geomancy.geo[geoId+1]
-				windower.add_to_chat(211,'Nuke now set to element type: '..tostring(geoSpell))
+				windower.add_to_chat(211,'Geo Spell now set to : '..tostring(geoSpell))
 			elseif geo == 'indicycle' then
 				indiId = indiId+1
 				indiId = indiId % 30
 				indiSpell = geomancy.indi[indiId+1]
-				windower.add_to_chat(211,'Nuke now set to element type: '..tostring(indiSpell))	
+				windower.add_to_chat(211,'Indi Spell now set to : '..tostring(indiSpell))	
 			elseif geo == 'indicycledown' then
 				indiId = indiId-1
 				indiId = indiId % 30
 				indiSpell = geomancy.indi[indiId+1]
-				windower.add_to_chat(211,'Nuke now set to element type: '..tostring(indiSpell))	  				
+				windower.add_to_chat(211,'Indi Spell now set to : '..tostring(indiSpell))	  				
             elseif not geomancy[geo] then
                 windower.add_to_chat(123,'Unknown spell command type: '..tostring(geo))
                 return
