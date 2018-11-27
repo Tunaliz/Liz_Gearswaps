@@ -4,19 +4,19 @@ Don't modify any of the JOB.lua if you don't know what you are doing and why you
 
 You will also need the files named as JOB_Gearsets.lua. This file is where your sets are, so you can modify this to create the sets you need without breaking the actual code. This is also where you can chose different keybinds than me. (I use f9-f10-f12)
 
-### Gearswap SMN template
+### Gearswap GEO template
 *Requires Shortcuts Add-On*
 
-This Lua branched off Aeyela's.
-
-More Info: http://www.ffxiah.com/forum/topic/47412/barebones-summoner-gearswap/
+More info: https://www.ffxiah.com/forum/topic/53025/a-geo-gearswap
 
 *Notable Features*
 
-* Keybind and support for cycling through avatar modes with 1 key.
-* Keybind for toggling autoBP
-* Keybind for toggling melee weapon lock
-* Avatar-agnostic Blood Pacts handling.
+* Keybind support for various commands
+* Auto Echo drops
+* Auto Detect if luopan is out to swap between refresh or luopan perp, can be overridden with a toggle for DT (Full masterDT if no luopan , hybrid luopan Perp / Master DT if luopan is out
+* Cycle function to go through and save an Element
+* Cycle function to go through Geo and Indi spells, save them so your macros can cast the appropriate spell
+* All in one Geo and Indi casting functions
 
 ### Gearswap SCH template
 *Requires Shortcuts Add-On*
@@ -32,3 +32,16 @@ More info: https://www.ffxiah.com/forum/topic/52995/a-sch-gearswap/
 * Cycle functions to go through and save an Element
 * All in one SC function
 
+### Gearswap SMN template
+*Requires Shortcuts Add-On*
+
+This Lua branched off Aeyela's.
+
+More Info: http://www.ffxiah.com/forum/topic/47412/barebones-summoner-gearswap/
+
+*Notable Features*
+
+* Keybind and support for cycling through avatar modes with 1 key.
+* Keybind for toggling autoBP
+* Keybind for toggling melee weapon lock
+* Avatar-agnostic Blood Pacts handling.
