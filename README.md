@@ -7,11 +7,10 @@ You will also need the files named as JOB_Gearsets.lua. This file is where your 
 ### Gearswap SMN template
 *Requires Shortcuts Add-On*
 
-*Notable Features*
-
+This Lua branched off Aeyela's.
 More Info: http://www.ffxiah.com/forum/topic/47412/barebones-summoner-gearswap/
 
-This Lua branched off Aeyela's and included the following:
+*Notable Features*
 
 * Keybind and support for cycling through avatar modes with 1 key.
 * Keybind for toggling autoBP
