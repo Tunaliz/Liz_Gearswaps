@@ -21,7 +21,7 @@ More Info: http://www.ffxiah.com/forum/topic/47412/barebones-summoner-gearswap/
 ### Gearswap SCH template
 *Requires Shortcuts Add-On*
 
-More info: https://www.ffxiah.com/node/352
+More info: https://www.ffxiah.com/forum/topic/52995/a-sch-gearswap/
 
 *Notable Features*
 
