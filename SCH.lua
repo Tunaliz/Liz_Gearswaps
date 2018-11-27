@@ -447,7 +447,6 @@ function self_command(command)
 			
 			local nuke = commandArgs[2]:lower()
 			if nuke == 'cycle' then
-				elemId = elemId+1
 				elemId = elemId % 8
 				elemId = elemId+1
 				element = elements[elemId]
@@ -457,7 +456,7 @@ function self_command(command)
 				elseif scTier == 'Level 1' then
 					wantedSc = tier1sc[elemId]
 				end
-				windower.add_to_chat(211,'SC now set to: '..tostring(wantedSc))				
+				windower.add_to_chat(211,'SC now set to: '..tostring(wantedSc))
 			elseif not nukes[nuke] then
 				windower.add_to_chat(123,'Unknown element type: '..tostring(nuke))
 				return				
