@@ -44,7 +44,8 @@
 
 
 -- Setup your Key Bindings here:  
-    windower.send_command('bind f9 gs c nuke cycle')		-- F9 Cycles element type for nuking & SC	
+    windower.send_command('bind f9 gs c nuke cycle')		-- F9 Cycles element type for nuking & SC
+    windower.send_command('bind f8 gs c nuke cycledown')	-- F8 Cycles element type for nuking & SC in reverse order	
     windower.send_command('bind f10 gs c toggle mb')		-- F10 toggles Magic Burst Mode on / off.
     windower.send_command('bind f12 gs c toggle melee')		-- F12 Toggle Melee mode on / off and locking of weapons
     windower.send_command('bind !` input /ma Stun <t>') 	-- Alt-` Quick Stun Shortcut.
@@ -57,6 +58,7 @@
 -- Remember to unbind your keybinds on job change.
 function user_unload()
     send_command('unbind f9')
+    send_command('unbind f8')	
     send_command('unbind f10')
     send_command('unbind f12')
     send_command('unbind !`')
