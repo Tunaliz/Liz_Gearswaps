@@ -142,8 +142,8 @@ indiSpell = geomancy.indi[indiId+1]
 
 -- Spam Chat to alert the user of what modes things are by default. 
 windower.add_to_chat(8,'----- Welcome back to your GEO.lua -----')	
-windower.add_to_chat(211,'Geo Spell now set to element type: '..tostring(geoSpell))
-windower.add_to_chat(211,'Indi Spell now set to element type: '..tostring(indiSpell))
+windower.add_to_chat(211,'Geo Spell now set to : '..tostring(geoSpell))
+windower.add_to_chat(211,'Indi Spell now set to: '..tostring(indiSpell))
 windower.add_to_chat(211,'Nuke now set to element type: '..tostring(element))	
 windower.add_to_chat(211,'Idle mode now set to: '..tostring(idleMode))
  
