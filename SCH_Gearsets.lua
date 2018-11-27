@@ -99,10 +99,10 @@ function get_sets()
 		right_ring="Defending Ring",
 		back="Moonbeam Cape",
     })
-    -- Your idle Sublimation set
-    sets.me.idle.sublimation = set_combine(sets.me.idle.refresh,{
+    -- Your idle Sublimation set combine from refresh or DT depening on mode.
+    sets.me.idle.sublimation = set_combine(sets.me.idle[idleMode],{
 
-    })   
+    })    
     
 	-- Your MP Recovered Whilst Resting Set
     sets.me.resting = { 
