@@ -139,11 +139,12 @@ meleeing = false
 mBurst = false
 runspeed = false
 idleMode = 'refresh'
+refreshType = idleMode
 regenMode = 'regen'
 nukeMode = 'normal'
 
 -- Spam Chat to alert the user of what modes things are by default. 
-windower.add_to_chat(211,'Welcome back to your SCH.lua')    
+windower.add_to_chat(8,'----- Welcome back to your SCH.lua -----')     
 windower.add_to_chat(211,'Nuke now set to element type: '..tostring(element))   
 windower.add_to_chat(211,'SC now set to: '..tostring(wantedSc))     
 windower.add_to_chat(211,'Idle mode now set to: '..tostring(idleMode))  
@@ -188,6 +189,16 @@ end
 
 function update_sublimation()
     Buff['Sublimation: Activated'] = buffactive['Sublimation: Activated'] or false
+    if Buff['Sublimation: Activated'] then
+        refreshType = "sublimation"
+    else
+        refreshType = "refresh"
+    end
+    if midaction() then
+        return
+    else
+        idle()
+    end
 end
 
 function buff_refresh(name,buff_details)
@@ -245,8 +256,7 @@ function precast(spell)
      
     elseif sets.precast[spell.name] then
         equip(sets.precast[spell.name])
-    end
-     
+    end   
 end
  
 function midcast(spell)
@@ -319,12 +329,12 @@ end
  
 function aftercast(spell) 
     -- Then initiate idle function to check which set should be equipped
+    update_active_strategems()
+    update_sublimation()
     idle()
 end
 
 function idle()
-    update_active_strategems()
-    update_sublimation()
     -- This function is called after every action, and handles which set to equip depending on what we're doing
     -- We check if we're meleeing because we don't want to idle in melee gear when we're only engaged for trusts
     if meleeing and player.status=='Engaged' then   
@@ -332,9 +342,14 @@ function idle()
         equip(sets.me.melee)            
     else
         -- If we are building sublimation, then we swap refresh to sublimation style idle.
-        if Buff['Sublimation: Activated'] then
-            equip(sets.me.idle.sublimation)
-            windower.add_to_chat(3,"----- Idle mode Now focus on: Sublimation")
+        if buffactive['Sublimation: Activated'] then
+            if idleMode == 'refresh' then
+                equip(sets.me.idle.sublimation)
+                windower.add_to_chat(8,"----- Idle mode Now focus on: Sublimation")
+            else
+                equip(sets.me.idle[idleMode])
+                windower.add_to_chat(8,"----- Idle mode Now focus on: Sublimation with added DT")
+            end
         -- We don't have sublimation ticking.
         else
             equip(sets.me.idle[idleMode])
