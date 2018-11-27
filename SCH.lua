@@ -129,9 +129,10 @@ nukes.storm = {['Earth']="Sandstorm II", ['Water']="Rainstorm II", 	['Air']="Win
 elements = 	{'Ice', 'Air', 'Dark', 'Light', 'Earth', 'Lightning', 'Water', 'Fire'}
 tier1sc = 	{'Induration', 'Detonation', 'Compression', 'Transfixion', 'Scission', 'Impaction', 'Reverberation', 'Liquefaction'}
 tier2sc = 	{'Distortion', 'Fragmentation', 'Gravitation', 'Fusion', 'Gravitation', 'Fragmentation', 'Distortion', 'Fusion'}
-elemId = 1
-element = elements[elemId]
-wantedSc = tier1sc[elemId]
+elemId = 0
+elemId = elemId % 8
+element = elements[elemId+1]
+wantedSc = tier1sc[elemId+1]
 
 scTier = 'Level 1'
 meleeing = false
