@@ -16,10 +16,10 @@
         gs c scholar skillchain                                 Immanence
         gs c scholar addendum           Addendum: White         Addendum: Black
 	
-		Toggle Function: 
-		gs c toggle melee 				Toggle Melee mode on / off and locking of weapons
-		gs c toggle mb					Toggles Magic Burst Mode on / off.
-		gs c toggle runspeed			Toggles locking on / off Herald's Gaiters
+	Toggle Function: 
+	gs c toggle melee 				Toggle Melee mode on / off and locking of weapons
+	gs c toggle mb					Toggles Magic Burst Mode on / off.
+	gs c toggle runspeed			Toggles locking on / off Herald's Gaiters
         gs c toggle idlemode            Toggles between Refresh and DT idle mode. Activating Sublimation JA will auto replace refresh set for sublimation set. DT set will superceed both. 		
         gs c toggle regenmode           Toggles between Hybrid, Duration and Potency mode for regen set 
         gs c toggle nukemode           	Toggles between Normal and Accuracy mode for midcast Nuking sets (MB included)
@@ -28,6 +28,7 @@
 		these are to set fewer macros (1 cycle, 5 cast) to save macro space when playing lazily with controler
 		
 		gs c nuke cycle 				Cycles element type for nuking & SC
+		gs c nuke cycledown				Cycles element type for nuking & SC in reverse order
 		gs c nuke t1					Cast tier 1 nuke of saved element 
 		gs c nuke t2					Cast tier 2 nuke of saved element 
 		gs c nuke t3					Cast tier 3 nuke of saved element 
