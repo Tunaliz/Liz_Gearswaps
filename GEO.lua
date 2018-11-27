@@ -116,8 +116,9 @@ nukes.ra2 = {['Earth']="Stonera II", ['Water']="Watera II", ['Air']="Aera II", [
 nukes.ra3 = {['Earth']="Stonera III",['Water']="Watera III",['Air']="Aera III",['Fire']="Fira III",['Ice']="Blizzara III",['Lightning']="Thundara III",['Light']="Thundara III",['Dark']="Blizzara III"}
 
 elements = 	{'Ice', 'Air', 'Dark', 'Light', 'Earth', 'Lightning', 'Water', 'Fire'}
-elemId = 1
-element = elements[elemId]
+elemId = 0
+elemId = elemId % 8
+element = elements[elemId+1]
 
 geomancy = {}
 geomancy.geo = {'Geo-Acumen', 'Geo-Attunement', 'Geo-Barrier', 'Geo-STR', 'Geo-DEX', 'Geo-VIT', 'Geo-AGI', 'Geo-INT', 'Geo-MND', 'Geo-CHR', 'Geo-Fade',
