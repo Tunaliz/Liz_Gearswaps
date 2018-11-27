@@ -93,16 +93,14 @@ function get_sets()
     sets.me.idle.refresh = {
 
     }
-    -- Your idle DT set
-    sets.me.idle.dt = set_combine(sets.me.idle.refresh,{
-		neck="Twilight Torque",	
-		right_ring="Defending Ring",
-		back="Moonbeam Cape",
-    })
     -- Your idle Sublimation set combine from refresh or DT depening on mode.
-    sets.me.idle.sublimation = set_combine(sets.me.idle[idleMode],{
+    sets.me.idle.sublimation = set_combine(sets.me.idle.refresh,{
 
-    })    
+    })   
+    -- Your idle DT set
+    sets.me.idle.dt = set_combine(sets.me.idle[refreshType],{
+
+    })  
     
 	-- Your MP Recovered Whilst Resting Set
     sets.me.resting = { 
