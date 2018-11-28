@@ -194,6 +194,11 @@ function update_sublimation()
     else
         refreshType = "refresh"
     end
+    if midaction() then
+        return
+    else
+        idle()
+    end
 end
 
 function buff_refresh(name,buff_details)
@@ -340,15 +345,13 @@ function idle()
         if buffactive['Sublimation: Activated'] then
             if idleMode == 'refresh' then
                 equip(sets.me.idle.sublimation)
-                windower.add_to_chat(8,"----- Idle mode Now focus on: Sublimation")
+                
             else
                 equip(sets.me.idle[idleMode])
-                windower.add_to_chat(8,"----- Idle mode Now focus on: Sublimation with added DT")
             end
         -- We don't have sublimation ticking.
         else
             equip(sets.me.idle[idleMode])
-            windower.add_to_chat(4,"----- Idle mode Now focus on: "..tostring(idleMode))
         end
     end
     -- Checks MP for Fucho-no-Obi
@@ -426,6 +429,16 @@ function self_command(command)
                     idleMode = 'refresh'
                     idle()                         
                 end
+                if buffactive['Sublimation: Activated'] then
+                    if idleMode == 'refresh' then
+                        windower.add_to_chat(8,"----- Idle mode Now focus on: Sublimation")                       
+                    elseif idleMode == 'dt' then
+                        windower.add_to_chat(8,"----- Idle mode Now focus on: Sublimation with added dt")
+                    end
+                -- We don't have sublimation ticking.
+                else
+                    windower.add_to_chat(4,"----- Idle mode Now focus on: "..tostring(idleMode))
+                end
             elseif commandArgs[2] == 'regenmode' then
                 if regenMode == 'regen' then
                     regenMode = 'regenduration'
@@ -499,12 +512,14 @@ function self_command(command)
             if arg == 'tier' then
                 if scTier == 'Level 1' then
                     scTier = 'Level 2'
-                    wantedSc = tier2sc[elemId]
+                    elemId = elemId % 8
+                    wantedSc = tier2sc[elemId+1]
                     windower.add_to_chat(211,'SC Tier now set to: '..tostring(scTier))
                     windower.add_to_chat(211,'SC now set to: '..tostring(wantedSc))     
                 elseif scTier == 'Level 2' then
-                    scTier = 'Level 1'  
-                    wantedSc = tier1sc[elemId]
+                    scTier = 'Level 1'
+                    elemId = elemId % 8  
+                    wantedSc = tier1sc[elemId+1]
                     windower.add_to_chat(211,'SC Tier now set to: '..tostring(scTier))
                     windower.add_to_chat(211,'SC now set to: '..tostring(wantedSc))     
                 end
