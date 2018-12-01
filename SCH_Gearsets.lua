@@ -159,11 +159,17 @@ function get_sets()
     sets.precast.casting = {
 
     }   
-      
+    -- When spell school is aligned with grimoire, swap relevent pieces -- Can also use Arbatel +1 set here if you value 1% quickcast procs per piece. (2+ pieces)  
+    -- Dont set_combine here, as this is the last step of the precast, it will have sorted all the needed pieces already based on type of spell.
+    -- Then only swap in what under this set after everything else. 
+    sets.precast.grimoire = {
+		--head="Peda. M.Board +3",
+		--feet="Academic's loafers +3",
+    }      
     -- Enhancing Magic, eg. Siegal Sash, etc
     sets.precast.enhancing = set_combine(sets.precast.casting,{
 		waist="Siegel Sash",
-        neck="Melic Torque",
+        	neck="Melic Torque",
     })
   
     -- Stoneskin casting time -, works off of enhancing -
