@@ -256,7 +256,17 @@ function precast(spell)
      
     elseif sets.precast[spell.name] then
         equip(sets.precast[spell.name])
-    end   
+    end
+    -- extends Fast cast set with Grimoire recast aligned 
+    if buffactive['addendum: black'] or buffactive['dark arts'] then
+        if spell.type == 'BlackMagic' then
+            equip(sets.precast.grimoire)
+        end
+    elseif buffactive['addendum: white'] or buffactive['light arts'] then
+        if spell.type == 'WhiteMagic' then
+            equip(sets.precast.grimoire)
+        end
+    end
 end
  
 function midcast(spell)
