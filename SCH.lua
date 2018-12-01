@@ -264,7 +264,11 @@ function midcast(spell)
     local spellMap = get_spell_map(spell)    
     -- No need to annotate all this, it's fairly logical. Just equips the relevant sets for the relevant magic
     if spell.name:match('Cure') or spell.name:match('Cura') then
-        equip(sets.midcast.cure)
+        if spell.element == world.weather_element or spell.element == world.day_element then
+            equip(sets.midcast.cure.weather)
+        else
+            equip(sets.midcast.cure.normal)
+        end
     elseif spell.skill == 'Enhancing Magic' then
         equip(sets.midcast.enhancing)
         if spellMap == 'Storm' then
