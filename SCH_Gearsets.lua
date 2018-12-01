@@ -270,9 +270,13 @@ function get_sets()
     sets.midcast["Aspir"] = sets.midcast["Drain"]
 
     -- Cure Potency
-    sets.midcast.cure = set_combine(sets.midcast.casting,{
+    sets.midcast.cure = {} -- Leave This Empty
+    -- Cure Potency
+    sets.midcast.cure.normal = set_combine(sets.midcast.casting,{
 
     })
+    -- Combine from normal cure, add in chatoyant staff when aurorastorm is up.
+    sets.midcast.cure.weather = set_combine(sets.midcast.cure.normal, { main="Chatoyant Staff" })   
 	
     ------------
     -- Regen
