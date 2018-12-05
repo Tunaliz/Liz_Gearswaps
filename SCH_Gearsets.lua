@@ -16,10 +16,10 @@
         gs c scholar skillchain                                 Immanence
         gs c scholar addendum           Addendum: White         Addendum: Black
 	
-	Toggle Function: 
-	gs c toggle melee 				Toggle Melee mode on / off and locking of weapons
-	gs c toggle mb					Toggles Magic Burst Mode on / off.
-	gs c toggle runspeed			Toggles locking on / off Herald's Gaiters
+		Toggle Function: 
+		gs c toggle melee 				Toggle Melee mode on / off and locking of weapons
+		gs c toggle mb					Toggles Magic Burst Mode on / off.
+		gs c toggle runspeed			Toggles locking on / off Herald's Gaiters
         gs c toggle idlemode            Toggles between Refresh and DT idle mode. Activating Sublimation JA will auto replace refresh set for sublimation set. DT set will superceed both. 		
         gs c toggle regenmode           Toggles between Hybrid, Duration and Potency mode for regen set 
         gs c toggle nukemode           	Toggles between Normal and Accuracy mode for midcast Nuking sets (MB included)
@@ -28,7 +28,6 @@
 		these are to set fewer macros (1 cycle, 5 cast) to save macro space when playing lazily with controler
 		
 		gs c nuke cycle 				Cycles element type for nuking & SC
-		gs c nuke cycledown				Cycles element type for nuking & SC in reverse order
 		gs c nuke t1					Cast tier 1 nuke of saved element 
 		gs c nuke t2					Cast tier 2 nuke of saved element 
 		gs c nuke t3					Cast tier 3 nuke of saved element 
@@ -42,36 +41,50 @@
 		gs c sc castsc					Cast All the stuff to create a SC burstable by the nuke element set with '/console gs c nuke element'.
 --]]
 
+include('organizer-lib')
 
--- Setup your Key Bindings here:  
-    windower.send_command('bind f9 gs c nuke cycle')		-- F9 Cycles element type for nuking & SC
-    windower.send_command('bind f8 gs c nuke cycledown')	-- F8 Cycles element type for nuking & SC in reverse order	
-    windower.send_command('bind f10 gs c toggle mb')		-- F10 toggles Magic Burst Mode on / off.
-    windower.send_command('bind f12 gs c toggle melee')		-- F12 Toggle Melee mode on / off and locking of weapons
-    windower.send_command('bind !` input /ma Stun <t>') 	-- Alt-` Quick Stun Shortcut.
-    windower.send_command('bind !f1 gs c sc tier')			-- Alt-F1 to change SC tier between Level 1 or Level 2 SC
-    windower.send_command('bind !f2 gs c toggle regenmode')	-- Alt-F2 to change Regen Mode	
-    windower.send_command('bind !f3 gs c toggle nukemode')	-- Alt-F3 to change Nuking Mode	
-    windower.send_command('bind !f4 gs c toggle idlemode')	-- Alt-F4 to change Idle Mode	
-    windower.send_command('bind !f5 gs c toggle runspeed') 	-- Alt-F5 toggles locking on / off Herald's Gaiters
-	
+-- Define your modes: 
+-- You can add or remove modes in the table below, they will get picked up in the cycle automatically. 
+-- to define sets for idle if you add more modes, name them: sets.me.idle.mymode and add 'mymode' in the group.
+-- to define sets for regen if you add more modes, name them: sets.midcast.regen.mymode and add 'mymode' in the group.
+-- Same idea for nuke modes. 
+idleModes = {'refresh', 'dt', 'mdt'}
+regenModes = {'hybrid', 'duration', 'potency'}
+-- To add a new mode to nuking, you need to define both sets: sets.midcast.nuking.mynewmode as well as sets.midcast.MB.mynewmode
+nukeModes = {'normal', 'acc'}
+
+-- Setup your Key Bindings here:
+    windower.send_command('bind insert gs c nuke cycle')        -- insert Cycles Nuke element
+    windower.send_command('bind delete gs c nuke cycledown')    -- delete Cycles Nuke element in reverse order    
+    windower.send_command('bind !f9 gs c toggle runspeed') 		-- Alt-F9 toggles locking on / off Herald's Gaiters
+    windower.send_command('bind f10 gs c toggle mb')			-- F10 toggles Magic Burst Mode on / off.
+    windower.send_command('bind f12 gs c toggle melee')			-- F12 Toggle Melee mode on / off and locking of weapons
+    windower.send_command('bind !` input /ma Stun <t>') 		-- Alt-` Quick Stun Shortcut.
+    windower.send_command('bind home gs c sc tier')				-- Alt-F1 to change SC tier between Level 1 or Level 2 SC
+    windower.send_command('bind !f12 gs c toggle regenmode')	-- Alt-F12 to change Regen Mode	
+    windower.send_command('bind !f10 gs c toggle nukemode')		-- Alt-F10 to change Nuking Mode	
+    windower.send_command('bind f9 gs c toggle idlemode')		-- F9 to change Idle Mode	
+
+
 -- Remember to unbind your keybinds on job change.
 function user_unload()
+    send_command('unbind insert')
+    send_command('unbind delete')	
     send_command('unbind f9')
-    send_command('unbind f8')	
     send_command('unbind f10')
     send_command('unbind f12')
     send_command('unbind !`')
-    send_command('unbind !f1')
-    send_command('unbind !f2')
-    send_command('unbind !f3')	
-    send_command('unbind !f4')	
-    send_command('unbind !f5')	
+    send_command('unbind home')
+    send_command('unbind !f12')
+    send_command('unbind !f10')	
+    send_command('unbind !f9')		
 end
 
 -- Optional. Swap to your sch macro sheet / book
 set_macros(1,17) -- Sheet, Book
-     
+
+refreshType = idleModes[1] -- leave this as is     
+
 -- Setup your Gear Sets below:
 function get_sets()
   
@@ -81,27 +94,32 @@ function get_sets()
     sets.me = {}        		-- leave this empty
     sets.buff = {} 				-- leave this empty
     sets.me.idle = {}			-- leave this empty
-	
+
 	-- For aug gear you can define some here like this.. Look below in the midcast MB set to see how it is used.
 	-- This helps when your augment changes to only have 1 place to update. 
     MerlHead = {}
-    MerlHead.MB = { name="Merlinic Hood", augments={'Mag. Acc.+20 "Mag.Atk.Bns."+20','Magic burst dmg.+7%','INT+2','"Mag.Atk.Bns."+11',}}
+	MerlHead.MB = { name="Merlinic Hood", augments={'Attack+23','Magic burst dmg.+11%','INT+8','"Mag.Atk.Bns."+13',}}
     MerlHead.ACC = { name="Merlinic Hood", augments={'Mag. Acc.+25 "Mag.Atk.Bns."+25','Magic burst dmg.+2%','INT+7','Mag. Acc.+15',}}
 	
+	ChiroPants = {}
+	ChiroPants.ACC = { name="Chironic Hose", augments={'Mag. Acc.+22 "Mag.Atk.Bns."+22','Enmity-5','INT+12','Mag. Acc.+11',}}
 
     -- Your idle set
     sets.me.idle.refresh = {
 
     }
-    -- Your idle Sublimation set combine from refresh
+
+    -- Your idle Sublimation set combine from refresh or DT depening on mode.
     sets.me.idle.sublimation = set_combine(sets.me.idle.refresh,{
 
     })   
-    -- Your idle DT set, combine from either of the above depening on your current mode
+    -- Your idle DT set
     sets.me.idle.dt = set_combine(sets.me.idle[refreshType],{
 
-    }) 
-    
+    })  
+    sets.me.idle.mdt = set_combine(sets.me.idle[refreshType],{
+
+    })  
 	-- Your MP Recovered Whilst Resting Set
     sets.me.resting = { 
 
@@ -158,18 +176,19 @@ function get_sets()
     -- Grimoire: 10 /rdm: 15
     sets.precast.casting = {
 
-    }   
+    }
     -- When spell school is aligned with grimoire, swap relevent pieces -- Can also use Arbatel +1 set here if you value 1% quickcast procs per piece. (2+ pieces)  
     -- Dont set_combine here, as this is the last step of the precast, it will have sorted all the needed pieces already based on type of spell.
     -- Then only swap in what under this set after everything else. 
     sets.precast.grimoire = {
-		--head="Peda. M.Board +3",
-		--feet="Academic's loafers +3",
-    }      
+		head="Peda. M.Board +3",
+		feet="Academic's loafers +3",
+    }
+
     -- Enhancing Magic, eg. Siegal Sash, etc
     sets.precast.enhancing = set_combine(sets.precast.casting,{
 		waist="Siegel Sash",
-        	neck="Melic Torque",
+        neck="Melic Torque",
     })
   
     -- Stoneskin casting time -, works off of enhancing -
@@ -186,10 +205,10 @@ function get_sets()
     -- Ability Precasting
     ---------------------
 
-    -- Tabula Rasa  
     sets.precast["Tabula Rasa"] = {legs="Pedagogy Pants +1"}
     sets.precast["Enlightenment"] = {body="Peda. Gown +1"}	 
-    
+    sets.precast["Sublimation"] = {head="Acad. Mortar. +1", body="Peda. Gown +1"}	 
+
 	
 	----------
     -- Midcast
@@ -222,18 +241,18 @@ function get_sets()
 
     -- Whatever you want to equip mid-cast as a catch all for all spells, and we'll overwrite later for individual spells
     sets.midcast.casting = {
-
-    }
 	
+    }
+
+	sets.midcast["Sublimation"] = {head="Acad. Mortar. +1", body="Peda. Gown +1"}
+    
     sets.midcast.nuking.normal = {
 
     }
     -- used with toggle, default: F10
     -- Pieces to swap from freen nuke to Magic Burst
     sets.midcast.MB.normal = set_combine(sets.midcast.nuking.normal, {
-		head= MerlHead.MB,
-		left_ring="Locus Ring",
-		right_ring="Mujin Band",
+
     })
 	
     sets.midcast.nuking.acc = {
@@ -242,10 +261,7 @@ function get_sets()
     -- used with toggle, default: F10
     -- Pieces to swap from freen nuke to Magic Burst
     sets.midcast.MB.acc = set_combine(sets.midcast.nuking.normal, {
-		head= MerlHead.MB,
-		left_ring="Locus Ring",
-		--right_ring="Mujin Band",
-		right_ring="Defending Ring",
+
     })	
 	
     -- Enfeebling
@@ -256,7 +272,7 @@ function get_sets()
 
     }
     sets.midcast.MndEnfeebling = {
-
+	
     }
 	
     -- Enhancing
@@ -280,30 +296,31 @@ function get_sets()
 		neck="Erra Pendant",
     })
     sets.midcast["Aspir"] = sets.midcast["Drain"]
-
-    -- Cure Potency
-    sets.midcast.cure = {} -- Leave This Empty
+ 	
+ 	sets.midcast.cure = {} -- Leave This Empty
     -- Cure Potency
     sets.midcast.cure.normal = set_combine(sets.midcast.casting,{
 
     })
-    -- Combine from normal cure, add in chatoyant staff when aurorastorm is up.
-    sets.midcast.cure.weather = set_combine(sets.midcast.cure.normal, { main="Chatoyant Staff" })   
-	
+    sets.midcast.cure.weather = set_combine(sets.midcast.cure.normal,{
+		main="Chatoyant Staff",
+
+    })    
+
     ------------
     -- Regen
     ------------	
-	
+	sets.midcast.regen = {} 	-- leave this empty
 	-- Normal hybrid well rounded Regen
-    sets.midcast.regen = {
+    sets.midcast.regen.hybrid = {
 
     }
 	-- Focus on Regen Duration 	
-    sets.midcast.regenduration = set_combine(sets.midcast.regen,{
+    sets.midcast.regen.duration = set_combine(sets.midcast.regen.hybrid,{
 
     }) 
 	-- Focus on Regen Potency 	
-    sets.midcast.regenpotency = set_combine(sets.midcast.regen,{
+    sets.midcast.regen.potency = set_combine(sets.midcast.regen.hybrid,{
 
     }) 
 	
