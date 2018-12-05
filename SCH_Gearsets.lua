@@ -200,6 +200,12 @@ function get_sets()
     	waist="Hachirin-no-Obi",
     }
 	
+	-----------------------------------------------------------------------------------------------
+	-- Helix sets automatically derives from casting sets. SO DONT PUT ANYTHING IN THEM other than:
+	-- Pixie in DarkHelix
+	-- Boots that aren't arbatel +1 (15% of small numbers meh, amalric+1 does more)
+	-- Belt that isn't Obi.
+	-----------------------------------------------------------------------------------------------
     -- Make sure you have a non weather obi in this set. Helix get bonus naturally no need Obi.	
     sets.midcast.DarkHelix = {
 		head="Pixie Hairpin +1",
