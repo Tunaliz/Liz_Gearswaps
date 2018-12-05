@@ -117,6 +117,14 @@ end
 
 -- Required variables and  their initial value
 
+function tablelength(T)
+  local count = 0
+  for _ in pairs(T) do count = count + 1 end
+  return count
+end
+
+include('SCH_Gearsets.lua')
+
 nukes = {}
 nukes.t1 = {['Earth']="Stone",      ['Water']="Water",      ['Air']="Aero",     ['Fire']="Fire",    ['Ice']="Blizzard",     ['Lightning']="Thunder", ['Light']="Thunder", ['Dark']="Blizzard"}
 nukes.t2 = {['Earth']="Stone II",   ['Water']="Water II",   ['Air']="Aero II",  ['Fire']="Fire II", ['Ice']="Blizzard II",  ['Lightning']="Thunder II", ['Light']="Thunder II", ['Dark']="Blizzard II"}
@@ -138,10 +146,21 @@ scTier = 'Level 1'
 meleeing = false
 mBurst = false
 runspeed = false
-idleMode = 'refresh'
-refreshType = idleMode
-regenMode = 'regen'
-nukeMode = 'normal'
+
+idleId = 0
+idleCount = tablelength(idleModes)
+idleId = elemId % idleCount
+idleMode = idleModes[idleId+1]
+
+regenId = 0
+regenCount = tablelength(regenModes)
+regenId = regenId % regenCount
+regenMode = regenModes[regenId+1]
+
+nukeId = 0
+nukeCount = tablelength(nukeModes)
+nukeId = nukeId % nukeCount
+nukeMode = nukeModes[nukeId+1]
 
 -- Spam Chat to alert the user of what modes things are by default. 
 windower.add_to_chat(8,'----- Welcome back to your SCH.lua -----')     
@@ -152,7 +171,7 @@ windower.add_to_chat(211,'Regen mode now set to: '..tostring(regenMode))
 windower.add_to_chat(211,'Nuke mode now set to: '..tostring(nukeMode))  
 
 
-include('SCH_Gearsets.lua')
+
 
 
 Buff = 
@@ -243,15 +262,14 @@ function precast(spell)
             if spell.name == 'Sneak' then
                 windower.ffxi.cancel_buff(71)--[[Cancels Sneak]]
             end
-        else
-         
+        else       
             -- For everything else we go with max fastcast
-            equip(sets.precast.casting)
-             
+            equip(sets.precast.casting)        
         end
          
     -- Job Abilities
-    -- We use a catch all here, if the set exists for an ability, use it
+    -- We use a cat
+    -- catch all here, if the set exists for an ability, use it
     -- This way we don't need to write a load of different code for different abilities, just make a set
      
     elseif sets.precast[spell.name] then
@@ -436,42 +454,26 @@ function self_command(command)
                     disable('feet')                 
                 end
             elseif commandArgs[2] == 'idlemode' then
-                if idleMode == 'refresh' then
-                    idleMode = 'dt'
-                    idle()
-                elseif idleMode == 'dt' then
-                    idleMode = 'refresh'
-                    idle()                         
-                end
+                idleId = idleId+1
+                idleId = idleId % idleCount
+                idleMode = idleModes[idleId+1]
+                idle()
                 if buffactive['Sublimation: Activated'] then
-                    if idleMode == 'refresh' then
-                        windower.add_to_chat(8,"----- Idle mode Now focus on: Sublimation")                       
-                    elseif idleMode == 'dt' then
-                        windower.add_to_chat(8,"----- Idle mode Now focus on: Sublimation with added dt")
-                    end
+                    windower.add_to_chat(4,"----- Idle mode Now focus on: "..tostring(idleMode).." in Sublimation Mode. ----")
                 -- We don't have sublimation ticking.
                 else
                     windower.add_to_chat(4,"----- Idle mode Now focus on: "..tostring(idleMode))
                 end
             elseif commandArgs[2] == 'regenmode' then
-                if regenMode == 'regen' then
-                    regenMode = 'regenduration'
-                    windower.add_to_chat(8,"----- Regen Mode now focus on Duration -----") 
-                elseif regenMode == 'regenduration' then
-                    regenMode = 'regenpotency'
-                    windower.add_to_chat(8,"----- Regen Mode now focus on Potency -----")        
-                elseif regenMode == 'regenpotency' then
-                    regenMode = 'regen'
-                    windower.add_to_chat(8,"----- Regen Mode now focus on Hybrid -----")            
-                end
+                regenId = regenId+1
+                regenId = regenId % regenCount
+                regenMode = regenModes[regenId+1]
+                windower.add_to_chat(8,"----- Regen Mode Now focus on: "..tostring(regenMode)) 
             elseif commandArgs[2] == 'nukemode' then
-                if nukeMode == 'normal' then
-                    nukeMode = 'acc'
-                    windower.add_to_chat(8,"----- Nuking Mode is now Accuracy -----") 
-                elseif nukeMode == 'acc' then
-                    nukeMode = 'normal'
-                    windower.add_to_chat(8,"----- Nuking Mode is now Normal -----")                       
-                end
+                nukeId = nukeId+1
+                nukeId = nukeId % nukeCount
+                nukeMode = nukeModes[nukeId+1]                
+                windower.add_to_chat(8,"----- Nuking Mode is now: "..tostring(regenMode)) 
             end
         end
         
