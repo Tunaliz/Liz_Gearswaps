@@ -41,7 +41,7 @@
 		gs c sc castsc					Cast All the stuff to create a SC burstable by the nuke element set with '/console gs c nuke element'.
 --]]
 
-include('organizer-lib')
+include('organizer-lib') -- optional, remove if you dont use organizer... 
 
 -- Define your modes: 
 -- You can add or remove modes in the table below, they will get picked up in the cycle automatically. 
