@@ -161,7 +161,7 @@ function precast(spell)
         add_to_chat(123, '****** ['..spell.name..' CANCELED - Using Echo Drops] ******')        
     end   
 
-    if spell.type == 'WhiteMagic' or spell.type == 'BlackMagic' then
+    if spell.type == 'WhiteMagic' or spell.type == 'BlackMagic' or  spell.type == 'Geomancy' then
      
         -- Stoneskin Precast
         if spell.name == 'Stoneskin' then
@@ -182,8 +182,9 @@ function precast(spell)
             if spell.name == 'Sneak' then
                 windower.ffxi.cancel_buff(71)--[[Cancels Sneak]]
             end
-        else
-         
+        elseif spell.type == 'Geomancy' then
+            equip(sets.precast.geomancy)
+        else     
             -- For everything else we go with max fastcast
             equip(sets.precast.casting)
              
