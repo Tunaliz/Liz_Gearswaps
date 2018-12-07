@@ -191,7 +191,11 @@ function get_sets()
     sets.precast.casting = {
 
     }   
-      
+	
+    sets.precast.geomancy = set_combine(sets.precast.casting,{
+        
+    })   
+	
     -- Enhancing Magic, eg. Siegal Sash, etc
     sets.precast.enhancing = set_combine(sets.precast.casting,{
 		waist="Siegel Sash",
