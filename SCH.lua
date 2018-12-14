@@ -473,7 +473,7 @@ function self_command(command)
                 nukeId = nukeId+1
                 nukeId = nukeId % nukeCount
                 nukeMode = nukeModes[nukeId+1]                
-                windower.add_to_chat(8,"----- Nuking Mode is now: "..tostring(regenMode)) 
+                windower.add_to_chat(8,"----- Nuking Mode is now: "..tostring(nukeMode)) 
             end
         end
         
