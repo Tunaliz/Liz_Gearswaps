@@ -306,7 +306,7 @@ function midcast(spell)
         elseif spell.name:match('Refresh') then
             equip(sets.midcast.refresh)
         elseif spell.name:match('Regen') then
-            equip(sets.midcast[regenMode])
+            equip(sets.midcast.regen[regenMode])
         elseif spell.name:match('Aquaveil') then
             equip(sets.midcast.aquaveil)
         end
