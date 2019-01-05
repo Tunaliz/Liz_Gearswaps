@@ -219,12 +219,12 @@ function set_hud_info()
     end
     if use_UI then 
         modestates_table = {
-            "     Elizabet's SCH.lua",
-            '\n-- Modes --\n     Idle: \\cs(125,125,255)'..tostring(idleMode)..'\\cr',
+            "       Elizabet's SCH.lua",
+            ' Modes --------------------\n     Idle: \\cs(125,125,255)'..tostring(idleMode)..'\\cr',
             '     Regen: \\cs(125,125,255)'..tostring(regenMode)..'\\cr',
             '     Casting: \\cs(125,125,255)'..tostring(nukeMode)..'\\cr',
             '     MB Mode: \\cs(125,125,255)'..tostring(mb)..'\\cr',
-            '\n-- Spells --\n     Element: \\cs(125,125,255)'..tostring(element)..'\\cr',
+            ' Spells --------------------\n     Element: \\cs(125,125,255)'..tostring(element)..'\\cr',
             '     Skillchain: \\cs(125,125,255)'..tostring(wantedSc)..'\\cr',
         }
         sch_property.modestates = concat_strings(modestates_table)
