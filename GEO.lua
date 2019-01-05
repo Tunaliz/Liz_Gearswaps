@@ -5,13 +5,13 @@
         gs c toggle melee               Toggle Melee mode on / off and locking of weapons
         gs c toggle mb                  Toggles Magic Burst Mode on / off.
         gs c toggle runspeed            Toggles locking on / off Herald's Gaiters
-		gs c toggle idlemode            Toggles between MasterRefresh, MasterDT, Full Pet Regen+DT or Hybrid PetDT and MasterDT idle mode.
+        gs c toggle idlemode            Toggles between MasterRefresh, MasterDT, Full Pet Regen+DT or Hybrid PetDT and MasterDT idle mode.
         
         Casting functions:
         these are to set fewer macros (1 cycle, 5 cast) to save macro space when playing lazily with controler
         
-        gs c nuke cycle              	Cycles element type for nuking
-		gs c nuke cycledown				Cycles element type for nuking & SC	in reverse order
+        gs c nuke cycle                 Cycles element type for nuking
+        gs c nuke cycledown             Cycles element type for nuking & SC in reverse order
         gs c nuke t1                    Cast tier 1 nuke of saved element 
         gs c nuke t2                    Cast tier 2 nuke of saved element 
         gs c nuke t3                    Cast tier 3 nuke of saved element 
@@ -19,15 +19,15 @@
         gs c nuke t5                    Cast tier 5 nuke of saved element 
         gs c nuke ra1                   Cast tier 1 -ra nuke of saved element 
         gs c nuke ra2                   Cast tier 2 -ra nuke of saved element 
-        gs c nuke ra3                   Cast tier 3 -ra nuke of saved element 		
-		
-		gs c geo geocycle				Cycles Geomancy Spell
-		gs c geo geocycledown			Cycles Geomancy Spell in reverse order
-		gs c geo indicycle				Cycles IndiColure Spel
-		gs c geo indicycledown			Cycles IndiColure Spell in reverse order
-		gs c geo geo					Cast saved Geo Spell
-		gs c geo indi					Cast saved Indi Spell
-		
+        gs c nuke ra3                   Cast tier 3 -ra nuke of saved element       
+        
+        gs c geo geocycle               Cycles Geomancy Spell
+        gs c geo geocycledown           Cycles Geomancy Spell in reverse order
+        gs c geo indicycle              Cycles IndiColure Spel
+        gs c geo indicycledown          Cycles IndiColure Spell in reverse order
+        gs c geo geo                    Cast saved Geo Spell
+        gs c geo indi                   Cast saved Indi Spell
+        
 --]]
 
 -------------------------------------------------------------------------------------------------------------------
@@ -93,7 +93,7 @@ spell_maps = {
     ['Fire Maneuver']='Maneuver',['Ice Maneuver']='Maneuver',['Wind Maneuver']='Maneuver',['Earth Maneuver']='Maneuver',['Thunder Maneuver']='Maneuver',
     ['Water Maneuver']='Maneuver',['Light Maneuver']='Maneuver',['Dark Maneuver']='Maneuver',
 }
-				
+                
 -- Set Macros for your SMN's macro page, book.
 function set_macros(sheet,book)
     if book then 
@@ -103,6 +103,16 @@ function set_macros(sheet,book)
     send_command('@input /macro set '..tostring(sheet))
 end
 
+-- Required variables and  their initial value
+
+function tablelength(T)
+  local count = 0
+  for _ in pairs(T) do count = count + 1 end
+  return count
+end
+
+use_UI = false
+include('GEO_Gearsets.lua')
 -- Required variables and  their initial value
 nukes = {}
 nukes.t1 = {['Earth']="Stone",      ['Water']="Water",      ['Air']="Aero",     ['Fire']="Fire",    ['Ice']="Blizzard",     ['Lightning']="Thunder", ['Light']="Thunder", ['Dark']="Blizzard"}
@@ -115,26 +125,29 @@ nukes.ra1 = {['Earth']="Stonera",    ['Water']="Watera",    ['Air']="Aera",    [
 nukes.ra2 = {['Earth']="Stonera II", ['Water']="Watera II", ['Air']="Aera II", ['Fire']="Fira II", ['Ice']="Blizzara II", ['Lightning']="Thundara II", ['Light']="Thundara II", ['Dark']="Blizzara II"}
 nukes.ra3 = {['Earth']="Stonera III",['Water']="Watera III",['Air']="Aera III",['Fire']="Fira III",['Ice']="Blizzara III",['Lightning']="Thundara III",['Light']="Thundara III",['Dark']="Blizzara III"}
 
-elements = 	{'Ice', 'Air', 'Dark', 'Light', 'Earth', 'Lightning', 'Water', 'Fire'}
+elements =  {'Ice', 'Air', 'Dark', 'Light', 'Earth', 'Lightning', 'Water', 'Fire'}
 elemId = 0
 elemId = elemId % 8
 element = elements[elemId+1]
 
 geomancy = {}
 geomancy.geo = {'Geo-Acumen', 'Geo-Attunement', 'Geo-Barrier', 'Geo-STR', 'Geo-DEX', 'Geo-VIT', 'Geo-AGI', 'Geo-INT', 'Geo-MND', 'Geo-CHR', 'Geo-Fade',
-			 'Geo-Fend', 'Geo-Focus', 'Geo-Frailty', 'Geo-Fury', 'Geo-Gravity', 'Geo-Haste', 'Geo-Languor', 'Geo-Malaise', 'Geo-Paralysis', 
-			 'Geo-Poison', 'Geo-Precision', 'Geo-Refresh', 'Geo-Regen', 'Geo-Slip', 'Geo-Slow', 'Geo-Torpor', 'Geo-Vex', 'Geo-Voidance', 'Geo-Wilt'}
+             'Geo-Fend', 'Geo-Focus', 'Geo-Frailty', 'Geo-Fury', 'Geo-Gravity', 'Geo-Haste', 'Geo-Languor', 'Geo-Malaise', 'Geo-Paralysis', 
+             'Geo-Poison', 'Geo-Precision', 'Geo-Refresh', 'Geo-Regen', 'Geo-Slip', 'Geo-Slow', 'Geo-Torpor', 'Geo-Vex', 'Geo-Voidance', 'Geo-Wilt'}
 geomancy.indi = {'Indi-Acumen', 'Indi-Attunement', 'Indi-Barrier', 'Indi-STR', 'Indi-DEX', 'Indi-VIT', 'Indi-AGI', 'Indi-INT', 'Indi-MND', 'Indi-CHR', 'Indi-Fade',
-			 'Indi-Fend', 'Indi-Focus', 'Indi-Frailty', 'Indi-Fury', 'Indi-Gravity', 'Indi-Haste', 'Indi-Languor', 'Indi-Malaise', 'Indi-Paralysis', 
-			 'Indi-Poison', 'Indi-Precision', 'Indi-Refresh', 'Indi-Regen', 'Indi-Slip', 'Indi-Slow', 'Indi-Torpor', 'Indi-Vex', 'Indi-Voidance', 'Indi-Wilt'}
+             'Indi-Fend', 'Indi-Focus', 'Indi-Frailty', 'Indi-Fury', 'Indi-Gravity', 'Indi-Haste', 'Indi-Languor', 'Indi-Malaise', 'Indi-Paralysis', 
+             'Indi-Poison', 'Indi-Precision', 'Indi-Refresh', 'Indi-Regen', 'Indi-Slip', 'Indi-Slow', 'Indi-Torpor', 'Indi-Vex', 'Indi-Voidance', 'Indi-Wilt'}
 
 meleeing = false
 mBurst = false
 runspeed = false
-idleMode = 'normal' -- normal or dt
-mode = 'me' 		-- me or pan (me = no luopan, pan = luopan is out)
 
-include('GEO_Gearsets.lua')
+idleId = 0
+idleCount = tablelength(idleModes)
+idleId = elemId % idleCount
+idleMode = idleModes[idleId+1]
+
+mode = 'me'         -- me or pan (me = no luopan, pan = luopan is out)
 
 geoId = geoId % 30
 geoSpell = geomancy.geo[geoId+1]
@@ -142,11 +155,124 @@ indiId = indiId % 30
 indiSpell = geomancy.indi[indiId+1]
 
 -- Spam Chat to alert the user of what modes things are by default. 
-windower.add_to_chat(8,'----- Welcome back to your GEO.lua -----')	
-windower.add_to_chat(211,'Geo Spell now set to : '..tostring(geoSpell))
-windower.add_to_chat(211,'Indi Spell now set to: '..tostring(indiSpell))
-windower.add_to_chat(211,'Nuke now set to element type: '..tostring(element))	
-windower.add_to_chat(211,'Idle mode now set to: '..tostring(idleMode))
+windower.add_to_chat(8,'----- Welcome back to your GEO.lua -----')
+
+--------------------------------------------------------------------------------------------------------------
+-- HUD STUFF
+--------------------------------------------------------------------------------------------------------------
+
+function setup_hud()
+    geo_property = {}
+    geo_info = {}
+    geo_info.box={
+        pos={x=hud_x_pos,y=hud_y_pos},
+        text={font='Segoe UI Symbol', size=hud_font_size, Fonts={'sans-serif'},},
+        bg={alpha=hud_transparency,red=0,green=0,blue=15},
+        flags={draggable=hud_draggable},
+        padding=7
+    }
+    window = texts.new(geo_info.box)
+    initialize(window, geo_info.box)
+    window:show()
+    updatedisplay()
+end
+
+function d_chat(s)
+    if debug_gs1 then add_to_chat(122,s) end
+end
+
+function initialize(text, settings)
+    local properties = L{}
+    properties:append('${modestates}')
+    text:clear()
+    text:append(properties:concat('\n'))
+end
+function concat_strings(s)
+    local t = { }
+    for k,v in ipairs(s) do
+        t[#t+1] = tostring(v)
+    end
+    return table.concat(t,"\n")
+end
+
+local res = require('resources')
+function set_hud_info()
+    local mb = "off"
+    local hasPet = ''
+    if mBurst then
+        mb = "on"
+    else
+        mb = "off"
+    end
+    if pet.isvalid then
+        hasPet = ' + luopan'
+    else
+        hasPet = ''
+    end
+    if use_UI then 
+        modestates_table = {
+            "       Elizabet's GEO.lua",
+            ' Modes --------------------\n     Idle: \\cs(125,125,255)'..tostring(idleMode)..tostring(hasPet)..'\\cr',
+            '     MB Mode: \\cs(125,125,255)'..tostring(mb)..'\\cr',            
+            ' Spells --------------------\n     Element: \\cs(125,125,255)'..tostring(element)..'\\cr',
+            '     Geo Spell: \\cs(125,125,255)'..tostring(geoSpell)..'\\cr',
+            '     Indi Spell: \\cs(125,125,255)'..tostring(indiSpell)..'\\cr',
+        }
+        geo_property.modestates = concat_strings(modestates_table)
+    end
+end
+update_delay=0
+
+function updatedisplay() --update hud display
+    if update_delay ~=0 then
+        coroutine.sleep(update_delay)
+        update_delay = 0
+    end
+    set_hud_info()
+    local info = {}
+    info.modestates = geo_property.modestates
+
+    --button:update(info)
+    --button:show()
+    window:update(info)
+    if display_hud then
+        window:show()
+    end
+end
+
+function spairs(t, order)
+    -- collect the keys
+    local keys = {}
+    for k in pairs(t) do keys[#keys+1] = k end
+
+    -- if order function given, sort by it by passing the table and keys a, b,
+    -- otherwise just sort the keys 
+    if order then
+        table.sort(keys, function(a,b) return order(t, a, b) end)
+    else
+        table.sort(keys)
+    end
+
+    -- return the iterator function
+    local i = 0
+    return function()
+        i = i + 1
+        if keys[i] then
+            return keys[i], t[keys[i]]
+        end
+    end
+end
+--------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------
+
+if use_UI == true then
+    setup_hud()
+else
+    windower.add_to_chat(211,'Geo Spell now set to : '..tostring(geoSpell))
+    windower.add_to_chat(211,'Indi Spell now set to: '..tostring(indiSpell))
+    windower.add_to_chat(211,'Nuke now set to element type: '..tostring(element))   
+    windower.add_to_chat(211,'Idle mode now set to: '..tostring(idleMode))
+end
  
 -- Get a spell mapping for the spell.
 function get_spell_map(spell)
@@ -184,7 +310,7 @@ function precast(spell)
             end
         elseif spell.type == 'Geomancy' then
             equip(sets.precast.geomancy)
-        else     
+        else
             -- For everything else we go with max fastcast
             equip(sets.precast.casting)
              
@@ -205,7 +331,11 @@ function midcast(spell)
     local spellMap = get_spell_map(spell)    
     -- No need to annotate all this, it's fairly logical. Just equips the relevant sets for the relevant magic
     if spell.name:match('Cure') or spell.name:match('Cura') then
-        equip(sets.midcast.cure)
+        if spell.element == world.weather_element or spell.element == world.day_element then
+            equip(sets.midcast.cure.weather)
+        else
+            equip(sets.midcast.cure.normal)
+        end
     elseif spell.skill == 'Enhancing Magic' then
         equip(sets.midcast.enhancing)
         if spell.name:match('Protect') or spell.name:match('Shell') then
@@ -253,7 +383,7 @@ function midcast(spell)
     if spell.element == world.day_element and spellMap ~= 'Helix'then
         equip(sets.midcast.Obi)
     end
-	-- This needs to be here for if you cast stoneskin on earthsday if doesnt swap to obi --___--;
+    -- This needs to be here for if you cast stoneskin on earthsday if doesnt swap to obi --___--;
     if spell.name:match('Stoneskin') then
             equip(sets.midcast.stoneskin)
     end
@@ -268,19 +398,20 @@ function idle(pet)
  
     -- This function is called after every action, and handles which set to equip depending on what we're doing
     -- We check if we're meleeing because we don't want to idle in melee gear when we're only engaged for trusts
-	if pet.isvalid then	
-		mode = 'pan'
-	else
-		mode = 'me' 		
-	end
-	
+    if pet.isvalid then 
+        mode = 'pan'
+    else
+        mode = 'me'         
+    end
+    
     if meleeing and player.status=='Engaged' then
-		-- We're both 'engaged' and 'meleeing' 
-		equip(sets[mode].melee) 
+        -- We're both 'engaged' and 'meleeing' 
+        equip(sets[mode].melee) 
     else
         -- We're not meleeing
         equip(sets[mode].idle[idleMode])     
     end
+    updatedisplay()
 end
  
 function status_change(new,old)
@@ -293,8 +424,8 @@ function status_change(new,old)
      
         -- We're resting
         equip(sets.me.resting)
-	else
-		idle(pet)
+    else
+        idle(pet)
     end
 end
  
@@ -334,10 +465,18 @@ function self_command(command)
                 -- You need to toggle prioritisation yourself
                 if mBurst then
                     mBurst = false
-                    windower.add_to_chat(8,"----- Nuking MB Mode OFF -----")
+                    if use_UI == true then
+                        updatedisplay()
+                    else
+                        windower.add_to_chat(8,"----- Nuking MB Mode OFF -----")
+                    end
                 else
                     mBurst = true
-                    windower.add_to_chat(8,"----- Nuking MB Mode ON -----")
+                    if use_UI == true then
+                        updatedisplay()
+                    else
+                        windower.add_to_chat(8,"----- Nuking MB Mode ON -----")
+                    end
                 end
             elseif commandArgs[2] == 'runspeed' then
                 if runspeed then
@@ -351,24 +490,20 @@ function self_command(command)
                     equip(sets.me.movespeed)
                     disable('feet')                 
                 end
-			elseif commandArgs[2] == 'idlemode' then
-                if idleMode == 'normal' then
-                    idleMode = 'dt'
-					if pet.isvalid then
-						windower.add_to_chat(8,"----- Hybrid Pet Per + Master DT Mode Active -----")
-					else
-						windower.add_to_chat(8,"----- Master DT Mode Active -----")
-					end
-                    idle(pet)
-                elseif idleMode == 'dt' then
-                    idleMode = 'normal'
-					if pet.isvalid then
-						windower.add_to_chat(8,"----- Normal Full Pet Perpetuation Mode Active -----")
-					else
-						windower.add_to_chat(8,"----- No Pet full Refresh Mode Active -----")
-					end
-                    idle(pet)                         
+            elseif commandArgs[2] == 'idlemode' then
+                idleId = idleId+1
+                idleId = idleId % idleCount
+                idleMode = idleModes[idleId+1]
+                if use_UI == true then
+                    updatedisplay()
+                else
+                    if pet.isvalid then
+                        windower.add_to_chat(4,"----- Idle mode Now focus on: "..tostring(idleMode).." + Pet")
+                    else
+                        windower.add_to_chat(4,"----- Idle mode Now focus on: "..tostring(idleMode))
+                    end
                 end
+                idle(pet)                       
             end
         end
         
@@ -379,16 +514,24 @@ function self_command(command)
             end
             
             local nuke = commandArgs[2]:lower()
-			if nuke == 'cycle' then
-				elemId = elemId+1
-				elemId = elemId % 8
-				element = elements[elemId+1]
-				windower.add_to_chat(211,'Nuke now set to element type: '..tostring(element))	
-			elseif nuke == 'cycledown' then
-				elemId = elemId-1
-				elemId = elemId % 8
-				element = elements[elemId+1]
-				windower.add_to_chat(211,'Nuke now set to element type: '..tostring(element))	          
+            if nuke == 'cycle' then
+                elemId = elemId+1
+                elemId = elemId % 8
+                element = elements[elemId+1]
+                if use_UI == true then                    
+                    updatedisplay()
+                else
+                    windower.add_to_chat(211,'Nuke now set to element type: '..tostring(element))
+                end   
+            elseif nuke == 'cycledown' then
+                elemId = elemId-1
+                elemId = elemId % 8
+                element = elements[elemId+1]
+                if use_UI == true then                    
+                    updatedisplay()
+                else
+                    windower.add_to_chat(211,'Nuke now set to element type: '..tostring(element))
+                end            
             elseif not nukes[nuke] then
                 windower.add_to_chat(123,'Unknown element type: '..tostring(nuke))
                 return
@@ -404,40 +547,56 @@ function self_command(command)
             end
             
             local geo = commandArgs[2]:lower()
-			if geo == 'geocycle' then
-				geoId = geoId+1
-				geoId = geoId % 30
-				geoSpell = geomancy.geo[geoId+1]
-				windower.add_to_chat(211,'Geo Spell now set to : '..tostring(geoSpell))	
-			elseif geo == 'geocycledown' then
-				geoId = geoId-1
-				geoId = geoId % 30
-				geoSpell = geomancy.geo[geoId+1]
-				windower.add_to_chat(211,'Geo Spell now set to : '..tostring(geoSpell))
-			elseif geo == 'indicycle' then
-				indiId = indiId+1
-				indiId = indiId % 30
-				indiSpell = geomancy.indi[indiId+1]
-				windower.add_to_chat(211,'Indi Spell now set to : '..tostring(indiSpell))	
-			elseif geo == 'indicycledown' then
-				indiId = indiId-1
-				indiId = indiId % 30
-				indiSpell = geomancy.indi[indiId+1]
-				windower.add_to_chat(211,'Indi Spell now set to : '..tostring(indiSpell))	  				
+            if geo == 'geocycle' then
+                geoId = geoId+1
+                geoId = geoId % 30
+                geoSpell = geomancy.geo[geoId+1]
+                if use_UI == true then                    
+                    updatedisplay()
+                else
+                    windower.add_to_chat(211,'Geo Spell now set to : '..tostring(geoSpell))
+                end   
+            elseif geo == 'geocycledown' then
+                geoId = geoId-1
+                geoId = geoId % 30
+                geoSpell = geomancy.geo[geoId+1]
+                if use_UI == true then                    
+                    updatedisplay()
+                else
+                    windower.add_to_chat(211,'Geo Spell now set to : '..tostring(geoSpell))
+                end 
+            elseif geo == 'indicycle' then
+                indiId = indiId+1
+                indiId = indiId % 30
+                indiSpell = geomancy.indi[indiId+1]
+                if use_UI == true then                    
+                    updatedisplay()
+                else
+                    windower.add_to_chat(211,'Geo Spell now set to : '..tostring(indiSpell))
+                end 
+            elseif geo == 'indicycledown' then
+                indiId = indiId-1
+                indiId = indiId % 30
+                indiSpell = geomancy.indi[indiId+1]
+                if use_UI == true then                    
+                    updatedisplay()
+                else
+                    windower.add_to_chat(211,'Geo Spell now set to : '..tostring(indiSpell))
+                end                 
             elseif not geomancy[geo] then
                 windower.add_to_chat(123,'Unknown spell command type: '..tostring(geo))
                 return
             else
-				if geo == 'geo' then
-					-- Leave out target; let Shortcuts auto-determine it.
-					geoId = geoId % 30
-					send_command('@input /ma "'..geomancy[geo][geoId+1]..'"')
-				elseif geo == 'indi' then
-					-- Leave out target; let Shortcuts auto-determine it.
-					indiId = indiId % 30
-					send_command('@input /ma "'..geomancy[geo][indiId+1]..'"')    
-				end
+                if geo == 'geo' then
+                    -- Leave out target; let Shortcuts auto-determine it.
+                    geoId = geoId % 30
+                    send_command('@input /ma "'..geomancy[geo][geoId+1]..'"')
+                elseif geo == 'indi' then
+                    -- Leave out target; let Shortcuts auto-determine it.
+                    indiId = indiId % 30
+                    send_command('@input /ma "'..geomancy[geo][indiId+1]..'"')    
+                end
             end
-        end		
+        end     
     end
 end
