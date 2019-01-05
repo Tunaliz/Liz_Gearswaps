@@ -1,4 +1,4 @@
- 
+
 --[[
         Custom commands:
         Shorthand versions for each strategem type that uses the version appropriate for
@@ -123,6 +123,12 @@ function tablelength(T)
   return count
 end
 
+use_UI = false
+hud_x_pos = 1400    --important to update these if you have a smaller screen
+hud_y_pos = 200     --important to update these if you have a smaller screen
+hud_draggable = true
+hud_font_size = 10
+hud_transparency = 200 -- a value of 0 (invisible) to 255 (no transparency at all)
 include('SCH_Gearsets.lua')
 
 nukes = {}
@@ -163,16 +169,121 @@ nukeId = nukeId % nukeCount
 nukeMode = nukeModes[nukeId+1]
 
 -- Spam Chat to alert the user of what modes things are by default. 
-windower.add_to_chat(8,'----- Welcome back to your SCH.lua -----')     
-windower.add_to_chat(211,'Nuke now set to element type: '..tostring(element))   
-windower.add_to_chat(211,'SC now set to: '..tostring(wantedSc))     
-windower.add_to_chat(211,'Idle mode now set to: '..tostring(idleMode))  
-windower.add_to_chat(211,'Regen mode now set to: '..tostring(regenMode))    
-windower.add_to_chat(211,'Nuke mode now set to: '..tostring(nukeMode))  
+windower.add_to_chat(8,'----- Welcome back to your SCH.lua -----')
+
+--------------------------------------------------------------------------------------------------------------
+-- HUD STUFF
+--------------------------------------------------------------------------------------------------------------
+
+function setup_hud()
+    sch_property = {}
+    sch_info = {}
+    sch_info.box={
+        pos={x=hud_x_pos,y=hud_y_pos},
+        text={font='Segoe UI Symbol', size=hud_font_size, Fonts={'sans-serif'},},
+        bg={alpha=hud_transparency,red=0,green=0,blue=15},
+        flags={draggable=hud_draggable},
+        padding=7
+    }
+    window = texts.new(sch_info.box)
+    initialize(window, sch_info.box)
+    window:show()
+    updatedisplay()
+end
+
+function d_chat(s)
+    if debug_gs1 then add_to_chat(122,s) end
+end
+
+function initialize(text, settings)
+    local properties = L{}
+    properties:append('${modestates}')
+    text:clear()
+    text:append(properties:concat('\n'))
+end
+function concat_strings(s)
+    local t = { }
+    for k,v in ipairs(s) do
+        t[#t+1] = tostring(v)
+    end
+    return table.concat(t,"\n")
+end
+
+local res = require('resources')
+function set_hud_info()
+    mb = "off"
+    if mBurst then
+        mb = "on"
+    else
+        mb = "off"
+    end
+    if use_UI then 
+        modestates_table = {
+            "     Elizabet's SCH.lua",
+            '\n-- Modes --\n     Idle: \\cs(125,125,255)'..tostring(idleMode)..'\\cr',
+            '     Regen: \\cs(125,125,255)'..tostring(regenMode)..'\\cr',
+            '     Casting: \\cs(125,125,255)'..tostring(nukeMode)..'\\cr',
+            '     MB Mode: \\cs(125,125,255)'..tostring(mb)..'\\cr',
+            '\n-- Spells --\n     Element: \\cs(125,125,255)'..tostring(element)..'\\cr',
+            '     Skillchain: \\cs(125,125,255)'..tostring(wantedSc)..'\\cr',
+        }
+        sch_property.modestates = concat_strings(modestates_table)
+    end
+end
+update_delay=0
+
+function updatedisplay() --update hud display
+    if update_delay ~=0 then
+        coroutine.sleep(update_delay)
+        update_delay = 0
+    end
+    set_hud_info()
+    local info = {}
+    info.modestates = sch_property.modestates
+
+    --button:update(info)
+    --button:show()
+    window:update(info)
+    if display_hud then
+        window:show()
+    end
+end
+
+function spairs(t, order)
+    -- collect the keys
+    local keys = {}
+    for k in pairs(t) do keys[#keys+1] = k end
+
+    -- if order function given, sort by it by passing the table and keys a, b,
+    -- otherwise just sort the keys 
+    if order then
+        table.sort(keys, function(a,b) return order(t, a, b) end)
+    else
+        table.sort(keys)
+    end
+
+    -- return the iterator function
+    local i = 0
+    return function()
+        i = i + 1
+        if keys[i] then
+            return keys[i], t[keys[i]]
+        end
+    end
+end
+--------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------
 
 
-
-
+if use_UI == true then
+    setup_hud()
+else
+    windower.add_to_chat(211,'Nuke now set to element type: '..tostring(element))   
+    windower.add_to_chat(211,'SC now set to: '..tostring(wantedSc))     
+    windower.add_to_chat(211,'Idle mode now set to: '..tostring(idleMode))  
+    windower.add_to_chat(211,'Regen mode now set to: '..tostring(regenMode))    
+    windower.add_to_chat(211,'Nuke mode now set to: '..tostring(nukeMode))  
+end
 
 Buff = 
     {
@@ -224,12 +335,18 @@ function buff_refresh(name,buff_details)
     -- Update SCH statagems when a buff refreshes.
     update_active_strategems()
     update_sublimation()
+    if use_UI == true then
+        updatedisplay()
+    end
 end
 
 function buff_change(name,gain,buff_details)
     -- Update SCH statagems when a buff is gained or lost.
     update_active_strategems()
     update_sublimation()
+    if use_UI == true then
+        updatedisplay()
+    end
 end
  
  
@@ -436,10 +553,18 @@ function self_command(command)
                 -- You need to toggle prioritisation yourself
                 if mBurst then
                     mBurst = false
-                    windower.add_to_chat(8,"----- Nuking MB Mode OFF -----")
+                    if use_UI == true then
+                        updatedisplay()
+                    else
+                        windower.add_to_chat(8,"----- Nuking MB Mode OFF -----")
+                    end
                 else
                     mBurst = true
-                    windower.add_to_chat(8,"----- Nuking MB Mode ON -----")
+                    if use_UI == true then
+                        updatedisplay()
+                    else
+                        windower.add_to_chat(8,"----- Nuking MB Mode ON -----")
+                    end
                 end
             elseif commandArgs[2] == 'runspeed' then
                 if runspeed then
@@ -458,22 +583,38 @@ function self_command(command)
                 idleId = idleId % idleCount
                 idleMode = idleModes[idleId+1]
                 idle()
-                if buffactive['Sublimation: Activated'] then
-                    windower.add_to_chat(4,"----- Idle mode Now focus on: "..tostring(idleMode).." in Sublimation Mode. ----")
+                if buffactive['Sublimation: Activated'] then                 
+                    if use_UI == true then
+                        updatedisplay()
+                    else
+                        windower.add_to_chat(4,"----- Idle mode Now focus on: "..tostring(idleMode).." in Sublimation Mode. ----")  
+                    end
                 -- We don't have sublimation ticking.
                 else
-                    windower.add_to_chat(4,"----- Idle mode Now focus on: "..tostring(idleMode))
+                    if use_UI == true then
+                        updatedisplay()
+                    else
+                        windower.add_to_chat(4,"----- Idle mode Now focus on: "..tostring(idleMode))
+                    end
                 end
             elseif commandArgs[2] == 'regenmode' then
                 regenId = regenId+1
                 regenId = regenId % regenCount
                 regenMode = regenModes[regenId+1]
-                windower.add_to_chat(8,"----- Regen Mode Now focus on: "..tostring(regenMode)) 
+                if use_UI == true then                    
+                    updatedisplay()
+                else
+                    windower.add_to_chat(8,"----- Regen Mode Now focus on: "..tostring(regenMode)) 
+                end     
             elseif commandArgs[2] == 'nukemode' then
                 nukeId = nukeId+1
                 nukeId = nukeId % nukeCount
                 nukeMode = nukeModes[nukeId+1]                
-                windower.add_to_chat(8,"----- Nuking Mode is now: "..tostring(nukeMode)) 
+                if use_UI == true then                    
+                    updatedisplay()
+                else
+                    windower.add_to_chat(8,"----- Nuking Mode is now: "..tostring(nukeMode)) 
+                end     
             end
         end
         
@@ -491,7 +632,11 @@ function self_command(command)
                 elemId = elemId+1
                 elemId = elemId % 8
                 element = elements[elemId+1]
-                windower.add_to_chat(211,'Nuke now set to element type: '..tostring(element))   
+                if use_UI == true then                    
+                    updatedisplay()
+                else
+                    windower.add_to_chat(211,'Nuke now set to element type: '..tostring(element))
+                end   
                 if scTier == 'Level 2' then
                     elemId = elemId % 8
                     wantedSc = tier2sc[elemId+1]
@@ -499,18 +644,30 @@ function self_command(command)
                     elemId = elemId % 8
                     wantedSc = tier1sc[elemId+1]
                 end
-                windower.add_to_chat(211,'SC now set to: '..tostring(wantedSc))
+                if use_UI == true then                    
+                    updatedisplay()
+                else
+                    windower.add_to_chat(211,'SC now set to: '..tostring(wantedSc))
+                end  
             elseif nuke == 'cycledown' then
                 elemId = elemId-1
                 elemId = elemId % 8
                 element = elements[elemId+1]
-                windower.add_to_chat(211,'Nuke now set to element type: '..tostring(element))   
+                if use_UI == true then                    
+                    updatedisplay()
+                else
+                    windower.add_to_chat(211,'Nuke now set to element type: '..tostring(element))
+                end   
                 if scTier == 'Level 2' then
                     wantedSc = tier2sc[elemId+1]
                 elseif scTier == 'Level 1' then
                     wantedSc = tier1sc[elemId+1]
                 end
-                windower.add_to_chat(211,'SC now set to: '..tostring(wantedSc))
+                if use_UI == true then                    
+                    updatedisplay()
+                else
+                    windower.add_to_chat(211,'SC now set to: '..tostring(wantedSc))
+                end 
             elseif not nukes[nuke] then
                 windower.add_to_chat(123,'Unknown element type: '..tostring(nuke))
                 return              
@@ -530,16 +687,25 @@ function self_command(command)
                     scTier = 'Level 2'
                     elemId = elemId % 8
                     wantedSc = tier2sc[elemId+1]
-                    windower.add_to_chat(211,'SC Tier now set to: '..tostring(scTier))
-                    windower.add_to_chat(211,'SC now set to: '..tostring(wantedSc))     
+                    if use_UI == true then                    
+                        updatedisplay()
+                    else
+                        windower.add_to_chat(211,'SC Tier now set to: '..tostring(scTier))
+                        windower.add_to_chat(211,'SC now set to: '..tostring(wantedSc))
+                    end     
                 elseif scTier == 'Level 2' then
                     scTier = 'Level 1'
                     elemId = elemId % 8  
                     wantedSc = tier1sc[elemId+1]
-                    windower.add_to_chat(211,'SC Tier now set to: '..tostring(scTier))
-                    windower.add_to_chat(211,'SC now set to: '..tostring(wantedSc))     
+                    if use_UI == true then                    
+                        updatedisplay()
+                    else
+                        windower.add_to_chat(211,'SC Tier now set to: '..tostring(scTier))    
+                        windower.add_to_chat(211,'SC now set to: '..tostring(wantedSc))
+                    end     
                 end
             end
+--nukes.helix = {['Earth']="Geohelix II",  ['Water']="Hydrohelix II", ['Air']="Anemohelix II",['Fire']="Pyrohelix II", ['Ice']="Cryohelix II", ['Lightning']="Ionohelix II",    ['Light']="Luminohelix II", ['Dark']="Noctohelix II"}
             if arg == 'castsc' then
                 if wantedSc == 'Scission' then
                     send_command('input /p Opening SC: Scission  MB: Stone; wait .1; input /ja "Immanence" <me>; wait 1.5; input /ma "Fire" <t>; wait 4.0; input /ja "Immanence" <me>; wait 1.5; input /p Closing SC: Scission  MB: Stone; input /ma "Geohelix" <t>')          
