@@ -53,6 +53,16 @@ regenModes = {'hybrid', 'duration', 'potency'}
 -- To add a new mode to nuking, you need to define both sets: sets.midcast.nuking.mynewmode as well as sets.midcast.MB.mynewmode
 nukeModes = {'normal', 'acc'}
 
+-- HUD Setups
+-- Currently in construction.
+use_UI = true 		-- Setting this to true will stop the text spam, and instead display modes in a UI.
+hud_x_pos = 1400 	--important to update these if you have a smaller screen
+hud_y_pos = 200		--important to update these if you have a smaller screen
+hud_draggable = true
+hud_font_size = 10
+hud_transparency = 200 -- a value of 0 (invisible) to 255 (no transparency at all)
+
+
 -- Setup your Key Bindings here:
     windower.send_command('bind insert gs c nuke cycle')        -- insert Cycles Nuke element
     windower.send_command('bind delete gs c nuke cycledown')    -- delete Cycles Nuke element in reverse order    
