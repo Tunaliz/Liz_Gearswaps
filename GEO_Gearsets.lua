@@ -34,6 +34,58 @@
 -- Optional. Swap to your sch macro sheet / book
 set_macros(1,5) -- Sheet, Book   
 
+-- Define your modes: 
+-- You can add or remove modes in the table below, they will get picked up in the cycle automatically. 
+-- to define sets for idle if you add more modes, name them: sets.me.idle.mymode and add 'mymode' in the group.
+-- to define sets for regen if you add more modes, name them: sets.midcast.regen.mymode and add 'mymode' in the group.
+-- Same idea for nuke modes. 
+idleModes = {'normal', 'dt', 'mdt'}
+-- Setting this to true will stop the text spam, and instead display modes in a UI.
+-- Currently in construction.
+use_UI = true
+hud_x_pos = 1400    --important to update these if you have a smaller screen
+hud_y_pos = 200     --important to update these if you have a smaller screen
+hud_draggable = true
+hud_font_size = 10
+hud_transparency = 200 -- a value of 0 (invisible) to 255 (no transparency at all)
+
+geoId = 13      -- Geo Spell Default 13 = Frailty (when you first load lua / change jobs the saved spells is this one)
+indiId = 16     -- Indi Spell Default 16 = Haste  (when you first load lua / change jobs the saved spells is this one)
+
+-- See below for what number is which spell
+--[[
+    0       Acumen
+    1       Attunement 
+    2       Barrier
+    3       STR 
+    4       DEX 
+    5       VIT 
+    6       AGI 
+    7       INT 
+    8       MND 
+    9       CHR 
+    10      Fade
+    11      Fend 
+    12      Focus
+    13      Frailty 
+    14      Fury
+    15      Gravit 
+    16      Haste
+    17      Languor 
+    18      Malaise
+    19      Paralysis
+    20      Poison
+    21      Precision
+    22      Refresh
+    23      Regen 
+    24      Slip
+    25      Slow
+    26      Torpor
+    27      Vex
+    28      Voidance 
+    29      Wilt
+]]--
+
 -- Setup your Key Bindings here:  
     windower.send_command('bind home gs c geo geocycle') 			-- home Cycles Geomancy Spell
     windower.send_command('bind end gs c geo geocycledown') 		-- end Cycles Geomancy Spell in reverse order	
@@ -57,42 +109,6 @@ function user_unload()
     send_command('unbind !`')
 end
 
-geoId = 13 		-- Geo Spell Default 13 = Frailty (when you first load lua / change jobs the saved spells is this one)
-indiId = 16		-- Indi Spell Default 16 = Haste  (when you first load lua / change jobs the saved spells is this one)
--- See below for what number is which spell
---[[
-	0		Acumen
-	1		Attunement 
-	2		Barrier
-	3		STR 
-	4		DEX 
-	5		VIT 
-	6		AGI 
-	7		INT 
-	8		MND 
-	9		CHR 
-	10		Fade
-	11		Fend 
-	12		Focus
-	13		Frailty 
-	14		Fury
-	15		Gravit 
-	16		Haste
-	17		Languor 
-	18		Malaise
-	19		Paralysis
-	20		Poison
-	21		Precision
-	22		Refresh
-	23		Regen 
-	24		Slip
-	25		Slow
-	26		Torpor
-	27		Vex
-	28		Voidance 
-	29		Wilt
-]]--
-    
 -- Setup your Gear Sets below:
 function get_sets()
   
