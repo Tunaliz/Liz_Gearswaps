@@ -112,6 +112,11 @@ function tablelength(T)
 end
 
 use_UI = false
+hud_x_pos = 1400    --important to update these if you have a smaller screen
+hud_y_pos = 200     --important to update these if you have a smaller screen
+hud_draggable = true
+hud_font_size = 10
+hud_transparency = 200 -- a value of 0 (invisible) to 255 (no transparency at all)
 include('GEO_Gearsets.lua')
 -- Required variables and  their initial value
 nukes = {}
