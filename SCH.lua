@@ -174,6 +174,17 @@ windower.add_to_chat(8,'----- Welcome back to your SCH.lua -----')
 --------------------------------------------------------------------------------------------------------------
 -- HUD STUFF
 --------------------------------------------------------------------------------------------------------------
+-- Colors for Text
+Colors = {
+    ["Fire"] = "\\cs(204, 0, 0)", 
+    ["Water"] = "\\cs(0, 102, 204)", 
+    ["Air"] = "\\cs(51, 102, 0)", 
+    ["Light"] = "\\cs(255, 255, 255)", 
+    ["Earth"] = "\\cs(139, 139, 19)", 
+    ["Ice"] = "\\cs(0, 204, 204)", 
+    ["Lightning"] = "\\cs(102, 0, 204)",
+    ['Dark']="\\cs(92, 92, 92)"
+}
 
 function setup_hud()
     sch_property = {}
@@ -224,8 +235,8 @@ function set_hud_info()
             '     Regen: \\cs(125,125,255)'..tostring(regenMode)..'\\cr',
             '     Casting: \\cs(125,125,255)'..tostring(nukeMode)..'\\cr',
             '     MB Mode: \\cs(125,125,255)'..tostring(mb)..'\\cr',
-            ' Spells --------------------\n     Element: \\cs(125,125,255)'..tostring(element)..'\\cr',
-            '     Skillchain: \\cs(125,125,255)'..tostring(wantedSc)..'\\cr',
+            ' Spells --------------------\n     Element: '..Colors[element]..tostring(element)..'\\cr',
+            '     Skillchain: '..Colors[element]..tostring(wantedSc)..'\\cr',
         }
         sch_property.modestates = concat_strings(modestates_table)
     end
