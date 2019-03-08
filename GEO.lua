@@ -291,7 +291,7 @@ function precast(spell)
         send_command('input /item "Echo Drops" <me>')     
         add_to_chat(123, '****** ['..spell.name..' CANCELED - Using Echo Drops] ******')        
     end   
-
+        
     if spell.type == 'WhiteMagic' or spell.type == 'BlackMagic' or  spell.type == 'Geomancy' then
      
         -- Stoneskin Precast
@@ -320,15 +320,15 @@ function precast(spell)
             equip(sets.precast.casting)
              
         end
-         
-    -- Job Abilities
+    end
+        
+    -- Job Abilities / Spells By name
     -- We use a catch all here, if the set exists for an ability, use it
     -- This way we don't need to write a load of different code for different abilities, just make a set
      
-    elseif sets.precast[spell.name] then
+    if sets.precast[spell.name] then
         equip(sets.precast[spell.name])
-    end
-     
+    end           
 end
  
 function midcast(spell)
