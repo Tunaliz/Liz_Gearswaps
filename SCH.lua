@@ -394,13 +394,13 @@ function precast(spell)
             -- For everything else we go with max fastcast
             equip(sets.precast.casting)        
         end
-         
+    end     
     -- Job Abilities
     -- We use a cat
     -- catch all here, if the set exists for an ability, use it
     -- This way we don't need to write a load of different code for different abilities, just make a set
      
-    elseif sets.precast[spell.name] then
+    if sets.precast[spell.name] then
         equip(sets.precast[spell.name])
     end
     -- extends Fast cast set with Grimoire recast aligned 
