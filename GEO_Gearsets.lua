@@ -320,10 +320,14 @@ function get_sets()
 
 	sets.midcast["Aspir"] = sets.midcast["Drain"]
      
-    sets.midcast.cure = set_combine(sets.midcast.casting,{
+    sets.midcast.cure = {} -- Leave This Empty
+    -- Cure Potency
+    sets.midcast.cure.normal = set_combine(sets.midcast.casting,{
+
+    })
+    sets.midcast.cure.weather = set_combine(sets.midcast.cure.normal,{
 
     }) 
-
     sets.midcast.regen = set_combine(sets.midcast.enhancing,{
 
     }) 
