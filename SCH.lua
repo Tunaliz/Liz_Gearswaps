@@ -28,7 +28,7 @@
         these are to set fewer macros (1 cycle, 5 cast) to save macro space when playing lazily with controler
         
         gs c nuke cycle                 Cycles element type for nuking & SC
-    gs c nuke cycledown     Cycles element type for nuking & SC in reverse order    
+        gs c nuke cycledown             Cycles element type for nuking & SC in reverse order    
         gs c nuke t1                    Cast tier 1 nuke of saved element 
         gs c nuke t2                    Cast tier 2 nuke of saved element 
         gs c nuke t3                    Cast tier 3 nuke of saved element 
@@ -36,16 +36,35 @@
         gs c nuke t5                    Cast tier 5 nuke of saved element 
         gs c nuke helix                 Cast helix2 nuke of saved element 
         gs c nuke storm                 Cast Storm II buff of saved element  
-
- 
+                    
         gs c sc tier                    Cycles SC Tier (1 & 2)
         gs c sc castsc                  Cast All the stuff to create a SC burstable by the nuke element set with '/console gs c nuke element'.
+
+        HUD Functions:
+        gs c hud hide                   Toggles the Hud entirely on or off
+        gs c hud hidemode               Toggles the Modes section of the HUD on or off
+        gs c hud hidescholar            Toggles the Scholar section of the HUD on or off
+        gs c hud light                  Toggles the HUD in lightweight style for less screen estate usage. Also on ALT-END
+        gs c hud keybinds               Toggles Display of the HUD keybindings (my defaults) You can change just under the binds in the Gearsets file.
+
+        // OPTIONAL IF YOU WANT / NEED to skip the cycles...  
+        gs c nuke Ice                   Set Element Type to Ice DO NOTE the Element needs a Capital letter. 
+        gs c nuke Air                   Set Element Type to Air DO NOTE the Element needs a Capital letter. 
+        gs c nuke Dark                  Set Element Type to Dark DO NOTE the Element needs a Capital letter. 
+        gs c nuke Light                 Set Element Type to Light DO NOTE the Element needs a Capital letter. 
+        gs c nuke Earth                 Set Element Type to Earth DO NOTE the Element needs a Capital letter. 
+        gs c nuke Lightning             Set Element Type to Lightning DO NOTE the Element needs a Capital letter. 
+        gs c nuke Water                 Set Element Type to Water DO NOTE the Element needs a Capital letter. 
+        gs c nuke Fire                  Set Element Type to Fire DO NOTE the Element needs a Capital letter. 
 --]]
 
 -------------------------------------------------------------------------------------------------------------------
 -- Spell mappings allow defining a general category or description that each of sets of related
 -- spells all fall under.
 -------------------------------------------------------------------------------------------------------------------
+res = require('resources')
+texts = require('texts')
+include('Modes.lua')
 
 spell_maps = {
     ['Cure']='Cure',['Cure II']='Cure',['Cure III']='Cure',['Cure IV']='Cure',['Cure V']='Cure',['Cure VI']='Cure',
@@ -115,61 +134,20 @@ function set_macros(sheet,book)
     send_command('@input /macro set '..tostring(sheet))
 end
 
--- Required variables and  their initial value
-
-function tablelength(T)
-  local count = 0
-  for _ in pairs(T) do count = count + 1 end
-  return count
-end
-
+-- These defaults gets overwritten in SCH_Gearsets.lua
 use_UI = false
+useLightMode = true
 hud_x_pos = 1400    --important to update these if you have a smaller screen
 hud_y_pos = 200     --important to update these if you have a smaller screen
 hud_draggable = true
 hud_font_size = 10
+hud_padding = 10
 hud_transparency = 200 -- a value of 0 (invisible) to 255 (no transparency at all)
+hud_font = 'Impact'
+
+
 include('SCH_Gearsets.lua')
 
-nukes = {}
-nukes.t1 = {['Earth']="Stone",      ['Water']="Water",      ['Air']="Aero",     ['Fire']="Fire",    ['Ice']="Blizzard",     ['Lightning']="Thunder", ['Light']="Thunder", ['Dark']="Blizzard"}
-nukes.t2 = {['Earth']="Stone II",   ['Water']="Water II",   ['Air']="Aero II",  ['Fire']="Fire II", ['Ice']="Blizzard II",  ['Lightning']="Thunder II", ['Light']="Thunder II", ['Dark']="Blizzard II"}
-nukes.t3 = {['Earth']="Stone III",  ['Water']="Water III",  ['Air']="Aero III", ['Fire']="Fire III",['Ice']="Blizzard III", ['Lightning']="Thunder III", ['Light']="Thunder III", ['Dark']="Blizzard III"}
-nukes.t4 = {['Earth']="Stone IV",   ['Water']="Water IV",   ['Air']="Aero IV",  ['Fire']="Fire IV", ['Ice']="Blizzard IV",  ['Lightning']="Thunder IV", ['Light']="Thunder IV", ['Dark']="Blizzard IV"}
-nukes.t5 = {['Earth']="Stone V",    ['Water']="Water V",    ['Air']="Aero V",   ['Fire']="Fire V",  ['Ice']="Blizzard V",   ['Lightning']="Thunder V", ['Light']="Thunder V", ['Dark']="Blizzard V"}
-nukes.helix = {['Earth']="Geohelix II",  ['Water']="Hydrohelix II", ['Air']="Anemohelix II",['Fire']="Pyrohelix II", ['Ice']="Cryohelix II", ['Lightning']="Ionohelix II",    ['Light']="Luminohelix II", ['Dark']="Noctohelix II"}
-nukes.storm = {['Earth']="Sandstorm II", ['Water']="Rainstorm II",  ['Air']="Windstorm II", ['Fire']="Firestorm II", ['Ice']="Hailstorm II", ['Lightning']="Thunderstorm II", ['Light']="Aurorastorm II", ['Dark']="Voidstorm II"}
-
-elements =  {'Ice', 'Air', 'Dark', 'Light', 'Earth', 'Lightning', 'Water', 'Fire'}
-tier1sc =   {'Induration', 'Detonation', 'Compression', 'Transfixion', 'Scission', 'Impaction', 'Reverberation', 'Liquefaction'}
-tier2sc =   {'Distortion', 'Fragmentation', 'Gravitation', 'Fusion', 'Gravitation', 'Fragmentation', 'Distortion', 'Fusion'}
-elemId = 0
-elemId = elemId % 8
-element = elements[elemId+1]
-wantedSc = tier1sc[elemId+1]
-
-scTier = 'Level 1'
-meleeing = false
-mBurst = false
-runspeed = false
-
-idleId = 0
-idleCount = tablelength(idleModes)
-idleId = elemId % idleCount
-idleMode = idleModes[idleId+1]
-
-regenId = 0
-regenCount = tablelength(regenModes)
-regenId = regenId % regenCount
-regenMode = regenModes[regenId+1]
-
-nukeId = 0
-nukeCount = tablelength(nukeModes)
-nukeId = nukeId % nukeCount
-nukeMode = nukeModes[nukeId+1]
-
--- Spam Chat to alert the user of what modes things are by default. 
-windower.add_to_chat(8,'----- Welcome back to your SCH.lua -----')
 
 --------------------------------------------------------------------------------------------------------------
 -- HUD STUFF
@@ -186,114 +164,259 @@ Colors = {
     ['Dark']="\\cs(92, 92, 92)"
 }
 
-function setup_hud()
-    sch_property = {}
-    sch_info = {}
-    sch_info.box={
-        pos={x=hud_x_pos,y=hud_y_pos},
-        text={font='Segoe UI Symbol', size=hud_font_size, Fonts={'sans-serif'},},
-        bg={alpha=hud_transparency,red=0,green=0,blue=15},
-        flags={draggable=hud_draggable},
-        padding=7
-    }
-    window = texts.new(sch_info.box)
-    initialize(window, sch_info.box)
-    window:show()
-    updatedisplay()
-end
+textHideMode = M(false)
+textHideOptions = M(false)
+textHideHUB = M(false)
+useLightMode = M(false)
+hud_bottom = false
 
-function d_chat(s)
-    if debug_gs1 then add_to_chat(122,s) end
-end
+const_on = "ON"
+const_off = "OFF"
 
-function initialize(text, settings)
-    local properties = L{}
-    properties:append('${modestates}')
-    text:clear()
-    text:append(properties:concat('\n'))
-end
-function concat_strings(s)
-    local t = { }
-    for k,v in ipairs(s) do
-        t[#t+1] = tostring(v)
-    end
-    return table.concat(t,"\n")
-end
+hud_x_pos_og = hud_x_pos
+hud_y_pos_og = hud_y_pos
+hud_font_size_og = hud_font_size
+hud_padding_og = hud_padding
 
-local res = require('resources')
-function set_hud_info()
-    mb = "off"
-    if mBurst then
-        mb = "on"
+hub_mode_standard = [[ \cs(255, 115, 0)Modes: ------------------------- \cr              
+\cs(255, 64, 64)${key_bind_idle} \cs(200, 200, 200)Idle:\cr \cs(125,125,255)${player_current_idle|Refresh}              
+\cs(255, 64, 64)${key_bind_regen} \cs(200, 200, 200)Regen:\cr \cs(125,125,255)${player_current_regen|Hybrid}            
+\cs(255, 64, 64)${key_bind_casting} \cs(200, 200, 200)Casting:\cr \cs(125,125,255)${player_current_casting|Normal}              
+\cs(255, 64, 64)${key_bind_mburst} \cs(200, 200, 200)Magic Burst:\cr \cs(125,125,255)${player_current_mb|OFF}           
+\cs(255, 64, 64)${key_bind_lock_weapon} \cs(200, 200, 200)Lock Weapon:\cr \cs(125,125,255)${toggle_lock_weapon|OFF}
+\cs(255, 64, 64)${key_bind_movespeed_lock}\cs(200, 200, 200)Herald's Gaiters Lock:\cr \cs(125,125,255)${toggle_movespeed_lock|OFF} 
+]]
+
+hub_mode_light = [[ \cs(255, 115, 0) == Modes: \cr              \cs(255, 64, 64)${key_bind_idle} \cs(200, 200, 200)Idle:\cr \cs(125,125,255)${player_current_idle|Refresh}              \cs(255, 64, 64)${key_bind_regen} \cs(200, 200, 200)Regen:\cr \cs(125,125,255)${player_current_regen|Hybrid}            \cs(255, 64, 64)${key_bind_casting} \cs(200, 200, 200)Casting:\cr \cs(125,125,255)${player_current_casting|Normal}              \cs(255, 64, 64)${key_bind_mburst} \cs(200, 200, 200)Magic Burst:\cr \cs(125,125,255)${player_current_mb|OFF}           \cs(255, 64, 64)${key_bind_lock_weapon} \cs(200, 200, 200)Lock Weapon:\cr \cs(125,125,255)${toggle_lock_weapon|OFF}             \cs(255, 64, 64)${key_bind_movespeed_lock} \cs(200, 200, 200)Herald's Gaiters Lock:\cr \cs(125,125,255)${toggle_movespeed_lock|OFF}             ]]
+
+hub_options_standard = [[ \cs(255, 115, 0)Scholar: ------------------------\cr             
+\cs(255, 64, 64)${key_bind_element_cycle} \cs(200, 200, 200)Element:\cr ${element_color|\\cs(0, 204, 204)}${toggle_element_cycle|Ice} \cr           
+\cs(255, 64, 64)${key_bind_sc_level} \cs(200, 200, 200)Skillchain:\cr ${element_color|\\cs(0, 204, 204)}${toggle_sc_level|Induration} 
+]]
+
+
+hub_options_light = [[ \cs(255, 115, 0) == Scholar: \cr             \cs(255, 64, 64)${key_bind_element_cycle} \cs(200, 200, 200)Element:\cr ${element_color|\\cs(0, 204, 204)}${toggle_element_cycle|Ice} \cr           \cs(255, 64, 64)${key_bind_sc_level} \cs(200, 200, 200)Skillchain:\cr ${element_color|\\cs(0, 204, 204)}${toggle_sc_level|Induration} ]]
+
+
+--[[
+    This gets passed in when the Keybinds are turned off.
+    For not it simply sets the variable to an empty string
+    (Researching better way to handle this)
+]]
+keybinds_off = {}
+keybinds_off['key_bind_idle'] = '       '
+keybinds_off['key_bind_regen'] = '       '
+keybinds_off['key_bind_casting'] = '       '
+keybinds_off['key_bind_mburst'] = '       '
+
+keybinds_off['key_bind_element_cycle'] = '       '
+keybinds_off['key_bind_sc_level'] = '       '
+keybinds_off['key_bind_lock_weapon'] = '       '
+keybinds_off['key_bind_movespeed_lock'] = '        '
+
+function validateTextInformation()
+
+    --Mode Information
+    main_text_hub.player_current_idle = idleModes.current
+    main_text_hub.player_current_regen = regenModes.current
+    main_text_hub.player_current_casting = nukeModes.current
+    main_text_hub.toggle_element_cycle = elements.current
+    main_text_hub.toggle_sc_level = wantedSc
+
+    if mBurst.value then
+        main_text_hub.player_current_mb = const_on
     else
-        mb = "off"
+        main_text_hub.player_current_mb = const_off
     end
-    if use_UI then 
-        modestates_table = {
-            "       Elizabet's SCH.lua",
-            ' Modes --------------------\n     Idle: \\cs(125,125,255)'..tostring(idleMode)..'\\cr',
-            '     Regen: \\cs(125,125,255)'..tostring(regenMode)..'\\cr',
-            '     Casting: \\cs(125,125,255)'..tostring(nukeMode)..'\\cr',
-            '     MB Mode: \\cs(125,125,255)'..tostring(mb)..'\\cr',
-            ' Spells --------------------\n     Element: '..Colors[element]..tostring(element)..'\\cr',
-            '     Skillchain: '..Colors[element]..tostring(wantedSc)..'\\cr',
-        }
-        sch_property.modestates = concat_strings(modestates_table)
-    end
-end
-update_delay=0
 
-function updatedisplay() --update hud display
-    if update_delay ~=0 then
-        coroutine.sleep(update_delay)
-        update_delay = 0
-    end
-    set_hud_info()
-    local info = {}
-    info.modestates = sch_property.modestates
-
-    --button:update(info)
-    --button:show()
-    window:update(info)
-    if display_hud then
-        window:show()
-    end
-end
-
-function spairs(t, order)
-    -- collect the keys
-    local keys = {}
-    for k in pairs(t) do keys[#keys+1] = k end
-
-    -- if order function given, sort by it by passing the table and keys a, b,
-    -- otherwise just sort the keys 
-    if order then
-        table.sort(keys, function(a,b) return order(t, a, b) end)
+    if meleeing.value then
+        main_text_hub.toggle_lock_weapon = const_off
     else
-        table.sort(keys)
+        main_text_hub.toggle_lock_weapon = const_on
     end
 
-    -- return the iterator function
-    local i = 0
-    return function()
-        i = i + 1
-        if keys[i] then
-            return keys[i], t[keys[i]]
-        end
+    if runspeed.value then
+        main_text_hub.toggle_movespeed_lock =  const_on
+    else
+        main_text_hub.toggle_movespeed_lock =  const_off
     end
+    
+    if keybinds.value then
+        texts.update(main_text_hub, keybinds_on)
+    else 
+        texts.update(main_text_hub, keybinds_off)
+    end
+    main_text_hub.element_color = Colors[elements.current]
+end
+
+--Default To Set Up the Text Window
+function setupTextWindow(pos_x, pos_y)
+
+    local default_settings = {}
+    default_settings.pos = {}
+    default_settings.pos.x = hud_x_pos
+    default_settings.pos.y = hud_y_pos
+    default_settings.bg = {}
+
+    default_settings.bg.alpha = hud_transparency
+    default_settings.bg.red = 40
+    default_settings.bg.green = 40
+    default_settings.bg.blue = 55
+    default_settings.bg.visible = true
+    default_settings.flags = {}
+    default_settings.flags.right = false
+    default_settings.flags.bottom = hud_bottom
+    default_settings.flags.bold = true
+    default_settings.flags.draggable = hud_draggable
+    default_settings.flags.italic = false
+    default_settings.padding = hud_padding
+    default_settings.text = {}
+    default_settings.text.size = hud_font_size
+    default_settings.text.font = hud_font
+    default_settings.text.fonts = {}
+    default_settings.text.alpha = 255
+    default_settings.text.red = 147
+    default_settings.text.green = 161
+    default_settings.text.blue = 161
+    default_settings.text.stroke = {}
+    default_settings.text.stroke.width = 0
+    default_settings.text.stroke.alpha = 255
+    default_settings.text.stroke.red = 0
+    default_settings.text.stroke.green = 0
+    default_settings.text.stroke.blue = 0
+
+    --Creates the initial Text Object will use to create the different sections in
+    main_text_hub = texts.new('', default_settings, default_settings)
+
+    --Appends the different sections to the main_text_hub
+    texts.append(main_text_hub, hub_mode)
+    texts.append(main_text_hub, hub_options)
+
+    --We then do a quick validation
+    validateTextInformation()
+
+    --Finally we show this to the user
+    main_text_hub:show()
+    
+end
+--[[
+    This handles hiding the different sections
+]]
+function hideTextSections()
+
+    --For now when hiding a section its easier to recreate the entire window
+    texts.clear(main_text_hub)
+    
+    --Below we check to make sure this is true by default these are false
+    if not textHideMode.value then
+        texts.append(main_text_hub, hub_mode)
+
+    end
+    if not textHideOptions.value then
+        texts.append(main_text_hub, hub_options)
+    end
+    validateTextInformation()
+
+end
+
+function hudStyle()
+
+    if useLightMode.value then
+        hud_x_pos = 0     
+        hud_y_pos = 0
+        hud_font_size = 8
+        hud_padding = 2
+        hub_options = hub_options_light
+        hub_mode = hub_mode_light
+    else
+        hud_x_pos = hud_x_pos_og
+        hud_y_pos = hud_y_pos_og
+        hud_font_size = hud_font_size_og
+        hud_padding = hud_padding_og
+        hub_options = hub_options_standard
+        hub_mode = hub_mode_standard
+    end
+    setupTextWindow(hud_x_pos, hud_y_pos)
+end
+
+function toggleHudStyle( useLightMode )
+    texts.clear(main_text_hub)
+    if useLightMode then
+        hud_x_pos = 0     
+        hud_y_pos = 0
+        hud_font_size = 8
+        hud_padding = 2
+        hub_options = hub_options_light
+        hub_mode = hub_mode_light
+    else
+        hud_x_pos = hud_x_pos_og
+        hud_y_pos = hud_y_pos_og
+        hud_font_size = hud_font_size_og
+        hud_padding = hud_padding_og
+        hub_options = hub_options_standard
+        hub_mode = hub_mode_standard
+    end
+    texts.pos(main_text_hub, hud_x_pos, hud_y_pos)
+    texts.size(main_text_hub, hud_font_size)
+    texts.pad(main_text_hub, hud_padding)
+    texts.append(main_text_hub, hub_mode)
+    texts.append(main_text_hub, hub_options)
+    validateTextInformation()
 end
 --------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------
+
+nukes = {}
+nukes.t1 = {['Earth']="Stone",      ['Water']="Water",      ['Air']="Aero",     ['Fire']="Fire",    ['Ice']="Blizzard",     ['Lightning']="Thunder", ['Light']="Thunder", ['Dark']="Blizzard"}
+nukes.t2 = {['Earth']="Stone II",   ['Water']="Water II",   ['Air']="Aero II",  ['Fire']="Fire II", ['Ice']="Blizzard II",  ['Lightning']="Thunder II", ['Light']="Thunder II", ['Dark']="Blizzard II"}
+nukes.t3 = {['Earth']="Stone III",  ['Water']="Water III",  ['Air']="Aero III", ['Fire']="Fire III",['Ice']="Blizzard III", ['Lightning']="Thunder III", ['Light']="Thunder III", ['Dark']="Blizzard III"}
+nukes.t4 = {['Earth']="Stone IV",   ['Water']="Water IV",   ['Air']="Aero IV",  ['Fire']="Fire IV", ['Ice']="Blizzard IV",  ['Lightning']="Thunder IV", ['Light']="Thunder IV", ['Dark']="Blizzard IV"}
+nukes.t5 = {['Earth']="Stone V",    ['Water']="Water V",    ['Air']="Aero V",   ['Fire']="Fire V",  ['Ice']="Blizzard V",   ['Lightning']="Thunder V", ['Light']="Thunder V", ['Dark']="Blizzard V"}
+nukes.helix = {['Earth']="Geohelix II",  ['Water']="Hydrohelix II", ['Air']="Anemohelix II",['Fire']="Pyrohelix II", ['Ice']="Cryohelix II", ['Lightning']="Ionohelix II",    ['Light']="Luminohelix II", ['Dark']="Noctohelix II"}
+nukes.storm = {['Earth']="Sandstorm II", ['Water']="Rainstorm II",  ['Air']="Windstorm II", ['Fire']="Firestorm II", ['Ice']="Hailstorm II", ['Lightning']="Thunderstorm II", ['Light']="Aurorastorm II", ['Dark']="Voidstorm II"}
+
+elements =  M('Ice', 'Air', 'Dark', 'Light', 'Earth', 'Lightning', 'Water', 'Fire')
+
+tier1sc =   {}
+tier1sc['Ice'] = 'Induration'
+tier1sc['Air'] ='Detonation'
+tier1sc['Dark'] = 'Compression' 
+tier1sc['Light'] = 'Transfixion'
+tier1sc['Earth'] = 'Scission'
+tier1sc['Lightning'] = 'Impaction'
+tier1sc['Water'] = 'Reverberation'
+tier1sc['Fire'] = 'Liquefaction'
+
+tier2sc =   {}
+tier2sc['Ice'] = 'Distortion'
+tier2sc['Air'] ='Fragmentation'
+tier2sc['Dark'] = 'Gravitation' 
+tier2sc['Light'] = 'Fusion'
+tier2sc['Earth'] = 'Gravitation'
+tier2sc['Lightning'] = 'Fragmentation'
+tier2sc['Water'] = 'Distortion'
+tier2sc['Fire'] = 'Fusion'
+
+wantedSc = tier1sc[elements.current]
+
+scTier2 = M(false)
+meleeing = M(true)
+mBurst = M(false)
+runspeed = M(true)
+keybinds = M(false)
+
+-- Saying hello
+windower.add_to_chat(8,'----- Welcome back to your SCH.lua -----')
 
 
 if use_UI == true then
-    setup_hud()
+    hudStyle()
 else
-    windower.add_to_chat(211,'Nuke now set to element type: '..tostring(element))   
+    windower.add_to_chat(211,'Nuke now set to element type: '..tostring(elements.current))   
     windower.add_to_chat(211,'SC now set to: '..tostring(wantedSc))     
-    windower.add_to_chat(211,'Idle mode now set to: '..tostring(idleMode))  
-    windower.add_to_chat(211,'Regen mode now set to: '..tostring(regenMode))    
-    windower.add_to_chat(211,'Nuke mode now set to: '..tostring(nukeMode))  
+    windower.add_to_chat(211,'Idle mode now set to: '..tostring(idleModes.current))  
+    windower.add_to_chat(211,'Regen mode now set to: '..tostring(regenModes.current))    
+    windower.add_to_chat(211,'Nuke mode now set to: '..tostring(nukeModes.current))  
 end
 
 Buff = 
@@ -347,7 +470,7 @@ function buff_refresh(name,buff_details)
     update_active_strategems()
     update_sublimation()
     if use_UI == true then
-        updatedisplay()
+        validateTextInformation()
     end
 end
 
@@ -356,7 +479,7 @@ function buff_change(name,gain,buff_details)
     update_active_strategems()
     update_sublimation()
     if use_UI == true then
-        updatedisplay()
+        validateTextInformation()
     end
 end
  
@@ -380,37 +503,35 @@ function precast(spell)
         -- Cure Precast
         elseif spell.name:match('Cure') or spell.name:match('Cura') then
          
-            equip(sets.precast.cure)
-             
+            equip(sets.precast.cure)         
         -- Enhancing Magic
         elseif spell.skill == 'Magic' then
          
-            equip(sets.precast.enhancing)
-             
+            equip(sets.precast.enhancing)            
             if spell.name == 'Sneak' then
                 windower.ffxi.cancel_buff(71)--[[Cancels Sneak]]
             end
         else       
             -- For everything else we go with max fastcast
-            equip(sets.precast.casting)        
+            equip(sets.precast.casting)                   
         end
-    end     
+    end
     -- Job Abilities
     -- We use a cat
     -- catch all here, if the set exists for an ability, use it
     -- This way we don't need to write a load of different code for different abilities, just make a set
      
     if sets.precast[spell.name] then
-        equip(sets.precast[spell.name])
+        equip(sets.precast[spell.name])        
     end
     -- extends Fast cast set with Grimoire recast aligned 
     if buffactive['addendum: black'] or buffactive['dark arts'] then
         if spell.type == 'BlackMagic' then
-            equip(sets.precast.grimoire)
+            equip(sets.precast.grimoire)            
         end
     elseif buffactive['addendum: white'] or buffactive['light arts'] then
         if spell.type == 'WhiteMagic' then
-            equip(sets.precast.grimoire)
+            equip(sets.precast.grimoire)            
         end
     end
 end
@@ -434,7 +555,7 @@ function midcast(spell)
         elseif spell.name:match('Refresh') then
             equip(sets.midcast.refresh)
         elseif spell.name:match('Regen') then
-            equip(sets.midcast.regen[regenMode])
+            equip(sets.midcast.regen[regenModes.current])
         elseif spell.name:match('Aquaveil') then
             equip(sets.midcast.aquaveil)
         end
@@ -444,9 +565,9 @@ function midcast(spell)
         equip(sets.midcast.MndEnfeebling)
     elseif spell.type == 'BlackMagic' then
         if mBurst then
-            equip(sets.midcast.MB[nukeMode])
+            equip(sets.midcast.MB[nukeModes.current])
         else
-            equip(sets.midcast.nuking[nukeMode])
+            equip(sets.midcast.nuking[nukeModes.current])
         end
     -- casting is basically enfeeble set.
     else
@@ -499,24 +620,23 @@ function idle()
     -- We check if we're meleeing because we don't want to idle in melee gear when we're only engaged for trusts
     if meleeing and player.status=='Engaged' then   
         -- We're engaged and meleeing
-        equip(sets.me.melee)            
+        equip(sets.me.melee)               
     else
         -- If we are building sublimation, then we swap refresh to sublimation style idle.
         if buffactive['Sublimation: Activated'] then
-            if idleMode == 'refresh' then
-                equip(sets.me.idle.sublimation)
-                
+            if idleModes.value == 'refresh' then
+                equip(sets.me.idle.sublimation)    
             else
-                equip(sets.me.idle[idleMode])
+                equip(sets.me.idle[idleModes.value])               
             end
         -- We don't have sublimation ticking.
         else
-            equip(sets.me.idle[idleMode])
+            equip(sets.me.idle[idleModes.value])             
         end
     end
     -- Checks MP for Fucho-no-Obi
     if player.mpp < 51 then
-        equip(sets.me.latent_refresh)
+        equip(sets.me.latent_refresh)          
     end
 end
  
@@ -528,7 +648,7 @@ function status_change(new,old)
     elseif new=='Resting' then
      
         -- We're resting
-        equip(sets.me.resting)
+        equip(sets.me.resting)          
     else
         idle()
     end
@@ -540,91 +660,87 @@ function self_command(command)
      
     if #commandArgs:split(' ') >= 2 then
         commandArgs = T(commandArgs:split(' '))
-        if commandArgs[1] == 'toggle' then
+        
+        if commandArgs[1]:lower() == "hud" then --First variable is hide lets find out what
+            if commandArgs[2]:lower() == "hidemode" then --Hides the Mode
+                textHideMode:toggle()
+                hideTextSections()
+            elseif commandArgs[2]:lower() == "hide" then -- Hides/Shows the HUB
+                textHideHUB:toggle()
+
+                if textHideHUB.value == true then
+                    texts.hide(main_text_hub)
+                else 
+                    texts.show(main_text_hub)
+                end
+
+                hideTextSections()
+            elseif commandArgs[2]:lower() == "keybinds" then --Hides/Show Keybinds
+                keybinds:toggle()
+
+                if keybinds.value then
+                    texts.update(main_text_hub, keybinds_on) --If ON then we pass in Table for keybinds to update the variables
+                else 
+                    texts.update(main_text_hub, keybinds_off) --Otherwise we set them to blank
+                end
+
+                hideTextSections()
+            elseif commandArgs[2]:lower() == "hidescholar" then --Hides/Show Options
+                textHideOptions:toggle()
+                hideTextSections()
+            elseif commandArgs[2]:lower() == "light" then --Hides/Show Options
+                useLightMode:toggle()
+                toggleHudStyle(useLightMode.value)
+            end
+
+        elseif commandArgs[1] == 'toggle' then
             if commandArgs[2] == 'melee' then
-             
                 -- //gs c toggle melee will toggle melee mode on and off.
                 -- This basically locks the slots that will cause you to lose TP if changing them,
                 -- As well as equip your melee set if you're engaged
-                if meleeing then
-                    meleeing = false
-                    enable('main','sub','ranged')
-                    windower.add_to_chat(8,'----- Weapons Unlocked, WILL LOSE TP -----')
-                    idle()
-                else
-                    meleeing=true
-                    disable('main','sub','ranged')
-                    windower.add_to_chat(8,'----- Weapons Locked, WILL NOT LOSE TP -----')
-                    idle()
-                end
+                meleeing:toggle()
+                lockMainHand(meleeing.value)
 
             elseif commandArgs[2] == 'mb' then
-                     
                 -- //gs c toggle mb will toggle mb mode on and off.
                 -- You need to toggle prioritisation yourself
-                if mBurst then
-                    mBurst = false
-                    if use_UI == true then
-                        updatedisplay()
-                    else
-                        windower.add_to_chat(8,"----- Nuking MB Mode OFF -----")
-                    end
-                else
-                    mBurst = true
-                    if use_UI == true then
-                        updatedisplay()
-                    else
-                        windower.add_to_chat(8,"----- Nuking MB Mode ON -----")
-                    end
-                end
+                mBurst:toggle()
+                updateMB(mBurst.value)
+
             elseif commandArgs[2] == 'runspeed' then
-                if runspeed then
-                    runspeed = false
-                    windower.add_to_chat(8,"----- Taking Off Herald's Gaiters -----")   
-                    enable('feet')
-                    idle()
-                else
-                    runspeed = true 
-                    windower.add_to_chat(8,"----- Locking On Herald's Gaiters -----")
-                    equip({feet="Herald's Gaiters"})
-                    disable('feet')                 
-                end
+                runspeed:toggle()
+                updateRunspeedGear(runspeed.value) 
+
             elseif commandArgs[2] == 'idlemode' then
-                idleId = idleId+1
-                idleId = idleId % idleCount
-                idleMode = idleModes[idleId+1]
+                idleModes:cycle()
                 idle()
                 if buffactive['Sublimation: Activated'] then                 
                     if use_UI == true then
-                        updatedisplay()
+                        validateTextInformation()
                     else
-                        windower.add_to_chat(4,"----- Idle mode Now focus on: "..tostring(idleMode).." in Sublimation Mode. ----")  
+                        windower.add_to_chat(4,"----- Idle mode Now focus on: "..tostring(idleModes.value).." in Sublimation Mode. ----")  
                     end
                 -- We don't have sublimation ticking.
                 else
                     if use_UI == true then
-                        updatedisplay()
+                        validateTextInformation()
                     else
-                        windower.add_to_chat(4,"----- Idle mode Now focus on: "..tostring(idleMode))
+                        windower.add_to_chat(4,"----- Idle mode Now focus on: "..tostring(idleModes.value))
                     end
                 end
             elseif commandArgs[2] == 'regenmode' then
-                regenId = regenId+1
-                regenId = regenId % regenCount
-                regenMode = regenModes[regenId+1]
+                regenModes:cycle()
                 if use_UI == true then                    
-                    updatedisplay()
+                    validateTextInformation()
                 else
-                    windower.add_to_chat(8,"----- Regen Mode Now focus on: "..tostring(regenMode)) 
+                    windower.add_to_chat(8,"----- Regen Mode Now focus on: "..tostring(regenModes.current)) 
                 end     
             elseif commandArgs[2] == 'nukemode' then
-                nukeId = nukeId+1
-                nukeId = nukeId % nukeCount
-                nukeMode = nukeModes[nukeId+1]                
+                nukeModes:cycle()               
                 if use_UI == true then                    
-                    updatedisplay()
+                    validateTextInformation()
                 else
-                    windower.add_to_chat(8,"----- Nuking Mode is now: "..tostring(nukeMode)) 
+                    windower.add_to_chat(8,"----- Nuking Mode is now: "..tostring(nukeModes.current)) 
                 end     
             end
         end
@@ -639,52 +755,35 @@ function self_command(command)
             end
             
             local nuke = commandArgs[2]:lower()
-            if nuke == 'cycle' then
-                elemId = elemId+1
-                elemId = elemId % 8
-                element = elements[elemId+1]
+            
+            if (nuke == 'cycle' or nuke == 'cycledown') then
+                if nuke == 'cycle' then
+                    elements:cycle()
+                elseif nuke == 'cycledown' then 
+                    elements:cycleback() 
+                end         
+                updateSC(elements.current, scTier2.value)  
                 if use_UI == true then                    
-                    updatedisplay()
+                    validateTextInformation()
                 else
-                    windower.add_to_chat(211,'Nuke now set to element type: '..tostring(element))
+                    windower.add_to_chat(211,'Nuke now set to element type: '..tostring(elements.current))
                 end   
-                if scTier == 'Level 2' then
-                    elemId = elemId % 8
-                    wantedSc = tier2sc[elemId+1]
-                elseif scTier == 'Level 1' then
-                    elemId = elemId % 8
-                    wantedSc = tier1sc[elemId+1]
-                end
+
+            elseif (nuke == 'air' or nuke == 'ice' or nuke == 'fire' or nuke == 'water' or nuke == 'lightning' or nuke == 'earth' or nuke == 'light' or nuke == 'dark') then
+                local newType = commandArgs[2]
+                elements:set(newType)
+                updateSC(elements.current, scTier2.value)  
                 if use_UI == true then                    
-                    updatedisplay()
+                    validateTextInformation()
                 else
-                    windower.add_to_chat(211,'SC now set to: '..tostring(wantedSc))
-                end  
-            elseif nuke == 'cycledown' then
-                elemId = elemId-1
-                elemId = elemId % 8
-                element = elements[elemId+1]
-                if use_UI == true then                    
-                    updatedisplay()
-                else
-                    windower.add_to_chat(211,'Nuke now set to element type: '..tostring(element))
-                end   
-                if scTier == 'Level 2' then
-                    wantedSc = tier2sc[elemId+1]
-                elseif scTier == 'Level 1' then
-                    wantedSc = tier1sc[elemId+1]
-                end
-                if use_UI == true then                    
-                    updatedisplay()
-                else
-                    windower.add_to_chat(211,'SC now set to: '..tostring(wantedSc))
+                    windower.add_to_chat(211,'Nuke now set to element type: '..tostring(elements.current))
                 end 
             elseif not nukes[nuke] then
-                windower.add_to_chat(123,'Unknown element type: '..tostring(nuke))
+                windower.add_to_chat(123,'Unknown element type: '..tostring(commandArgs[2]))
                 return              
             else        
                 -- Leave out target; let Shortcuts auto-determine it.
-                send_command('@input /ma "'..nukes[nuke][element]..'"')     
+                send_command('@input /ma "'..nukes[nuke][elements.current]..'"')     
             end
         elseif commandArgs[1]:lower() == 'sc' then
             if not commandArgs[2] then
@@ -693,30 +792,12 @@ function self_command(command)
             end
             
             local arg = commandArgs[2]:lower()
+            
             if arg == 'tier' then
-                if scTier == 'Level 1' then
-                    scTier = 'Level 2'
-                    elemId = elemId % 8
-                    wantedSc = tier2sc[elemId+1]
-                    if use_UI == true then                    
-                        updatedisplay()
-                    else
-                        windower.add_to_chat(211,'SC Tier now set to: '..tostring(scTier))
-                        windower.add_to_chat(211,'SC now set to: '..tostring(wantedSc))
-                    end     
-                elseif scTier == 'Level 2' then
-                    scTier = 'Level 1'
-                    elemId = elemId % 8  
-                    wantedSc = tier1sc[elemId+1]
-                    if use_UI == true then                    
-                        updatedisplay()
-                    else
-                        windower.add_to_chat(211,'SC Tier now set to: '..tostring(scTier))    
-                        windower.add_to_chat(211,'SC now set to: '..tostring(wantedSc))
-                    end     
-                end
+                scTier2:toggle()
+                updateSC(elements.current, scTier2.value )   
             end
---nukes.helix = {['Earth']="Geohelix II",  ['Water']="Hydrohelix II", ['Air']="Anemohelix II",['Fire']="Pyrohelix II", ['Ice']="Cryohelix II", ['Lightning']="Ionohelix II",    ['Light']="Luminohelix II", ['Dark']="Noctohelix II"}
+
             if arg == 'castsc' then
                 if wantedSc == 'Scission' then
                     send_command('input /p Opening SC: Scission  MB: Stone; wait .1; input /ja "Immanence" <me>; wait 1.5; input /ma "Fire" <t>; wait 4.0; input /ja "Immanence" <me>; wait 1.5; input /p Closing SC: Scission  MB: Stone; input /ma "Geohelix" <t>')          
@@ -747,6 +828,80 @@ function self_command(command)
         end
     end
 end
+
+function updateSC( element , scTier )   
+    if scTier then
+        wantedSc = tier2sc[element]
+    else
+        wantedSc = tier1sc[element]
+    end
+
+    if use_UI == true then                    
+        validateTextInformation()
+    else
+        windower.add_to_chat(211,'SC now set to: '..tostring(wantedSc))
+    end  
+end
+
+function updateMB( mBurst )   
+    if mBurst then
+        if use_UI == true then
+            validateTextInformation()
+        else
+            windower.add_to_chat(8,"----- Nuking MB Mode OFF -----")
+        end
+    else
+        if use_UI == true then
+            validateTextInformation()
+        else
+            windower.add_to_chat(8,"----- Nuking MB Mode ON -----")
+        end
+    end
+end
+
+
+function updateRunspeedGear( runspeed )   
+    
+    if not runspeed then
+        if use_UI == true then
+            validateTextInformation()
+        else
+            windower.add_to_chat(8,"----- Taking Off Herald's Gaiters -----")   
+        end
+        enable('feet')
+        idle()
+    else
+        if use_UI == true then
+            validateTextInformation()
+        else
+            windower.add_to_chat(8,"----- Locking On Herald's Gaiters -----")
+        end
+        equip({feet="Herald's Gaiters"})
+        disable('feet')                 
+    end
+end
+
+function lockMainHand( meleeing )   
+    
+    if meleeing then
+        enable('main','sub','ranged')
+        if use_UI == true then
+            validateTextInformation()
+        else
+            windower.add_to_chat(8,'----- Weapons Unlocked, WILL LOSE TP -----')
+        end
+        idle()
+    else
+        disable('main','sub','ranged')
+        if use_UI == true then
+            validateTextInformation()
+        else
+            windower.add_to_chat(8,'----- Weapons Locked, WILL NOT LOSE TP -----')
+        end
+        idle()
+    end
+end
+
 
 -- Equip sets appropriate to the active buffs, relative to the spell being cast.
 function apply_grimoire_bonuses(spell, action, spellMap)
