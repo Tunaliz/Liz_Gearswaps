@@ -224,12 +224,15 @@ keybinds_off['key_bind_movespeed_lock'] = '        '
 function validateTextInformation()
 
     --Mode Information
+    main_text_hub.player_current_idle = idleModes.current
     main_text_hub.player_current_regen = regenModes.current
     main_text_hub.player_current_casting = nukeModes.current
     main_text_hub.toggle_element_cycle = elements.current
     main_text_hub.toggle_sc_level = wantedSc
     main_text_hub.player_name = pName
-    
+    if (refreshType == "sublimation") then
+        main_text_hub.player_current_idle = idleModes.current.." + Sublimation"
+    end
     if mBurst.value then
         main_text_hub.player_current_mb = const_on
     else
@@ -451,12 +454,8 @@ function update_sublimation()
     Buff['Sublimation: Activated'] = buffactive['Sublimation: Activated'] or false
     if Buff['Sublimation: Activated'] then
         refreshType = "sublimation"
-        main_text_hub.player_current_idle = idleModes.current.." + Sublimation"
-        hideTextSections()  
     else
         refreshType = "refresh"
-        main_text_hub.player_current_idle = idleModes.current
-        hideTextSections() 
     end
     if midaction() then
         return
@@ -717,6 +716,7 @@ function self_command(command)
                 if buffactive['Sublimation: Activated'] then                 
                     if use_UI == true then
                         update_sublimation()
+                        validateTextInformation()
                     else
                         windower.add_to_chat(4,"----- Idle mode Now focus on: "..tostring(idleModes.value).." in Sublimation Mode. ----")  
                     end
