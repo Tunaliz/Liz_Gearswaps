@@ -91,7 +91,7 @@ hud_font = 'Impact'
     windower.send_command('bind end gs c toggle regenmode')		-- end to change Regen Mode	
     windower.send_command('bind !f10 gs c toggle nukemode')		-- Alt-F10 to change Nuking Mode	
     windower.send_command('bind f9 gs c toggle idlemode')		-- F9 to change Idle Mode	
-    windower.send_command('bind !end gs c hud light')           -- Alt-End to toggle light hud version   
+    windower.send_command('bind !end gs c hud lite')           -- Alt-End to toggle light hud version   
 
 --[[
     This gets passed in when the Keybinds is turned on.
