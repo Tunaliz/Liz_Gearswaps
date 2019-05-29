@@ -44,7 +44,7 @@
         gs c hud hide                   Toggles the Hud entirely on or off
         gs c hud hidemode               Toggles the Modes section of the HUD on or off
         gs c hud hidescholar            Toggles the Scholar section of the HUD on or off
-        gs c hud lite                  Toggles the HUD in lightweight style for less screen estate usage. Also on ALT-END
+        gs c hud lite                   Toggles the HUD in lightweight style for less screen estate usage. Also on ALT-END
         gs c hud keybinds               Toggles Display of the HUD keybindings (my defaults) You can change just under the binds in the Gearsets file.
 
         // OPTIONAL IF YOU WANT / NEED to skip the cycles...  
@@ -57,559 +57,961 @@
         gs c nuke Water                 Set Element Type to Water DO NOTE the Element needs a Capital letter. 
         gs c nuke Fire                  Set Element Type to Fire DO NOTE the Element needs a Capital letter. 
 --]]
-include('organizer-lib')
 
--- Define your modes: 
--- You can add or remove modes in the table below, they will get picked up in the cycle automatically. 
--- to define sets for idle if you add more modes, name them: sets.me.idle.mymode and add 'mymode' in the group.
--- to define sets for regen if you add more modes, name them: sets.midcast.regen.mymode and add 'mymode' in the group.
--- Same idea for nuke modes. 
-idleModes = M('refresh', 'dt', 'mdt')
-regenModes = M('hybrid', 'duration', 'potency')
--- To add a new mode to nuking, you need to define both sets: sets.midcast.nuking.mynewmode as well as sets.midcast.MB.mynewmode
-nukeModes = M('normal', 'acc')
+-------------------------------------------------------------------------------------------------------------------
+-- Spell mappings allow defining a general category or description that each of sets of related
+-- spells all fall under.
+-------------------------------------------------------------------------------------------------------------------
+res = require('resources')
+texts = require('texts')
+include('Modes.lua')
 
--- Setting this to true will stop the text spam, and instead display modes in a UI.
--- Currently in construction.
-use_UI = true
+spell_maps = {
+    ['Cure']='Cure',['Cure II']='Cure',['Cure III']='Cure',['Cure IV']='Cure',['Cure V']='Cure',['Cure VI']='Cure',
+    ['Full Cure']='Cure',
+    ['Cura']='Curaga',['Cura II']='Curaga',['Cura III']='Curaga',
+    ['Curaga']='Curaga',['Curaga II']='Curaga',['Curaga III']='Curaga',['Curaga IV']='Curaga',['Curaga V']='Curaga',
+    -- Status Removal doesn't include Esuna or Sacrifice, since they work differently than the rest
+    ['Poisona']='StatusRemoval',['Paralyna']='StatusRemoval',['Silena']='StatusRemoval',['Blindna']='StatusRemoval',['Cursna']='StatusRemoval',
+    ['Stona']='StatusRemoval',['Viruna']='StatusRemoval',['Erase']='StatusRemoval',
+    ['Barfire']='BarElement',['Barstone']='BarElement',['Barwater']='BarElement',['Baraero']='BarElement',['Barblizzard']='BarElement',['Barthunder']='BarElement',
+    ['Barfira']='BarElement',['Barstonra']='BarElement',['Barwatera']='BarElement',['Baraera']='BarElement',['Barblizzara']='BarElement',['Barthundra']='BarElement',
+    ['Raise']='Raise',['Raise II']='Raise',['Raise III']='Raise',['Arise']='Raise',
+    ['Reraise']='Reraise',['Reraise II']='Reraise',['Reraise III']='Reraise',['Reraise IV']='Reraise',
+    ['Protect']='Protect',['Protect II']='Protect',['Protect III']='Protect',['Protect IV']='Protect',['Protect V']='Protect',
+    ['Shell']='Shell',['Shell II']='Shell',['Shell III']='Shell',['Shell IV']='Shell',['Shell V']='Shell',
+    ['Protectra']='Protectra',['Protectra II']='Protectra',['Protectra III']='Protectra',['Protectra IV']='Protectra',['Protectra V']='Protectra',
+    ['Shellra']='Shellra',['Shellra II']='Shellra',['Shellra III']='Shellra',['Shellra IV']='Shellra',['Shellra V']='Shellra',
+    ['Regen']='Regen',['Regen II']='Regen',['Regen III']='Regen',['Regen IV']='Regen',['Regen V']='Regen',
+    ['Refresh']='Refresh',['Refresh II']='Refresh',['Refresh III']='Refresh',
+    ['Teleport-Holla']='Teleport',['Teleport-Dem']='Teleport',['Teleport-Mea']='Teleport',['Teleport-Altep']='Teleport',['Teleport-Yhoat']='Teleport',
+    ['Teleport-Vahzl']='Teleport',['Recall-Pashh']='Teleport',['Recall-Meriph']='Teleport',['Recall-Jugner']='Teleport',
+    ['Valor Minuet']='Minuet',['Valor Minuet II']='Minuet',['Valor Minuet III']='Minuet',['Valor Minuet IV']='Minuet',['Valor Minuet V']='Minuet',
+    ["Knight's Minne"]='Minne',["Knight's Minne II"]='Minne',["Knight's Minne III"]='Minne',["Knight's Minne IV"]='Minne',["Knight's Minne V"]='Minne',
+    ['Advancing March']='March',['Victory March']='March',
+    ['Sword Madrigal']='Madrigal',['Blade Madrigal']='Madrigal',
+    ["Hunter's Prelude"]='Prelude',["Archer's Prelude"]='Prelude',
+    ['Sheepfoe Mambo']='Mambo',['Dragonfoe Mambo']='Mambo',
+    ['Raptor Mazurka']='Mazurka',['Chocobo Mazurka']='Mazurka',
+    ['Sinewy Etude']='Etude',['Dextrous Etude']='Etude',['Vivacious Etude']='Etude',['Quick Etude']='Etude',['Learned Etude']='Etude',['Spirited Etude']='Etude',['Enchanting Etude']='Etude',
+    ['Herculean Etude']='Etude',['Uncanny Etude']='Etude',['Vital Etude']='Etude',['Swift Etude']='Etude',['Sage Etude']='Etude',['Logical Etude']='Etude',['Bewitching Etude']='Etude',
+    ["Mage's Ballad"]='Ballad',["Mage's Ballad II"]='Ballad',["Mage's Ballad III"]='Ballad',
+    ["Army's Paeon"]='Paeon',["Army's Paeon II"]='Paeon',["Army's Paeon III"]='Paeon',["Army's Paeon IV"]='Paeon',["Army's Paeon V"]='Paeon',["Army's Paeon VI"]='Paeon',
+    ['Fire Carol']='Carol',['Ice Carol']='Carol',['Wind Carol']='Carol',['Earth Carol']='Carol',['Lightning Carol']='Carol',['Water Carol']='Carol',['Light Carol']='Carol',['Dark Carol']='Carol',
+    ['Fire Carol II']='Carol',['Ice Carol II']='Carol',['Wind Carol II']='Carol',['Earth Carol II']='Carol',['Lightning Carol II']='Carol',['Water Carol II']='Carol',['Light Carol II']='Carol',['Dark Carol II']='Carol',
+    ['Foe Lullaby']='Lullaby',['Foe Lullaby II']='Lullaby',['Horde Lullaby']='Lullaby',['Horde Lullaby II']='Lullaby',
+    ['Fire Threnody']='Threnody',['Ice Threnody']='Threnody',['Wind Threnody']='Threnody',['Earth Threnody']='Threnody',['Lightning Threnody']='Threnody',['Water Threnody']='Threnody',['Light Threnody']='Threnody',['Dark Threnody']='Threnody',
+    ['Fire Threnody II']='Threnody',['Ice Threnody II']='Threnody',['Wind Threnody II']='Threnody',['Earth Threnody II']='Threnody',['Lightning Threnody II']='Threnody',['Water Threnody II']='Threnody',['Light Threnody II']='Threnody',['Dark Threnody II']='Threnody',
+    ['Battlefield Elegy']='Elegy',['Carnage Elegy']='Elegy',
+    ['Foe Requiem']='Requiem',['Foe Requiem II']='Requiem',['Foe Requiem III']='Requiem',['Foe Requiem IV']='Requiem',['Foe Requiem V']='Requiem',['Foe Requiem VI']='Requiem',['Foe Requiem VII']='Requiem',
+    ['Utsusemi: Ichi']='Utsusemi',['Utsusemi: Ni']='Utsusemi',['Utsusemi: San']='Utsusemi',
+    ['Katon: Ichi'] = 'ElementalNinjutsu',['Suiton: Ichi'] = 'ElementalNinjutsu',['Raiton: Ichi'] = 'ElementalNinjutsu',
+    ['Doton: Ichi'] = 'ElementalNinjutsu',['Huton: Ichi'] = 'ElementalNinjutsu',['Hyoton: Ichi'] = 'ElementalNinjutsu',
+    ['Katon: Ni'] = 'ElementalNinjutsu',['Suiton: Ni'] = 'ElementalNinjutsu',['Raiton: Ni'] = 'ElementalNinjutsu',
+    ['Doton: Ni'] = 'ElementalNinjutsu',['Huton: Ni'] = 'ElementalNinjutsu',['Hyoton: Ni'] = 'ElementalNinjutsu',
+    ['Katon: San'] = 'ElementalNinjutsu',['Suiton: San'] = 'ElementalNinjutsu',['Raiton: San'] = 'ElementalNinjutsu',
+    ['Doton: San'] = 'ElementalNinjutsu',['Huton: San'] = 'ElementalNinjutsu',['Hyoton: San'] = 'ElementalNinjutsu',
+    ['Banish']='Banish',['Banish II']='Banish',['Banish III']='Banish',['Banishga']='Banish',['Banishga II']='Banish',
+    ['Holy']='Holy',['Holy II']='Holy',['Drain']='Drain',['Drain II']='Drain',['Drain III']='Drain',['Aspir']='Aspir',['Aspir II']='Aspir',
+    ['Absorb-Str']='Absorb',['Absorb-Dex']='Absorb',['Absorb-Vit']='Absorb',['Absorb-Agi']='Absorb',['Absorb-Int']='Absorb',['Absorb-Mnd']='Absorb',['Absorb-Chr']='Absorb',
+    ['Absorb-Acc']='Absorb',['Absorb-TP']='Absorb',['Absorb-Attri']='Absorb',
+    ['Enlight']='Enlight',['Enlight II']='Enlight',['Endark']='Endark',['Endark II']='Endark',
+    ['Burn']='ElementalEnfeeble',['Frost']='ElementalEnfeeble',['Choke']='ElementalEnfeeble',['Rasp']='ElementalEnfeeble',['Shock']='ElementalEnfeeble',['Drown']='ElementalEnfeeble',
+    ['Pyrohelix']='Helix',['Cryohelix']='Helix',['Anemohelix']='Helix',['Geohelix']='Helix',['Ionohelix']='Helix',['Hydrohelix']='Helix',['Luminohelix']='Helix',['Noctohelix']='DarkHelix',
+    ['Pyrohelix II']='Helix',['Cryohelix II']='Helix',['Anemohelix II']='Helix',['Geohelix II']='Helix',['Ionohelix II']='Helix',['Hydrohelix II']='Helix',['Luminohelix II']='Helix',['Noctohelix II']='DarkHelix',
+    ['Firestorm']='Storm',['Hailstorm']='Storm',['Windstorm']='Storm',['Sandstorm']='Storm',['Thunderstorm']='Storm',['Rainstorm']='Storm',['Aurorastorm']='Storm',['Voidstorm']='Storm',
+    ['Firestorm II']='Storm',['Hailstorm II']='Storm',['Windstorm II']='Storm',['Sandstorm II']='Storm',['Thunderstorm II']='Storm',['Rainstorm II']='Storm',['Aurorastorm II']='Storm',['Voidstorm II']='Storm',
+    ['Fire Maneuver']='Maneuver',['Ice Maneuver']='Maneuver',['Wind Maneuver']='Maneuver',['Earth Maneuver']='Maneuver',['Thunder Maneuver']='Maneuver',
+    ['Water Maneuver']='Maneuver',['Light Maneuver']='Maneuver',['Dark Maneuver']='Maneuver',
+}
+                
+-- Set Macros for your SCH's macro page, book.
+function set_macros(sheet,book)
+    if book then 
+        send_command('@input /macro book '..tostring(book)..';wait .1;input /macro set '..tostring(sheet))
+        return
+    end
+    send_command('@input /macro set '..tostring(sheet))
+end
+
+-- These defaults gets overwritten in SCH_Gearsets.lua
+use_UI = false
+useLightMode = true
 hud_x_pos = 1400    --important to update these if you have a smaller screen
 hud_y_pos = 200     --important to update these if you have a smaller screen
 hud_draggable = true
 hud_font_size = 10
+hud_padding = 10
 hud_transparency = 200 -- a value of 0 (invisible) to 255 (no transparency at all)
 hud_font = 'Impact'
 
 
--- Setup your Key Bindings here:
-    windower.send_command('bind insert gs c nuke cycle')        -- insert to Cycles Nuke element
-    windower.send_command('bind delete gs c nuke cycledown')    -- delete to Cycles Nuke element in reverse order    
-    windower.send_command('bind !f9 gs c toggle runspeed') 		-- Alt-F9 toggles locking on / off Herald's Gaiters
-    windower.send_command('bind f10 gs c toggle mb')			-- F10 toggles Magic Burst Mode on / off.
-    windower.send_command('bind f12 gs c toggle melee')			-- F12 Toggle Melee mode on / off and locking of weapons
-    windower.send_command('bind !` input /ma Stun <t>') 		-- Alt-` Quick Stun Shortcut.
-    windower.send_command('bind home gs c sc tier')				-- home to change SC tier between Level 1 or Level 2 SC
-    windower.send_command('bind end gs c toggle regenmode')		-- end to change Regen Mode	
-    windower.send_command('bind !f10 gs c toggle nukemode')		-- Alt-F10 to change Nuking Mode	
-    windower.send_command('bind f9 gs c toggle idlemode')		-- F9 to change Idle Mode	
-    windower.send_command('bind !end gs c hud light')           -- Alt-End to toggle light hud version   
+include('SCH_Gearsets.lua')
+
+
+--------------------------------------------------------------------------------------------------------------
+-- HUD STUFF
+--------------------------------------------------------------------------------------------------------------
+-- Colors for Text
+Colors = {
+    ["Fire"] = "\\cs(204, 0, 0)", 
+    ["Water"] = "\\cs(0, 102, 204)", 
+    ["Air"] = "\\cs(51, 102, 0)", 
+    ["Light"] = "\\cs(255, 255, 255)", 
+    ["Earth"] = "\\cs(139, 139, 19)", 
+    ["Ice"] = "\\cs(0, 204, 204)", 
+    ["Lightning"] = "\\cs(102, 0, 204)",
+    ['Dark']="\\cs(92, 92, 92)"
+}
+
+textHideMode = M(false)
+textHideOptions = M(false)
+textHideHUB = M(false)
+useLightMode = M(false)
+hud_bottom = false
+
+const_on = "\\cs(32, 255, 32)ON\\cr"
+const_off = "\\cs(255, 32, 32)OFF\\cr"
+
+hud_x_pos_og = hud_x_pos
+hud_y_pos_og = hud_y_pos
+hud_font_size_og = hud_font_size
+hud_padding_og = hud_padding
+hud_transparency_og = hud_transparency
+
+hub_mode_std = [[ \cs(255, 115, 0)Modes: ------------------------- \cr              
+\cs(255, 64, 64)${key_bind_idle} \cs(200, 200, 200)Idle:\cr \cs(125,125,255)${player_current_idle|Refresh}              
+\cs(255, 64, 64)${key_bind_regen} \cs(200, 200, 200)Regen:\cr \cs(125,125,255)${player_current_regen|Hybrid}            
+\cs(255, 64, 64)${key_bind_casting} \cs(200, 200, 200)Casting:\cr \cs(125,125,255)${player_current_casting|Normal}              
+\cs(255, 64, 64)${key_bind_mburst} \cs(200, 200, 200)Magic Burst:\cr \cs(125,125,255)${player_current_mb|OFF}           
+\cs(255, 64, 64)${key_bind_lock_weapon} \cs(200, 200, 200)Lock Weapon:\cr \cs(125,125,255)${toggle_lock_weapon|OFF}
+\cs(255, 64, 64)${key_bind_movespeed_lock}\cs(200, 200, 200)Herald's Gaiters Lock:\cr \cs(125,125,255)${toggle_movespeed_lock|OFF} 
+]]
+
+hub_mode_lte = [[ \cs(255, 115, 0) == Modes: \cr              \cs(255, 64, 64)${key_bind_idle} \cs(200, 200, 200)Idle:\cr \cs(125,125,255)${player_current_idle|Refresh}              \cs(255, 64, 64)${key_bind_regen} \cs(200, 200, 200)Regen:\cr \cs(125,125,255)${player_current_regen|Hybrid}            \cs(255, 64, 64)${key_bind_casting} \cs(200, 200, 200)Casting:\cr \cs(125,125,255)${player_current_casting|Normal}              \cs(255, 64, 64)${key_bind_mburst} \cs(200, 200, 200)Magic Burst:\cr \cs(125,125,255)${player_current_mb|OFF}           \cs(255, 64, 64)${key_bind_lock_weapon} \cs(200, 200, 200)Lock Weapon:\cr \cs(125,125,255)${toggle_lock_weapon|OFF}             \cs(255, 64, 64)${key_bind_movespeed_lock} \cs(200, 200, 200)Herald's Gaiters Lock:\cr \cs(125,125,255)${toggle_movespeed_lock|OFF}             ]]
+
+hub_options_std = [[ \cs(255, 115, 0)Scholar: ------------------------\cr             
+\cs(255, 64, 64)${key_bind_element_cycle} \cs(200, 200, 200)Element:\cr ${element_color|\\cs(0, 204, 204)}${toggle_element_cycle|Ice} \cr           
+\cs(255, 64, 64)${key_bind_sc_level} \cs(200, 200, 200)Skillchain:\cr ${element_color|\\cs(0, 204, 204)}${toggle_sc_level|Induration} 
+]]
+
+
+hub_options_lte = [[ \cs(255, 115, 0) == Scholar: \cr             \cs(255, 64, 64)${key_bind_element_cycle} \cs(200, 200, 200)Element:\cr ${element_color|\\cs(0, 204, 204)}${toggle_element_cycle|Ice} \cr           \cs(255, 64, 64)${key_bind_sc_level} \cs(200, 200, 200)Skillchain:\cr ${element_color|\\cs(0, 204, 204)}${toggle_sc_level|Induration} ]]
+
+-- init style
+hub_mode = hub_mode_std
+hub_options = hub_options_std
 
 --[[
-    This gets passed in when the Keybinds is turned on.
-    Each one matches to a given variable within the text object
-    IF you changed the Default Keybind above, Edit the ones below so it can be reflected in the hud using showmybinds command
+    This gets passed in when the Keybinds are turned off.
+    For not it simply sets the variable to an empty string
+    (Researching better way to handle this)
 ]]
-keybinds_on = {}
-keybinds_on['key_bind_idle'] = '(F9)'
-keybinds_on['key_bind_regen'] = '(END)'
-keybinds_on['key_bind_casting'] = '(ALT-F10)'
-keybinds_on['key_bind_mburst'] = '(F10)'
+keybinds_off = {}
+keybinds_off['key_bind_idle'] = '       '
+keybinds_off['key_bind_regen'] = '       '
+keybinds_off['key_bind_casting'] = '       '
+keybinds_off['key_bind_mburst'] = '       '
 
-keybinds_on['key_bind_element_cycle'] = '(INSERT)'
-keybinds_on['key_bind_sc_level'] = '(HOME)'
-keybinds_on['key_bind_lock_weapon'] = '(F12)'
-keybinds_on['key_bind_movespeed_lock'] = '(ALT-F9)'
+keybinds_off['key_bind_element_cycle'] = '       '
+keybinds_off['key_bind_sc_level'] = '       '
+keybinds_off['key_bind_lock_weapon'] = '       '
+keybinds_off['key_bind_movespeed_lock'] = '        '
 
+function validateTextInformation()
 
--- Remember to unbind your keybinds on job change.
-function user_unload()
-    send_command('unbind insert')
-    send_command('unbind delete')	
-    send_command('unbind f9')
-    send_command('unbind f10')
-    send_command('unbind f12')
-    send_command('unbind !`')
-    send_command('unbind home')
-    send_command('unbind end')
-    send_command('unbind !f10')	
-    send_command('unbind !f9')	
-    send_command('unbind !end')      	
+    --Mode Information
+    main_text_hub.player_current_idle = idleModes.current
+    main_text_hub.player_current_regen = regenModes.current
+    main_text_hub.player_current_casting = nukeModes.current
+    main_text_hub.toggle_element_cycle = elements.current
+    main_text_hub.toggle_sc_level = wantedSc
+
+    if mBurst.value then
+        main_text_hub.player_current_mb = const_on
+    else
+        main_text_hub.player_current_mb = const_off
+    end
+
+    if meleeing.value then
+        main_text_hub.toggle_lock_weapon = const_off
+    else
+        main_text_hub.toggle_lock_weapon = const_on
+    end
+
+    if runspeed.value then
+        main_text_hub.toggle_movespeed_lock =  const_on
+    else
+        main_text_hub.toggle_movespeed_lock =  const_off
+    end
+    
+    if keybinds.value then
+        texts.update(main_text_hub, keybinds_on)
+    else 
+        texts.update(main_text_hub, keybinds_off)
+    end
+    main_text_hub.element_color = Colors[elements.current]
 end
 
--- Optional. Swap to your sch macro sheet / book
-set_macros(1,17) -- Sheet, Book
+--Default To Set Up the Text Window
+function setupTextWindow()
 
-refreshType = idleModes[1] -- leave this as is     
+    local default_settings = {}
+    default_settings.pos = {}
+    default_settings.pos.x = hud_x_pos
+    default_settings.pos.y = hud_y_pos
+    default_settings.bg = {}
 
--- Setup your Gear Sets below:
-function get_sets()
-  
-    -- My formatting is very easy to follow. All sets that pertain to my character doing things are under 'me'.
-    -- All sets that are equipped to faciliate my avatar's behaviour or abilities are under 'avatar', eg, Perpetuation, Blood Pacts, etc
-      
-    sets.me = {}        		-- leave this empty
-    sets.buff = {} 				-- leave this empty
-    sets.me.idle = {}			-- leave this empty
+    default_settings.bg.alpha = hud_transparency
+    default_settings.bg.red = 40
+    default_settings.bg.green = 40
+    default_settings.bg.blue = 55
+    default_settings.bg.visible = true
+    default_settings.flags = {}
+    default_settings.flags.right = false
+    default_settings.flags.bottom = false
+    default_settings.flags.bold = true
+    default_settings.flags.draggable = hud_draggable
+    default_settings.flags.italic = false
+    default_settings.padding = hud_padding
+    default_settings.text = {}
+    default_settings.text.size = hud_font_size
+    default_settings.text.font = hud_font
+    default_settings.text.fonts = {}
+    default_settings.text.alpha = 255
+    default_settings.text.red = 147
+    default_settings.text.green = 161
+    default_settings.text.blue = 161
+    default_settings.text.stroke = {}
+    default_settings.text.stroke.width = 1
+    default_settings.text.stroke.alpha = 255
+    default_settings.text.stroke.red = 0
+    default_settings.text.stroke.green = 0
+    default_settings.text.stroke.blue = 0
 
-    -- Optional 
-	include('AugGear.lua') -- I list all my Augmented gears in a sidecar file since it's shared across many jobs. 
+    --Creates the initial Text Object will use to create the different sections in
+    main_text_hub = texts.new('', default_settings, default_settings)
 
-    -- Your idle set
-    sets.me.idle.refresh = {
-		--main={ name="Akademos", augments={'INT+15','"Mag.Atk.Bns."+15','Mag. Acc.+15',}},
-		main="Musa",    		
-		sub="Enki Strap",
-		ammo="Homiliary",
-		head="Peda. M.Board +3",
-		body="Jhakri Robe +2",
-		hands="Acad. Bracers +3",
-		legs="Assid. Pants +1",
-        feet="Peda. Loafers +3",
-		neck="Twilight Torque",
-		waist="Refoccilation Stone",
-		left_ear="Etiolation Earring",
-		right_ear="Ethereal Earring",
-		left_ring="Stikini Ring +1",
-		right_ring="Defending Ring",
-		back="Moonbeam Cape",
-    }
+    --Appends the different sections to the main_text_hub
+    texts.append(main_text_hub, hub_mode)
+    texts.append(main_text_hub, hub_options)
 
-    -- Your idle Sublimation set combine from refresh or DT depening on mode.
-    sets.me.idle.sublimation = set_combine(sets.me.idle.refresh,{
-    	head="Acad. Mortar. +1",
-		body="Peda. Gown +3",
-		hands="Telchine Gloves",
-        feet="Peda Loafers +3",
-		back="Moonbeam Cape",
-    })   
-    -- Your idle DT set
-    sets.me.idle.dt = set_combine(sets.me.idle[refreshType],{
-		main={ name="Akademos", augments={'INT+15','"Mag.Atk.Bns."+15','Mag. Acc.+15',}},
-		--main="Musa",      	
-        body="Mallquis Saio +2",
-        feet="Mallquis Clogs +1",
-		neck="Twilight Torque",	
-		right_ring="Defending Ring",
-		left_ear="Genmei Earring",
-        right_ear="Ethereal Earring",
-		back="Moonbeam Cape",
-    })  
-    sets.me.idle.mdt = set_combine(sets.me.idle[refreshType],{
-		body=Amal.Body.A, 
-		left_ear="Etiolation Earring",
-        right_ear="Odnowa Earring +1",
-    })  
-	-- Your MP Recovered Whilst Resting Set
-    sets.me.resting = { 
-		ammo="Homiliary",
-		head=Amal.Head.A,
-		body=Amal.Body.A,
-		hands=Amal.Hands.D,
-		legs="Assid. Pants +1",
-		feet=Amal.Feet.A,
-		neck="Twilight Torque",
-		waist="Refoccilation Stone",
-		left_ear="Etiolation Earring",
-		right_ear="Friomisi Earring",
-		left_ring="Stikini Ring +1",
-		right_ring="Defending Ring",
-		back=SCHCape.NUKE,
+    --We then do a quick validation
+    validateTextInformation()
+
+    --Finally we show this to the user
+    main_text_hub:show()
+    
+end
+--[[
+    This handles hiding the different sections
+]]
+function hideTextSections()
+
+    --For now when hiding a section its easier to recreate the entire window
+    texts.clear(main_text_hub)
+    
+    --Below we check to make sure this is true by default these are false
+    if not textHideMode.value then
+        texts.append(main_text_hub, hub_mode)
+
+    end
+    if not textHideOptions.value then
+        texts.append(main_text_hub, hub_options)
+    end
+    validateTextInformation()
+
+end
+
+function hudStyle()
+
+    setupTextWindow(hud_x_pos, hud_y_pos)
+end
+
+function toggleHudStyle( useLightMode )
+    texts.clear(main_text_hub)
+    if useLightMode then
+        hud_x_pos = 0     
+        hud_y_pos = 0
+        hud_font_size = 8
+        hud_padding = 2
+        hud_transparency = 0
+        hud_strokewidth = 2
+        hub_options = hub_options_lte
+        hub_mode = hub_mode_lte
+    else
+        hud_x_pos = hud_x_pos_og
+        hud_y_pos = hud_y_pos_og
+        hud_font_size = hud_font_size_og
+        hud_padding = hud_padding_og
+        hud_transparency = hud_transparency_og
+        hud_strokewidth = 1
+        hub_options = hub_options_std
+        hub_mode = hub_mode_std
+    end
+    texts.pos(main_text_hub, hud_x_pos, hud_y_pos)
+    texts.size(main_text_hub, hud_font_size)
+    texts.pad(main_text_hub, hud_padding)
+    texts.bg_alpha(main_text_hub, hud_transparency)
+    texts.stroke_width(main_text_hub, hud_strokewidth)      
+    hideTextSections()
+end
+--------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------
+
+nukes = {}
+nukes.t1 = {['Earth']="Stone",      ['Water']="Water",      ['Air']="Aero",     ['Fire']="Fire",    ['Ice']="Blizzard",     ['Lightning']="Thunder", ['Light']="Thunder", ['Dark']="Blizzard"}
+nukes.t2 = {['Earth']="Stone II",   ['Water']="Water II",   ['Air']="Aero II",  ['Fire']="Fire II", ['Ice']="Blizzard II",  ['Lightning']="Thunder II", ['Light']="Thunder II", ['Dark']="Blizzard II"}
+nukes.t3 = {['Earth']="Stone III",  ['Water']="Water III",  ['Air']="Aero III", ['Fire']="Fire III",['Ice']="Blizzard III", ['Lightning']="Thunder III", ['Light']="Thunder III", ['Dark']="Blizzard III"}
+nukes.t4 = {['Earth']="Stone IV",   ['Water']="Water IV",   ['Air']="Aero IV",  ['Fire']="Fire IV", ['Ice']="Blizzard IV",  ['Lightning']="Thunder IV", ['Light']="Thunder IV", ['Dark']="Blizzard IV"}
+nukes.t5 = {['Earth']="Stone V",    ['Water']="Water V",    ['Air']="Aero V",   ['Fire']="Fire V",  ['Ice']="Blizzard V",   ['Lightning']="Thunder V", ['Light']="Thunder V", ['Dark']="Blizzard V"}
+nukes.helix = {['Earth']="Geohelix II",  ['Water']="Hydrohelix II", ['Air']="Anemohelix II",['Fire']="Pyrohelix II", ['Ice']="Cryohelix II", ['Lightning']="Ionohelix II",    ['Light']="Luminohelix II", ['Dark']="Noctohelix II"}
+nukes.storm = {['Earth']="Sandstorm II", ['Water']="Rainstorm II",  ['Air']="Windstorm II", ['Fire']="Firestorm II", ['Ice']="Hailstorm II", ['Lightning']="Thunderstorm II", ['Light']="Aurorastorm II", ['Dark']="Voidstorm II"}
+
+elements =  M('Ice', 'Air', 'Dark', 'Light', 'Earth', 'Lightning', 'Water', 'Fire')
+
+tier1sc =   {}
+tier1sc['Ice'] = 'Induration'
+tier1sc['Air'] ='Detonation'
+tier1sc['Dark'] = 'Compression' 
+tier1sc['Light'] = 'Transfixion'
+tier1sc['Earth'] = 'Scission'
+tier1sc['Lightning'] = 'Impaction'
+tier1sc['Water'] = 'Reverberation'
+tier1sc['Fire'] = 'Liquefaction'
+
+tier2sc =   {}
+tier2sc['Ice'] = 'Distortion'
+tier2sc['Air'] ='Fragmentation'
+tier2sc['Dark'] = 'Gravitation' 
+tier2sc['Light'] = 'Fusion'
+tier2sc['Earth'] = 'Gravitation'
+tier2sc['Lightning'] = 'Fragmentation'
+tier2sc['Water'] = 'Distortion'
+tier2sc['Fire'] = 'Fusion'
+
+wantedSc = tier1sc[elements.current]
+
+scTier2 = M(false)
+meleeing = M(true)
+mBurst = M(false)
+runspeed = M(true)
+keybinds = M(false)
+
+-- Saying hello
+windower.add_to_chat(8,'----- Welcome back to your SCH.lua -----')
+
+
+if use_UI == true then
+    setupTextWindow()
+else
+    windower.add_to_chat(211,'Nuke now set to element type: '..tostring(elements.current))   
+    windower.add_to_chat(211,'SC now set to: '..tostring(wantedSc))     
+    windower.add_to_chat(211,'Idle mode now set to: '..tostring(idleModes.current))  
+    windower.add_to_chat(211,'Regen mode now set to: '..tostring(regenModes.current))    
+    windower.add_to_chat(211,'Nuke mode now set to: '..tostring(nukeModes.current))  
+end
+
+Buff = 
+    {
+        ['Ebullience'] = false, 
+        ['Rapture'] = false, 
+        ['Perpetuance'] = false,
+        ['Immanence'] = false,
+        ['Penury'] = false,
+        ['Parsimony'] = false,
+        ['Celerity'] = false,
+        ['Alacrity'] = false,
+        ['Klimaform'] = false,
+        ['Sublimation: Activated'] = false
     }
     
-    sets.me.latent_refresh = {waist="Fucho-no-obi"}     
+-- Get a spell mapping for the spell.
+function get_spell_map(spell)
+    return spell_maps[spell.name]
+end
+
+-- Reset the state vars tracking strategems.
+function update_active_strategems(name, gain)
+    Buff['Ebullience'] = buffactive['Ebullience'] or false
+    Buff['Rapture'] = buffactive['Rapture'] or false
+    Buff['Perpetuance'] = buffactive['Perpetuance'] or false
+    Buff['Immanence'] = buffactive['Immanence'] or false
+    Buff['Penury'] = buffactive['Penury'] or false
+    Buff['Parsimony'] = buffactive['Parsimony'] or false
+    Buff['Celerity'] = buffactive['Celerity'] or false
+    Buff['Alacrity'] = buffactive['Alacrity'] or false
+    Buff['Klimaform'] = buffactive['Klimaform'] or false
+end
+
+function update_sublimation()
+    Buff['Sublimation: Activated'] = buffactive['Sublimation: Activated'] or false
+    if Buff['Sublimation: Activated'] then
+        refreshType = "sublimation"
+    else
+        refreshType = "refresh"
+    end
+    if midaction() then
+        return
+    else
+        idle()
+    end
+end
+
+function buff_refresh(name,buff_details)
+    -- Update SCH statagems when a buff refreshes.
+    update_active_strategems()
+    update_sublimation()
+    if use_UI == true then
+        validateTextInformation()
+    end
+end
+
+function buff_change(name,gain,buff_details)
+    -- Update SCH statagems when a buff is gained or lost.
+    update_active_strategems()
+    update_sublimation()
+    if use_UI == true then
+        validateTextInformation()
+    end
+end
+ 
+ 
+function precast(spell)
+    -- Auto use Echo Drops if you are trying to cast while silenced --    
+    if spell.action_type == 'Magic' and buffactive['Silence'] then 
+        cancel_spell()
+        send_command('input /item "Echo Drops" <me>')     
+        add_to_chat(123, '****** ['..spell.name..' CANCELED - Using Echo Drops] ******')        
+    end         
+    -- Moving on to other types of magic
+    if spell.type == 'WhiteMagic' or spell.type == 'BlackMagic' then
+     
+        -- Stoneskin Precast
+        if spell.name == 'Stoneskin' then
+         
+            windower.ffxi.cancel_buff(37)--[[Cancels stoneskin, not delayed incase you get a Quick Cast]]
+            equip(sets.precast.stoneskin)
+             
+        -- Cure Precast
+        elseif spell.name:match('Cure') or spell.name:match('Cura') then
+         
+            equip(sets.precast.cure)         
+        -- Enhancing Magic
+        elseif spell.skill == 'Magic' then
+         
+            equip(sets.precast.enhancing)            
+            if spell.name == 'Sneak' then
+                windower.ffxi.cancel_buff(71)--[[Cancels Sneak]]
+            end
+        else       
+            -- For everything else we go with max fastcast
+            equip(sets.precast.casting)                   
+        end
+    end
+    -- Job Abilities
+    -- We use a cat
+    -- catch all here, if the set exists for an ability, use it
+    -- This way we don't need to write a load of different code for different abilities, just make a set
+     
+    if sets.precast[spell.name] then
+        equip(sets.precast[spell.name])        
+    end
+    -- extends Fast cast set with Grimoire recast aligned 
+    if buffactive['addendum: black'] or buffactive['dark arts'] then
+        if spell.type == 'BlackMagic' then
+            equip(sets.precast.grimoire)            
+        end
+    elseif buffactive['addendum: white'] or buffactive['light arts'] then
+        if spell.type == 'WhiteMagic' then
+            equip(sets.precast.grimoire)            
+        end
+    end
+end
+ 
+function midcast(spell)
+    -- Get the spell mapping, since we'll be passing it to various functions and checks.
+    local spellMap = get_spell_map(spell)    
+    -- No need to annotate all this, it's fairly logical. Just equips the relevant sets for the relevant magic
+    if spell.name:match('Cure') or spell.name:match('Cura') then
+        if spell.element == world.weather_element or spell.element == world.day_element then
+            equip(sets.midcast.cure.weather)
+        else
+            equip(sets.midcast.cure.normal)
+        end
+    elseif spell.skill == 'Enhancing Magic' then
+        equip(sets.midcast.enhancing)
+        if spellMap == 'Storm' then
+            equip(sets.midcast.storm)
+        elseif spell.name:match('Protect') or spell.name:match('Shell') then
+            equip({rring="Sheltered Ring"})
+        elseif spell.name:match('Refresh') then
+            equip(sets.midcast.refresh)
+        elseif spell.name:match('Regen') then
+            equip(sets.midcast.regen[regenModes.current])
+        elseif spell.name:match('Aquaveil') then
+            equip(sets.midcast.aquaveil)
+        end
+    elseif spell.skill == 'Enfeebling Magic' and spell.type == 'BlackMagic' then -- to do: better rule for this.
+        equip(sets.midcast.IntEnfeebling)
+    elseif spell.skill == 'Enfeebling Magic' and spell.type == 'WhiteMagic' then -- to do: better rule for this.
+        equip(sets.midcast.MndEnfeebling)
+    elseif spell.type == 'BlackMagic' then
+        if mBurst then
+            equip(sets.midcast.MB[nukeModes.current])
+        else
+            equip(sets.midcast.nuking[nukeModes.current])
+        end
+    -- casting is basically enfeeble set.
+    else
+        equip(sets.midcast.casting)
+    end
+    -- And our catch all, if a set exists for this spell name, use it
+    if sets.midcast[spell.name] then
+        equip(sets.midcast[spell.name])
+    -- Catch all for tiered spells (use mapping), basically if no set for spell name, check set for spell mapping. AKA Drain works for all Drain tiers.
+    elseif sets.midcast[spellMap] then
+        equip(sets.midcast[spellMap])
+    -- Remember those WS Sets we defined? :) sets.me["Insert Weaponskill"] are basically how I define any non-magic spells sets, aka, WS, JA, Idles, etc.
+    elseif sets.me[spell.name] then
+        equip(sets.me[spell.name])
+    end
     
-	-- Combat Related Sets
-    sets.me.melee = set_combine(sets.me.idle[idleMode],{
+    -- Put the JSE in place.
+    if spell.action_type == 'Magic' then
+        apply_grimoire_bonuses(spell, action, spellMap)
+    end
 
-    })
-      
-    -- Weapon Skills sets just add them by name.
-    sets.me["Shell Crusher"] = {
-		ammo="Ghastly Tathlum +1",
-		head="Jhakri Coronal +1",
-		body="Jhakri Robe +2",
-		hands="Jhakri Cuffs +1",
-		legs="Jhakri Slops +1",
-		feet="Jhakri Pigaches +1",
-		neck="Sanctity Necklace",
-		waist="Grunfeld Rope",
-		left_ear="Mache Earring +1",
-		right_ear="Telos Earring",
-		left_ring="Stikini Ring +1",
-		right_ring="Begrudging Ring",
-		back="Altruistic Cape",	
-	}
-    sets.me["Shattersoul"] = {
-		ammo="Ghastly Tathlum +1",
-		head=Amal.Head.A,
-		body=Amal.Body.A,
-		hands=Amal.Hands.D,
-		legs=Amal.Pants.A,
-		feet=Amal.Feet.A,
-		neck="Mizu. Kubikazari",
-		waist="Mujin Obi",
-		left_ear="Barkaro. Earring",
-		right_ear="Enchntr. Earring +1",
-		left_ring="Stikini Ring +1",
-		right_ring="Prolix Ring",
-		back="Altruistic Cape",
-    }
-    sets.me["Myrkr"] = {
-		ammo="Ghastly Tathlum +1",
-		head=Amal.Head.A,
-		body=Amal.Body.A,
-		hands=Amal.Hands.D,
-		legs=Amal.Pants.A,
-		feet=Amal.Feet.A,
-		neck="Mizu. Kubikazari",
-		waist="Mujin Obi",
-		left_ear="Barkaro. Earring",
-		right_ear="Enchntr. Earring +1",
-		left_ring="Stikini Ring +1",
-		right_ring="Prolix Ring",
-		back="Altruistic Cape",
-    }
-      
-    -- Feel free to add new weapon skills, make sure you spell it the same as in game. These are the only two I ever use though
-  
-    ------------
-    -- Buff Sets
-    ------------	
-    -- Gear that needs to be worn to **actively** enhance a current player buff.
-    -- Fill up following with your avaible pieces.
-    sets.buff['Rapture'] = {head="Arbatel bonnet +1"}
-    sets.buff['Perpetuance'] = {hands="Arbatel Bracers +1"}
-    sets.buff['Immanence'] = {hands="Arbatel Bracers +1"}
-    sets.buff['Penury'] = {legs="Arbatel Pants +1"}
-    sets.buff['Parsimony'] = {legs="Arbatel Pants +1"}
-    sets.buff['Celerity'] = {feet="Peda. Loafers +3"}
-    sets.buff['Alacrity'] = {feet="Peda. Loafers +3"}
-    sets.buff['Klimaform'] = {feet="Arbatel Loafers +1"}	
-    -- Ebulience set empy now as we get better damage out of a good Merlinic head
-    sets.buff['Ebullience'] = {} -- I left it there still if it becomes needed so the SCH.lua file won't need modification should you want to use this set
-   
-	
-	
-    ---------------
-    -- Casting Sets
-    ---------------
-    sets.precast = {}   		-- Leave this empty  
-    sets.midcast = {}    		-- Leave this empty  
-    sets.aftercast = {}  		-- Leave this empty  
-	sets.midcast.nuking = {}	-- leave this empty
-	sets.midcast.MB	= {}		-- leave this empty      
-    ----------
-    -- Precast
-    ----------
-      
-    -- Generic Casting Set that all others take off of. Here you should add all your fast cast 
-    -- Grimoire: 10(cap:25) / rdm: 15
-    sets.precast.casting = {
-		main="Musa",    
-    	ammo="Incantor Stone",		--2
-		head=Amal.Head.A, 	--11
-		body=Merl.Body.FC, 			--12
-		hands="Acad. Bracers +3", 	--7
-		legs="Psycloth Lappas", --7
-		feet="Peda. Loafers +3", 	--8
-		neck="Twilight Torque", 	
-		waist="Witful Belt",		--3
-	    left_ring="Kishar Ring",	--4
-	    right_ring="Weather. Ring",	--5
-		left_ear="Loquac. Earring", --2
-		right_ear="Enchntr. Earring +1",--2
-		back=SCHCape.FC,			--10
-    }
+    -- Obi up for matching weather / day
+    if spell.element == world.weather_element and spellMap ~= 'Helix'then
+        equip(sets.midcast.Obi)
+    end
+    if spell.element == world.day_element and spellMap ~= 'Helix'then
+        equip(sets.midcast.Obi)
+    end
+    if spell.name:match('Stoneskin') then
+        equip(sets.midcast.stoneskin)
+    end
+    -- Dark based Helix gets "pixie hairpin +1"
+    if spellMap == 'DarkHelix'then
+        equip(sets.midcast.DarkHelix)
+    end
+    if spellMap == 'Helix' then
+        equip(sets.midcast.Helix)
+    end
+end
+ 
+function aftercast(spell) 
+    -- Then initiate idle function to check which set should be equipped
+    update_active_strategems()
+    update_sublimation()
+    idle()
+end
 
-	sets.precast["Stun"] = {
-		main="Musa",
-		ammo="Incantor Stone",
-		head=Merl.Head.ACC,
-		body=Amal.Body.A,
-		hands="Acad. Bracers +3",
-		legs="Psycloth Lappas", --7
-		feet="Acad. loafers +3",
-		neck="Erra Pendant",
-		waist="Porous Rope",
-		left_ear="Barkaro. Earring",
-		right_ear="Enchntr. Earring +1",
-		left_ring="Stikini Ring +1",
-		right_ring="Weather. Ring",
-		back=SCHCape.FC,	
-	}
+function idle()
+    -- This function is called after every action, and handles which set to equip depending on what we're doing
+    -- We check if we're meleeing because we don't want to idle in melee gear when we're only engaged for trusts
+    if meleeing and player.status=='Engaged' then   
+        -- We're engaged and meleeing
+        equip(sets.me.melee)               
+    else
+        -- If we are building sublimation, then we swap refresh to sublimation style idle.
+        if buffactive['Sublimation: Activated'] then
+            if idleModes.value == 'refresh' then
+                equip(sets.me.idle.sublimation)    
+            else
+                equip(sets.me.idle[idleModes.value])               
+            end
+        -- We don't have sublimation ticking.
+        else
+            equip(sets.me.idle[idleModes.value])             
+        end
+    end
+    -- Checks MP for Fucho-no-Obi
+    if player.mpp < 51 then
+        equip(sets.me.latent_refresh)          
+    end
+end
+ 
+function status_change(new,old)
+    if new == 'Engaged' then  
+        -- If we engage check our meleeing status
+        idle()
+         
+    elseif new=='Resting' then
+     
+        -- We're resting
+        equip(sets.me.resting)          
+    else
+        idle()
+    end
+end
 
-    -- When spell school is aligned with grimoire, swap relevent pieces -- Can also use Arbatel +1 set here if you value 1% quickcast procs per piece. (2+ pieces)  
-    -- Dont set_combine here, as this is the last step of the precast, it will have sorted all the needed pieces already based on type of spell.
-    -- Then only swap in what under this set after everything else. 
-    sets.precast.grimoire = {
-		feet="Acad. loafers +3",
-    }
+function self_command(command)
+ 
+    local commandArgs = command
+     
+    if #commandArgs:split(' ') >= 2 then
+        commandArgs = T(commandArgs:split(' '))
+        
+        if commandArgs[1]:lower() == "hud" then --First variable is hide lets find out what
+            if commandArgs[2]:lower() == "hidemode" then --Hides the Mode
+                textHideMode:toggle()
+                hideTextSections()
+            elseif commandArgs[2]:lower() == "hide" then -- Hides/Shows the HUB
+                textHideHUB:toggle()
 
-	
-    -- Enhancing Magic, eg. Siegal Sash, etc
-    sets.precast.enhancing = set_combine(sets.precast.casting,{
-		waist="Siegel Sash",
-        neck="Melic Torque",
-    })
-  
-    -- Stoneskin casting time -, works off of enhancing -
-    sets.precast.stoneskin = set_combine(sets.precast.enhancing,{
-		waist="Siegel Sash",
-    })
-      
-    -- Curing Precast, Cure Spell Casting time -
-    sets.precast.cure = set_combine(sets.precast.casting,{
-		back="Pahtli Cape",
-		left_ring="Lebeche Ring",		
-    })
-      
-    ---------------------
-    -- Ability Precasting
-    ---------------------
+                if textHideHUB.value == true then
+                    texts.hide(main_text_hub)
+                else 
+                    texts.show(main_text_hub)
+                end
 
-    sets.precast["Tabula Rasa"] = {legs="Pedagogy Pants +1"}
-    sets.precast["Enlightenment"] = {body="Peda. Gown +3"}	 
-    sets.precast["Sublimation"] = {head="Acad. Mortar. +1", body="Peda. Gown +3"}	 
+                hideTextSections()
+            elseif commandArgs[2]:lower() == "keybinds" then --Hides/Show Keybinds
+                keybinds:toggle()
 
-	
-	----------
-    -- Midcast
-    ----------
-	
-    -- Just go make it, inventory will thank you and making rules for each is meh.
-    sets.midcast.Obi = {
-    	waist="Hachirin-no-Obi",
-    }
-	
-	-----------------------------------------------------------------------------------------------
-	-- Helix sets automatically derives from casting sets. SO DONT PUT ANYTHING IN THEM other than:
-	-- Pixie in DarkHelix
-	-- Boots that aren't arbatel +1 (15% of small numbers meh, amalric+1 does more)
-	-- Belt that isn't Obi.
-	-----------------------------------------------------------------------------------------------
-    -- Make sure you have a non weather obi in this set. Helix get bonus naturally no need Obi.	
-    sets.midcast.DarkHelix = {
-		head="Pixie Hairpin +1",
-    	-- Amalric Nails +1 are beating Arbatel Loafers +1 for Helix atm, YMMV
-		feet=Amal.Feet.A,
-		waist="Refoccilation Stone",
-    }
-    -- Make sure you have a non weather obi in this set. Helix get bonus naturally no need Obi.	
-    sets.midcast.Helix = {
-		-- Amalric Nails +1 are beating Arbatel Loafers +1 for Helix atm, YMMV
-		feet=Amal.Feet.A,
-		waist="Refoccilation Stone",
-    }	
+                if keybinds.value then
+                    texts.update(main_text_hub, keybinds_on) --If ON then we pass in Table for keybinds to update the variables
+                else 
+                    texts.update(main_text_hub, keybinds_off) --Otherwise we set them to blank
+                end
 
-    -- Whatever you want to equip mid-cast as a catch all for all spells, and we'll overwrite later for individual spells
-    sets.midcast.casting = {
-		main={ name="Akademos", augments={'INT+15','"Mag.Atk.Bns."+15','Mag. Acc.+15',}},   		
-		sub="Enki Strap",    
-		ammo="Pemphredo Tathlum",
-		head= Merl.Head.ACC,
-		body=Amal.Body.A,
-		hands=Amal.Hands.D,
-		legs=Chiro.Pants.ACC,
-		feet=Amal.Feet.A,
-		neck="Mizu. Kubikazari",
-		waist="Refoccilation Stone",
-		left_ear="Barkaro. Earring",
-		right_ear="Friomisi Earring",
-		left_ring="Shiva Ring",
-		right_ring="Shiva Ring",
-		back=SCHCape.NUKE,	
-    }
+                hideTextSections()
+            elseif commandArgs[2]:lower() == "hidescholar" then --Hides/Show Options
+                textHideOptions:toggle()
+                hideTextSections()
+            elseif commandArgs[2]:lower() == "lite" then --Hides/Show Options
+                useLightMode:toggle()
+                toggleHudStyle(useLightMode.value)
+            end
 
-	sets.midcast["Sublimation"] = {head="Acad. Mortar. +1", body="Peda. Gown +3"}
+        elseif commandArgs[1] == 'toggle' then
+            if commandArgs[2] == 'melee' then
+                -- //gs c toggle melee will toggle melee mode on and off.
+                -- This basically locks the slots that will cause you to lose TP if changing them,
+                -- As well as equip your melee set if you're engaged
+                meleeing:toggle()
+                lockMainHand(meleeing.value)
+
+            elseif commandArgs[2] == 'mb' then
+                -- //gs c toggle mb will toggle mb mode on and off.
+                -- You need to toggle prioritisation yourself
+                mBurst:toggle()
+                updateMB(mBurst.value)
+
+            elseif commandArgs[2] == 'runspeed' then
+                runspeed:toggle()
+                updateRunspeedGear(runspeed.value) 
+
+            elseif commandArgs[2] == 'idlemode' then
+                idleModes:cycle()
+                idle()
+                if buffactive['Sublimation: Activated'] then                 
+                    if use_UI == true then
+                        validateTextInformation()
+                    else
+                        windower.add_to_chat(4,"----- Idle mode Now focus on: "..tostring(idleModes.value).." in Sublimation Mode. ----")  
+                    end
+                -- We don't have sublimation ticking.
+                else
+                    if use_UI == true then
+                        validateTextInformation()
+                    else
+                        windower.add_to_chat(4,"----- Idle mode Now focus on: "..tostring(idleModes.value))
+                    end
+                end
+            elseif commandArgs[2] == 'regenmode' then
+                regenModes:cycle()
+                if use_UI == true then                    
+                    validateTextInformation()
+                else
+                    windower.add_to_chat(8,"----- Regen Mode Now focus on: "..tostring(regenModes.current)) 
+                end     
+            elseif commandArgs[2] == 'nukemode' then
+                nukeModes:cycle()               
+                if use_UI == true then                    
+                    validateTextInformation()
+                else
+                    windower.add_to_chat(8,"----- Nuking Mode is now: "..tostring(nukeModes.current)) 
+                end     
+            end
+        end
+        
+        if commandArgs[1]:lower() == 'scholar' then
+            handle_strategems(commandArgs)
+
+        elseif commandArgs[1]:lower() == 'nuke' then
+            if not commandArgs[2] then
+                windower.add_to_chat(123,'No element type given.')
+                return
+            end
+            
+            local nuke = commandArgs[2]:lower()
+            
+            if (nuke == 'cycle' or nuke == 'cycledown') then
+                if nuke == 'cycle' then
+                    elements:cycle()
+                elseif nuke == 'cycledown' then 
+                    elements:cycleback() 
+                end         
+                updateSC(elements.current, scTier2.value)  
+                if use_UI == true then                    
+                    validateTextInformation()
+                else
+                    windower.add_to_chat(211,'Nuke now set to element type: '..tostring(elements.current))
+                end   
+
+            elseif (nuke == 'air' or nuke == 'ice' or nuke == 'fire' or nuke == 'water' or nuke == 'lightning' or nuke == 'earth' or nuke == 'light' or nuke == 'dark') then
+                local newType = commandArgs[2]
+                elements:set(newType)
+                updateSC(elements.current, scTier2.value)  
+                if use_UI == true then                    
+                    validateTextInformation()
+                else
+                    windower.add_to_chat(211,'Nuke now set to element type: '..tostring(elements.current))
+                end 
+            elseif not nukes[nuke] then
+                windower.add_to_chat(123,'Unknown element type: '..tostring(commandArgs[2]))
+                return              
+            else        
+                -- Leave out target; let Shortcuts auto-determine it.
+                send_command('@input /ma "'..nukes[nuke][elements.current]..'"')     
+            end
+        elseif commandArgs[1]:lower() == 'sc' then
+            if not commandArgs[2] then
+                windower.add_to_chat(123,'No element type given.')
+                return
+            end
+            
+            local arg = commandArgs[2]:lower()
+            
+            if arg == 'tier' then
+                scTier2:toggle()
+                updateSC(elements.current, scTier2.value )   
+            end
+
+            if arg == 'castsc' then
+                if wantedSc == 'Scission' then
+                    send_command('input /p Opening SC: Scission  MB: Stone; wait .1; input /ja "Immanence" <me>; wait 1.5; input /ma "Fire" <t>; wait 4.0; input /ja "Immanence" <me>; wait 1.5; input /p Closing SC: Scission  MB: Stone; input /ma "Geohelix" <t>')          
+                elseif wantedSc == 'Reverberation' then
+                    send_command('input /p Opening SC: Reverberation  MB: Water; wait .1; input /ja "Immanence" <me>; wait 1.5; input /ma "Stone" <t>; wait 4.0; input /ja "Immanence" <me>; wait 1.5; input /p Closing SC: Reverberation  MB: Water; input /ma "Hydrohelix" <t>')       
+                elseif wantedSc == 'Detonation' then
+                    send_command('input /p Opening SC: Detonation  MB: Air; wait .1; input /ja "Immanence" <me>; wait 1.5; input /ma "Thunder" <t>; wait 4.0; input /ja "Immanence" <me>; wait 1.5; input /p Closing SC: Detonation  MB: Air; input /ma "Anemohelix" <t>')    
+                elseif wantedSc == 'Liquefaction' then
+                    send_command('input /p Opening SC: Liquefaction  MB: Fire; wait .1; input /ja "Immanence" <me>; wait 1.5; input /ma "Thunder" <t>; wait 4.0; input /ja "Immanence" <me>; wait 1.5; input /p Closing SC: Liquefaction  MB: Fire; input /ma "Pyrohelix" <t>')                  
+                elseif wantedSc == 'Induration' then
+                    send_command('input /p Opening SC: Induration  MB: Ice; wait .1; input /ja "Immanence" <me>; wait 1.5; input /ma "Water" <t>; wait 4.0; input /ja "Immanence" <me>; wait 1.5; input /p Closing SC: Induration  MB: Ice; input /ma "Cryohelix" <t>')                  
+                elseif wantedSc == 'Impaction' then
+                    send_command('input /p Opening SC: Impaction  MB: Lightning; wait .1; input /ja "Immanence" <me>; wait 1.5; input /ma "Blizzard" <t>; wait 4.0; input /ja "Immanence" <me>; wait 1.5; input /p Closing SC: Impaction  MB: Lightning; input /ma "Ionohelix" <t>')                  
+                elseif wantedSc == 'Compression' then
+                    send_command('input /p Opening SC: Compression  MB: Dark; wait .1; input /ja "Immanence" <me>; wait 1.5; input /ma "Blizzard" <t>; wait 4.0; input /ja "Immanence" <me>; wait 1.5; input /p Closing SC: Compression  MB: Dark; input /ma "Noctohelix" <t>')                 
+                elseif wantedSc == 'Distortion' then
+                    send_command('input /p Opening SC: Distortion  MB: Water / Ice; wait .1; input /ja "Immanence" <me>; wait 1.5; input /ma "Luminohelix" <t>; wait 6.0; input /ja "Immanence" <me>; wait 1.5; input /p Closing SC: Distortion  MB: Water / Ice; input /ma "Geohelix" <t>')                   
+                elseif wantedSc == 'Fragmentation' then
+                    send_command('input /p Opening SC: Fragmentation  MB: Lightning / Wind; wait .1; input /ja "Immanence" <me>; wait 1.5; input /ma "Blizzard" <t>; wait 4.0; input /ja "Immanence" <me>; wait 1.5; input /p Closing SC: Fragmentation  MB: Wind / Lightning; input /ma "Hydrohelix" <t>')                  
+                elseif wantedSc == 'Fusion' then
+                    send_command('input /p Opening SC: Fusion  MB: Light / Fire; wait .1; input /ja "Immanence" <me>; wait 1.5; input /ma "Fire" <t>; wait 4.0; input /ja "Immanence" <me>; wait 1.5; input /p Closing SC: Fusion  MB: Light / Fire; input /ma "Ionohelix" <t>')                  
+                elseif wantedSc == 'Gravitation' then
+                    send_command('input /p Opening SC: Gravitation  MB: Dark / Stone; wait .1; input /ja "Immanence" <me>; wait 1.5; input /ma "Aero" <t>; wait 4.0; input /ja "Immanence" <me>; wait 1.5; input /p Closing SC: Gravitation  MB: Dark / Stone; input /ma "Noctohelix" <t>')                 
+                elseif wantedSc == 'Transfixion' then
+                    send_command('input /p Opening SC: Transfixion  MB: Light; wait .1; input /ja "Immanence" <me>; wait 1.5; input /ma "Noctohelix" <t>; wait 4.0; input /ja "Immanence" <me>; wait 1.5; input /p Closing SC: Transfixion  MB: Light; input /ma "Luminohelix" <t>')
+                end
+            end
+        end
+    end
+end
+
+function updateSC( element , scTier )   
+    if scTier then
+        wantedSc = tier2sc[element]
+    else
+        wantedSc = tier1sc[element]
+    end
+
+    if use_UI == true then                    
+        validateTextInformation()
+    else
+        windower.add_to_chat(211,'SC now set to: '..tostring(wantedSc))
+    end  
+end
+
+function updateMB( mBurst )   
+    if mBurst then
+        if use_UI == true then
+            validateTextInformation()
+        else
+            windower.add_to_chat(8,"----- Nuking MB Mode OFF -----")
+        end
+    else
+        if use_UI == true then
+            validateTextInformation()
+        else
+            windower.add_to_chat(8,"----- Nuking MB Mode ON -----")
+        end
+    end
+end
+
+
+function updateRunspeedGear( runspeed )   
     
-    sets.midcast.nuking.normal = {
-		main={ name="Akademos", augments={'INT+15','"Mag.Atk.Bns."+15','Mag. Acc.+15',}},   		
-		sub="Enki Strap",  
-		ammo="Pemphredo Tathlum",
-		head= Merl.Head.ACC,
-		body=Amal.Body.A,
-		hands=Amal.Hands.D,
-		legs=Amal.Pants.A,
-		feet=Amal.Feet.A,
-		neck="Sanctity Necklace",
-		waist="Refoccilation Stone",
-		left_ear="Barkaro. Earring",
-		right_ear="Friomisi Earring",
-		left_ring="Shiva Ring",
-		right_ring="Shiva Ring",
-		back=SCHCape.NUKE,
-    }
-    -- used with toggle, default: F10
-    -- Pieces to swap from freen nuke to Magic Burst
-    sets.midcast.MB.normal = set_combine(sets.midcast.nuking.normal, {
-		head= Merl.Head.MB,
-		neck="Mizu. Kubikazari",		
-		left_ring="Locus Ring",
-		right_ring="Mujin Band",
-    })
-	
-    sets.midcast.nuking.acc = {
-		main={ name="Akademos", augments={'INT+15','"Mag.Atk.Bns."+15','Mag. Acc.+15',}},   		
-		sub="Enki Strap",  
-		ammo="Pemphredo Tathlum",
-		head= Merl.Head.ACC,
-		body=Amal.Body.A,
-		hands=Amal.Hands.D,
-		legs=Chiro.Pants.ACC,
-		feet=Amal.Feet.A,
-		neck="Sanctity Necklace",
-		waist="Refoccilation Stone",
-		left_ear="Barkaro. Earring",
-		right_ear="Friomisi Earring",
-		left_ring="Shiva Ring",
-		right_ring="Shiva Ring",
-		back=SCHCape.NUKE,
-    }
-    -- used with toggle, default: F10
-    -- Pieces to swap from freen nuke to Magic Burst
-    sets.midcast.MB.acc = set_combine(sets.midcast.nuking.normal, {
-	    head="Peda. M.Board +3",
-	    legs=Merl.Pants.MB,
-	    neck="Mizu. Kubikazari",
-	    waist="Refoccilation Stone",
-	    left_ear="Barkaro. Earring",
-	    right_ear="Friomisi Earring",
-	    left_ring="Locus Ring",
-	    right_ring="Mujin Band",
-    })	
-	
-    -- Enfeebling
-	sets.midcast["Stun"] = {
-		main="Musa",
-		ammo="Ghastly Tathlum +1",
-		head=Merl.Head.ACC,
-		body=Amal.Body.A,
-		hands="Acad. Bracers +3",
-		legs=Chiro.Pants.ACC,
-		feet="Acad. loafers +3",
-		neck="Erra Pendant",
-		waist="Porous Rope",
-		left_ear="Barkaro. Earring",
-		right_ear="Enchntr. Earring +1",
-		left_ring="Stikini Ring +1",
-		right_ring="Weather. Ring",
-		back=SCHCape.FC,	
-	}	
-    sets.midcast.IntEnfeebling = {
-		main="Musa",    
-		ammo="Ghastly Tathlum +1",
-		head=Merl.Head.ACC,
-		body="Jhakri Robe +2",
-		hands="Jhakri Cuffs +1",
-		legs=Chiro.Pants.ACC,
-		feet="Acad. loafers +3",
-		neck="Imbodla Necklace",
-		waist="Porous Rope",
-		left_ear="Barkaro. Earring",
-		right_ear="Enchntr. Earring +1",
-		left_ring="Stikini Ring +1",
-		right_ring="Kishar Ring",
-		back=SCHCape.NUKE,
-    }
-    sets.midcast.MndEnfeebling = {
-		main="Musa",
-		ammo="Ghastly Tathlum +1",
-		head=Merl.Head.ACC,
-		body=Amal.Body.A,
-		hands="Jhakri Cuffs",
-		legs=Chiro.Pants.ACC,
-		feet="Acad. loafers +3",
-		neck="Imbodla Necklace",
-		waist="Porous Rope",
-		left_ear="Barkaro. Earring",
-		right_ear="Enchntr. Earring +1",
-		left_ring="Stikini Ring +1",
-		right_ring="Kishar Ring",
-		back=SCHCape.FC,	
-    }
-	
-    -- Enhancing
-    sets.midcast.enhancing = set_combine(sets.midcast.casting,{
-		main="Musa",  
-	    ammo="Ghastly Tathlum +1",
-		head="Telchine Cap",
-		body="Peda. Gown +3",
-		hands="Telchine Gloves", 
-		legs="Telchine Braconi",
-		feet="Telchine Pigaches", 
-		neck="Melic Torque",
-		waist="Porous Rope",
-		left_ear="Enchntr. Earring +1",
-		right_ear="Loquac. Earring",
-		left_ring="Stikini Ring +1",
-		right_ring="Stikini Ring",
-		back="Perimede Cape",
-    })
-    sets.midcast.storm = set_combine(sets.midcast.enhancing,{
-		feet="Peda. Loafers +3",
-		right_ring="Kishar Ring",
-    })       
-    -- Stoneskin
-    sets.midcast.stoneskin = set_combine(sets.midcast.enhancing,{
-		waist="Siegel Sash",
-    })
-    sets.midcast.refresh = set_combine(sets.midcast.enhancing,{
-		head=Amal.Head.A,
-    })
-    sets.midcast.aquaveil = sets.midcast.refresh
-	
-    sets.midcast["Drain"] = set_combine(sets.midcast.nuking, {
-		head="Pixie Hairpin +1",
-		neck="Erra Pendant",
-    })
-    sets.midcast["Aspir"] = sets.midcast["Drain"]
- 	
- 	sets.midcast.cure = {} -- Leave This Empty
-    -- Cure Potency
-    sets.midcast.cure.normal = set_combine(sets.midcast.casting,{
-		main="Musa",
-		ammo="Ghastly Tathlum +1",
-		head="Gende. Caubeen +1",
-		body="Gende. Bilaut +1",
-		hands="Telchine Gloves",
-		legs="Gyve Trousers",
-		feet="Regal Pumps +1",
-		neck="Fylgja Torque +1",
-		waist="Porous Rope",
-		left_ear="Mendi. Earring",
-		right_ear="Loquac. Earring",
-		right_ring="Stikini Ring +1",
-		left_ring="Lebeche Ring", 	
-		back="Pahtli Cape",
-    })
-    sets.midcast.cure.weather = set_combine(sets.midcast.cure.normal,{
-		main="Chatoyant Staff",
+    if not runspeed then
+        if use_UI == true then
+            validateTextInformation()
+        else
+            windower.add_to_chat(8,"----- Taking Off Herald's Gaiters -----")   
+        end
+        enable('feet')
+        idle()
+    else
+        if use_UI == true then
+            validateTextInformation()
+        else
+            windower.add_to_chat(8,"----- Locking On Herald's Gaiters -----")
+        end
+        equip({feet="Herald's Gaiters"})
+        disable('feet')                 
+    end
+end
 
-    })    
+function lockMainHand( meleeing )   
+    
+    if meleeing then
+        enable('main','sub','ranged')
+        if use_UI == true then
+            validateTextInformation()
+        else
+            windower.add_to_chat(8,'----- Weapons Unlocked, WILL LOSE TP -----')
+        end
+        idle()
+    else
+        disable('main','sub','ranged')
+        if use_UI == true then
+            validateTextInformation()
+        else
+            windower.add_to_chat(8,'----- Weapons Locked, WILL NOT LOSE TP -----')
+        end
+        idle()
+    end
+end
 
-    ------------
-    -- Regen
-    ------------	
-	sets.midcast.regen = {} 	-- leave this empty
-	-- Normal hybrid well rounded Regen
-    sets.midcast.regen.hybrid = {
-		main="Musa",
-	    ammo="Ghastly Tathlum +1",
-		head="Arbatel Bonnet +1",
-		body="Telchine Chas.",
-		hands="Telchine Gloves", 
-		legs="Telchine Braconi",
-		feet="Telchine Pigaches", 
-		neck="Melic Torque",
-		waist="Porous Rope",
-		left_ear="Enchntr. Earring +1",
-		right_ear="Loquac. Earring",
-		left_ring="Stikini Ring +1",
-		right_ring="Stikini Ring",
-		back=SCHCape.NUKE,
-    }
-	-- Focus on Regen Duration 	
-    sets.midcast.regen.duration = set_combine(sets.midcast.regen.hybrid,{
-		head="Telchine Cap",
-    }) 
-	-- Focus on Regen Potency 	
-    sets.midcast.regen.potency = set_combine(sets.midcast.regen.hybrid,{
 
-    }) 
-	
-    ------------
-    -- Aftercast
-    ------------
-      
-    -- I don't use aftercast sets, as we handle what to equip later depending on conditions using a function.
-	
+-- Equip sets appropriate to the active buffs, relative to the spell being cast.
+function apply_grimoire_bonuses(spell, action, spellMap)
+    if Buff['Perpetuance'] and spell.type =='WhiteMagic' and spell.skill == 'Enhancing Magic' then
+        equip(sets.buff['Perpetuance'])
+    end
+    if Buff['Rapture'] and (spellMap == 'Cure' or spellMap == 'Curaga') then
+        equip(sets.buff['Rapture'])
+    end
+    if spell.skill == 'Elemental Magic' and spellMap ~= 'ElementalEnfeeble' then
+        if Buff['Ebullience'] and spell.english ~= 'Impact' then
+            equip(sets.buff['Ebullience'])
+        end
+        if Buff['Immanence'] then
+            equip(sets.buff['Immanence'])
+        end
+        if Buff['Klimaform'] and spell.element == world.weather_element then
+            equip(sets.buff['Klimaform'])
+        end
+    end
+
+    if Buff['Penury'] then equip(sets.buff['Penury']) end
+    if Buff['Parsimony'] then equip(sets.buff['Parsimony']) end
+    if Buff['Celerity'] then equip(sets.buff['Celerity']) end
+    if Buff['Alacrity'] then equip(sets.buff['Alacrity']) end
+end
+
+-- General handling of strategems in an Arts-agnostic way.
+-- Format: gs c scholar <strategem>
+
+function handle_strategems(cmdParams)
+    -- cmdParams[1] == 'scholar'
+    -- cmdParams[2] == strategem to use
+
+    if not cmdParams[2] then
+        add_to_chat(123,'Error: No strategem command given.')
+        return
+    end
+    local strategem = cmdParams[2]:lower()
+
+    if strategem == 'light' then
+        if buffactive['light arts'] then
+            send_command('input /ja "Addendum: White" <me>')
+        elseif buffactive['addendum: white'] then
+            add_to_chat(122,'Error: Addendum: White is already active.')
+        else
+            send_command('input /ja "Light Arts" <me>')
+        end
+    elseif strategem == 'dark' then
+        if buffactive['dark arts'] then
+            send_command('input /ja "Addendum: Black" <me>')
+        elseif buffactive['addendum: black'] then
+            add_to_chat(122,'Error: Addendum: Black is already active.')
+        else
+            send_command('input /ja "Dark Arts" <me>')
+        end
+    elseif buffactive['light arts'] or buffactive['addendum: white'] then
+        if strategem == 'cost' then
+            send_command('input /ja Penury <me>')
+        elseif strategem == 'speed' then
+            send_command('input /ja Celerity <me>')
+        elseif strategem == 'aoe' then
+            send_command('input /ja Accession <me>')
+        elseif strategem == 'power' then
+            send_command('input /ja Rapture <me>')
+        elseif strategem == 'duration' then
+            send_command('input /ja Perpetuance <me>')
+        elseif strategem == 'accuracy' then
+            send_command('input /ja Altruism <me>')
+        elseif strategem == 'enmity' then
+            send_command('input /ja Tranquility <me>')
+        elseif strategem == 'skillchain' then
+            add_to_chat(122,'Error: Light Arts does not have a skillchain strategem.')
+        elseif strategem == 'addendum' then
+            send_command('input /ja "Addendum: White" <me>')
+        else
+            add_to_chat(123,'Error: Unknown strategem ['..strategem..']')
+        end
+    elseif buffactive['dark arts']  or buffactive['addendum: black'] then
+        if strategem == 'cost' then
+            send_command('input /ja Parsimony <me>')
+        elseif strategem == 'speed' then
+            send_command('input /ja Alacrity <me>')
+        elseif strategem == 'aoe' then
+            send_command('input /ja Manifestation <me>')
+        elseif strategem == 'power' then
+            send_command('input /ja Ebullience <me>')
+        elseif strategem == 'duration' then
+            add_to_chat(122,'Error: Dark Arts does not have a duration strategem.')
+        elseif strategem == 'accuracy' then
+            send_command('input /ja Focalization <me>')
+        elseif strategem == 'enmity' then
+            send_command('input /ja Equanimity <me>')
+        elseif strategem == 'skillchain' then
+            send_command('input /ja Immanence <me>')
+        elseif strategem == 'addendum' then
+            send_command('input /ja "Addendum: Black" <me>')
+        else
+            add_to_chat(123,'Error: Unknown strategem ['..strategem..']')
+        end
+    else
+        add_to_chat(123,'No arts has been activated yet.')
+    end
+end
+
+-- Gets the current number of available strategems based on the recast remaining
+-- and the level of the sch.
+function get_current_strategem_count()
+    -- returns recast in seconds.
+    local allRecasts = windower.ffxi.get_ability_recasts()
+    local stratsRecast = allRecasts[231]
+
+    local maxStrategems = math.floor(player.main_job_level + 10) / 20
+    -- assuming level 90+ and if not 550JP replace 5*33 by 5*45 below
+    local fullRechargeTime = 5*33
+
+    local currentCharges = math.floor(maxStrategems - maxStrategems * stratsRecast / fullRechargeTime)
+
+    return currentCharges
 end
