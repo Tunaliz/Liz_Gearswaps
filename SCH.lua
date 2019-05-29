@@ -399,7 +399,7 @@ wantedSc = tier1sc[elements.current]
 scTier2 = M(false)
 meleeing = M(true)
 mBurst = M(false)
-runspeed = M(true)
+runspeed = M(false)
 keybinds = M(false)
 
 -- Saying hello
