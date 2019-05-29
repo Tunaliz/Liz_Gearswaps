@@ -44,7 +44,7 @@
         gs c hud hide                   Toggles the Hud entirely on or off
         gs c hud hidemode               Toggles the Modes section of the HUD on or off
         gs c hud hidescholar            Toggles the Scholar section of the HUD on or off
-        gs c hud light                  Toggles the HUD in lightweight style for less screen estate usage. Also on ALT-END
+        gs c hud lite                  Toggles the HUD in lightweight style for less screen estate usage. Also on ALT-END
         gs c hud keybinds               Toggles Display of the HUD keybindings (my defaults) You can change just under the binds in the Gearsets file.
 
         // OPTIONAL IF YOU WANT / NEED to skip the cycles...  
@@ -145,15 +145,15 @@ function get_sets()
 
     -- Your idle set
     sets.me.idle.refresh = {
-		main={ name="Akademos", augments={'INT+15','"Mag.Atk.Bns."+15','Mag. Acc.+15',}},
-		--main="Musa",    		
+		--main={ name="Akademos", augments={'INT+15','"Mag.Atk.Bns."+15','Mag. Acc.+15',}},
+		main="Musa",    		
 		sub="Enki Strap",
 		ammo="Homiliary",
 		head="Peda. M.Board +3",
 		body="Jhakri Robe +2",
 		hands="Acad. Bracers +3",
 		legs="Assid. Pants +1",
-        	feet="Peda. Loafers +3",
+        feet="Peda. Loafers +3",
 		neck="Twilight Torque",
 		waist="Refoccilation Stone",
 		left_ear="Etiolation Earring",
@@ -172,7 +172,9 @@ function get_sets()
 		back="Moonbeam Cape",
     })   
     -- Your idle DT set
-    sets.me.idle.dt = set_combine(sets.me.idle[refreshType],{	
+    sets.me.idle.dt = set_combine(sets.me.idle[refreshType],{
+		main={ name="Akademos", augments={'INT+15','"Mag.Atk.Bns."+15','Mag. Acc.+15',}},
+		--main="Musa",      	
         body="Mallquis Saio +2",
         feet="Mallquis Clogs +1",
 		neck="Twilight Torque",	
