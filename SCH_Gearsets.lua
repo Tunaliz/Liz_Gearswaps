@@ -141,7 +141,7 @@ function get_sets()
     sets.me.idle = {}			-- leave this empty
 
     -- Optional 
-	--include('AugGear.lua') -- I list all my Augmented gears in a sidecar file since it's shared across many jobs. 
+	include('AugGear.lua') -- I list all my Augmented gears in a sidecar file since it's shared across many jobs. 
 
     -- Your idle set
     sets.me.idle.refresh = {
@@ -184,25 +184,25 @@ function get_sets()
 		back="Moonbeam Cape",
     })  
     sets.me.idle.mdt = set_combine(sets.me.idle[refreshType],{
-		--body=Amal.Body.A, 
+		body=Amal.Body.A, 
 		left_ear="Etiolation Earring",
         right_ear="Odnowa Earring +1",
     })  
 	-- Your MP Recovered Whilst Resting Set
     sets.me.resting = { 
 		ammo="Homiliary",
-		--head=Amal.Head.A,
-		--body=Amal.Body.A,
-		--hands=Amal.Hands.D,
+		head=Amal.Head.A,
+		body=Amal.Body.A,
+		hands=Amal.Hands.D,
 		legs="Assid. Pants +1",
-		--feet=Amal.Feet.A,
+		feet=Amal.Feet.A,
 		neck="Twilight Torque",
 		waist="Refoccilation Stone",
 		left_ear="Etiolation Earring",
 		right_ear="Friomisi Earring",
 		left_ring="Stikini Ring +1",
 		right_ring="Defending Ring",
-		--back=SCHCape.NUKE,
+		back=SCHCape.NUKE,
     }
     
     sets.me.latent_refresh = {waist="Fucho-no-obi"}     
@@ -230,11 +230,11 @@ function get_sets()
 	}
     sets.me["Shattersoul"] = {
 		ammo="Ghastly Tathlum +1",
-		--head=Amal.Head.A,
-		--body=Amal.Body.A,
-		--hands=Amal.Hands.D,
-		--legs=Amal.Pants.A,
-		--feet=Amal.Feet.A,
+		head=Amal.Head.A,
+		body=Amal.Body.A,
+		hands=Amal.Hands.D,
+		legs=Amal.Pants.A,
+		feet=Amal.Feet.A,
 		neck="Mizu. Kubikazari",
 		waist="Mujin Obi",
 		left_ear="Barkaro. Earring",
@@ -245,11 +245,11 @@ function get_sets()
     }
     sets.me["Myrkr"] = {
 		ammo="Ghastly Tathlum +1",
-		--head=Amal.Head.A,
-		--body=Amal.Body.A,
-		--hands=Amal.Hands.D,
-		--legs=Amal.Pants.A,
-		--feet=Amal.Feet.A,
+		head=Amal.Head.A,
+		body=Amal.Body.A,
+		hands=Amal.Hands.D,
+		legs=Amal.Pants.A,
+		feet=Amal.Feet.A,
 		neck="Mizu. Kubikazari",
 		waist="Mujin Obi",
 		left_ear="Barkaro. Earring",
@@ -296,8 +296,8 @@ function get_sets()
     sets.precast.casting = {
 		main="Musa",    
     	ammo="Incantor Stone",		--2
-		--head=Amal.Head.A, 	--11
-		--body=Merl.Body.FC, 			--12
+		head=Amal.Head.A, 	--11
+		body=Merl.Body.FC, 			--12
 		hands="Acad. Bracers +3", 	--7
 		legs="Psycloth Lappas", --7
 		feet="Peda. Loafers +3", 	--8
@@ -307,14 +307,14 @@ function get_sets()
 	    right_ring="Weather. Ring",	--5
 		left_ear="Loquac. Earring", --2
 		right_ear="Enchntr. Earring +1",--2
-		--back=SCHCape.FC,			--10
+		back=SCHCape.FC,			--10
     }
 
 	sets.precast["Stun"] = {
 		main="Musa",
 		ammo="Incantor Stone",
-		--head=Merl.Head.ACC,
-		--body=Amal.Body.A,
+		head=Merl.Head.ACC,
+		body=Amal.Body.A,
 		hands="Acad. Bracers +3",
 		legs="Psycloth Lappas", --7
 		feet="Acad. loafers +3",
@@ -324,7 +324,7 @@ function get_sets()
 		right_ear="Enchntr. Earring +1",
 		left_ring="Stikini Ring +1",
 		right_ring="Weather. Ring",
-		--back=SCHCape.FC,	
+		back=SCHCape.FC,	
 	}
 
     -- When spell school is aligned with grimoire, swap relevent pieces -- Can also use Arbatel +1 set here if you value 1% quickcast procs per piece. (2+ pieces)  
@@ -380,13 +380,13 @@ function get_sets()
     sets.midcast.DarkHelix = {
 		head="Pixie Hairpin +1",
     	-- Amalric Nails +1 are beating Arbatel Loafers +1 for Helix atm, YMMV
-		--feet=Amal.Feet.A,
+		feet=Amal.Feet.A,
 		waist="Refoccilation Stone",
     }
     -- Make sure you have a non weather obi in this set. Helix get bonus naturally no need Obi.	
     sets.midcast.Helix = {
 		-- Amalric Nails +1 are beating Arbatel Loafers +1 for Helix atm, YMMV
-		--feet=Amal.Feet.A,
+		feet=Amal.Feet.A,
 		waist="Refoccilation Stone",
     }	
 
@@ -395,18 +395,18 @@ function get_sets()
 		main={ name="Akademos", augments={'INT+15','"Mag.Atk.Bns."+15','Mag. Acc.+15',}},   		
 		sub="Enki Strap",    
 		ammo="Pemphredo Tathlum",
-		--head= Merl.Head.ACC,
-		--body=Amal.Body.A,
-		--hands=Amal.Hands.D,
-		--legs=Chiro.Pants.ACC,
-		--feet=Amal.Feet.A,
+		head= Merl.Head.ACC,
+		body=Amal.Body.A,
+		hands=Amal.Hands.D,
+		legs=Chiro.Pants.ACC,
+		feet=Amal.Feet.A,
 		neck="Mizu. Kubikazari",
 		waist="Refoccilation Stone",
 		left_ear="Barkaro. Earring",
 		right_ear="Friomisi Earring",
 		left_ring="Shiva Ring",
 		right_ring="Shiva Ring",
-		--back=SCHCape.NUKE,	
+		back=SCHCape.NUKE,	
     }
 
 	sets.midcast["Sublimation"] = {head="Acad. Mortar. +1", body="Peda. Gown +3"}
@@ -415,18 +415,18 @@ function get_sets()
 		main={ name="Akademos", augments={'INT+15','"Mag.Atk.Bns."+15','Mag. Acc.+15',}},   		
 		sub="Enki Strap",  
 		ammo="Pemphredo Tathlum",
-		--head= Merl.Head.ACC,
-		--body=Amal.Body.A,
-		--hands=Amal.Hands.D,
-		--legs=Amal.Pants.A,
-		--feet=Amal.Feet.A,
+		head= Merl.Head.ACC,
+		body=Amal.Body.A,
+		hands=Amal.Hands.D,
+		legs=Amal.Pants.A,
+		feet=Amal.Feet.A,
 		neck="Sanctity Necklace",
 		waist="Refoccilation Stone",
 		left_ear="Barkaro. Earring",
 		right_ear="Friomisi Earring",
 		left_ring="Shiva Ring",
 		right_ring="Shiva Ring",
-		--back=SCHCape.NUKE,
+		back=SCHCape.NUKE,
     }
     -- used with toggle, default: F10
     -- Pieces to swap from freen nuke to Magic Burst
@@ -441,24 +441,24 @@ function get_sets()
 		main={ name="Akademos", augments={'INT+15','"Mag.Atk.Bns."+15','Mag. Acc.+15',}},   		
 		sub="Enki Strap",  
 		ammo="Pemphredo Tathlum",
-		--head= Merl.Head.ACC,
-		--body=Amal.Body.A,
-		--hands=Amal.Hands.D,
-		--legs=Chiro.Pants.ACC,
-		--feet=Amal.Feet.A,
+		head= Merl.Head.ACC,
+		body=Amal.Body.A,
+		hands=Amal.Hands.D,
+		legs=Chiro.Pants.ACC,
+		feet=Amal.Feet.A,
 		neck="Sanctity Necklace",
 		waist="Refoccilation Stone",
 		left_ear="Barkaro. Earring",
 		right_ear="Friomisi Earring",
 		left_ring="Shiva Ring",
 		right_ring="Shiva Ring",
-		--back=SCHCape.NUKE,
+		back=SCHCape.NUKE,
     }
     -- used with toggle, default: F10
     -- Pieces to swap from freen nuke to Magic Burst
     sets.midcast.MB.acc = set_combine(sets.midcast.nuking.normal, {
 	    head="Peda. M.Board +3",
-	    --legs=Merl.Pants.MB,
+	    legs=Merl.Pants.MB,
 	    neck="Mizu. Kubikazari",
 	    waist="Refoccilation Stone",
 	    left_ear="Barkaro. Earring",
@@ -471,10 +471,10 @@ function get_sets()
 	sets.midcast["Stun"] = {
 		main="Musa",
 		ammo="Ghastly Tathlum +1",
-		--head=Merl.Head.ACC,
-		--body=Amal.Body.A,
+		head=Merl.Head.ACC,
+		body=Amal.Body.A,
 		hands="Acad. Bracers +3",
-		--legs=Chiro.Pants.ACC,
+		legs=Chiro.Pants.ACC,
 		feet="Acad. loafers +3",
 		neck="Erra Pendant",
 		waist="Porous Rope",
@@ -482,15 +482,15 @@ function get_sets()
 		right_ear="Enchntr. Earring +1",
 		left_ring="Stikini Ring +1",
 		right_ring="Weather. Ring",
-		--back=SCHCape.FC,	
+		back=SCHCape.FC,	
 	}	
     sets.midcast.IntEnfeebling = {
 		main="Musa",    
 		ammo="Ghastly Tathlum +1",
-		--head=Merl.Head.ACC,
+		head=Merl.Head.ACC,
 		body="Jhakri Robe +2",
 		hands="Jhakri Cuffs +1",
-		--legs=Chiro.Pants.ACC,
+		legs=Chiro.Pants.ACC,
 		feet="Acad. loafers +3",
 		neck="Imbodla Necklace",
 		waist="Porous Rope",
@@ -498,15 +498,15 @@ function get_sets()
 		right_ear="Enchntr. Earring +1",
 		left_ring="Stikini Ring +1",
 		right_ring="Kishar Ring",
-		--back=SCHCape.NUKE,
+		back=SCHCape.NUKE,
     }
     sets.midcast.MndEnfeebling = {
 		main="Musa",
 		ammo="Ghastly Tathlum +1",
-		--head=Merl.Head.ACC,
-		--body=Amal.Body.A,
+		head=Merl.Head.ACC,
+		body=Amal.Body.A,
 		hands="Jhakri Cuffs",
-		--legs=Chiro.Pants.ACC,
+		legs=Chiro.Pants.ACC,
 		feet="Acad. loafers +3",
 		neck="Imbodla Necklace",
 		waist="Porous Rope",
@@ -514,7 +514,7 @@ function get_sets()
 		right_ear="Enchntr. Earring +1",
 		left_ring="Stikini Ring +1",
 		right_ring="Kishar Ring",
-		--back=SCHCape.FC,	
+		back=SCHCape.FC,	
     }
 	
     -- Enhancing
@@ -543,7 +543,7 @@ function get_sets()
 		waist="Siegel Sash",
     })
     sets.midcast.refresh = set_combine(sets.midcast.enhancing,{
-		--head=Amal.Head.A,
+		head=Amal.Head.A,
     })
     sets.midcast.aquaveil = sets.midcast.refresh
 	
@@ -595,7 +595,7 @@ function get_sets()
 		right_ear="Loquac. Earring",
 		left_ring="Stikini Ring +1",
 		right_ring="Stikini Ring",
-		--back=SCHCape.NUKE,
+		back=SCHCape.NUKE,
     }
 	-- Focus on Regen Duration 	
     sets.midcast.regen.duration = set_combine(sets.midcast.regen.hybrid,{
