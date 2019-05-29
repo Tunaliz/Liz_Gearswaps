@@ -145,64 +145,23 @@ function get_sets()
 
     -- Your idle set
     sets.me.idle.refresh = {
-		--main={ name="Akademos", augments={'INT+15','"Mag.Atk.Bns."+15','Mag. Acc.+15',}},
-		main="Musa",    		
-		sub="Enki Strap",
-		ammo="Homiliary",
-		head="Peda. M.Board +3",
-		body="Jhakri Robe +2",
-		hands="Acad. Bracers +3",
-		legs="Assid. Pants +1",
-        feet="Peda. Loafers +3",
-		neck="Twilight Torque",
-		waist="Refoccilation Stone",
-		left_ear="Etiolation Earring",
-		right_ear="Ethereal Earring",
-		left_ring="Stikini Ring +1",
-		right_ring="Defending Ring",
-		back="Moonbeam Cape",
+
     }
 
     -- Your idle Sublimation set combine from refresh or DT depening on mode.
     sets.me.idle.sublimation = set_combine(sets.me.idle.refresh,{
-    	head="Acad. Mortar. +1",
-		body="Peda. Gown +3",
-		hands="Telchine Gloves",
-        feet="Peda Loafers +3",
-		back="Moonbeam Cape",
+
     })   
     -- Your idle DT set
     sets.me.idle.dt = set_combine(sets.me.idle[refreshType],{
-		main={ name="Akademos", augments={'INT+15','"Mag.Atk.Bns."+15','Mag. Acc.+15',}},
-		--main="Musa",      	
-        body="Mallquis Saio +2",
-        feet="Mallquis Clogs +1",
-		neck="Twilight Torque",	
-		right_ring="Defending Ring",
-		left_ear="Genmei Earring",
-        right_ear="Ethereal Earring",
-		back="Moonbeam Cape",
+
     })  
     sets.me.idle.mdt = set_combine(sets.me.idle[refreshType],{
-		body=Amal.Body.A, 
-		left_ear="Etiolation Earring",
-        right_ear="Odnowa Earring +1",
+
     })  
 	-- Your MP Recovered Whilst Resting Set
     sets.me.resting = { 
-		ammo="Homiliary",
-		head=Amal.Head.A,
-		body=Amal.Body.A,
-		hands=Amal.Hands.D,
-		legs="Assid. Pants +1",
-		feet=Amal.Feet.A,
-		neck="Twilight Torque",
-		waist="Refoccilation Stone",
-		left_ear="Etiolation Earring",
-		right_ear="Friomisi Earring",
-		left_ring="Stikini Ring +1",
-		right_ring="Defending Ring",
-		back=SCHCape.NUKE,
+
     }
     
     sets.me.latent_refresh = {waist="Fucho-no-obi"}     
@@ -214,49 +173,13 @@ function get_sets()
       
     -- Weapon Skills sets just add them by name.
     sets.me["Shell Crusher"] = {
-		ammo="Ghastly Tathlum +1",
-		head="Jhakri Coronal +1",
-		body="Jhakri Robe +2",
-		hands="Jhakri Cuffs +1",
-		legs="Jhakri Slops +1",
-		feet="Jhakri Pigaches +1",
-		neck="Sanctity Necklace",
-		waist="Grunfeld Rope",
-		left_ear="Mache Earring +1",
-		right_ear="Telos Earring",
-		left_ring="Stikini Ring +1",
-		right_ring="Begrudging Ring",
-		back="Altruistic Cape",	
+	
 	}
     sets.me["Shattersoul"] = {
-		ammo="Ghastly Tathlum +1",
-		head=Amal.Head.A,
-		body=Amal.Body.A,
-		hands=Amal.Hands.D,
-		legs=Amal.Pants.A,
-		feet=Amal.Feet.A,
-		neck="Mizu. Kubikazari",
-		waist="Mujin Obi",
-		left_ear="Barkaro. Earring",
-		right_ear="Enchntr. Earring +1",
-		left_ring="Stikini Ring +1",
-		right_ring="Prolix Ring",
-		back="Altruistic Cape",
+
     }
     sets.me["Myrkr"] = {
-		ammo="Ghastly Tathlum +1",
-		head=Amal.Head.A,
-		body=Amal.Body.A,
-		hands=Amal.Hands.D,
-		legs=Amal.Pants.A,
-		feet=Amal.Feet.A,
-		neck="Mizu. Kubikazari",
-		waist="Mujin Obi",
-		left_ear="Barkaro. Earring",
-		right_ear="Enchntr. Earring +1",
-		left_ring="Stikini Ring +1",
-		right_ring="Prolix Ring",
-		back="Altruistic Cape",
+
     }
       
     -- Feel free to add new weapon skills, make sure you spell it the same as in game. These are the only two I ever use though
@@ -294,37 +217,11 @@ function get_sets()
     -- Generic Casting Set that all others take off of. Here you should add all your fast cast 
     -- Grimoire: 10(cap:25) / rdm: 15
     sets.precast.casting = {
-		main="Musa",    
-    	ammo="Incantor Stone",		--2
-		head=Amal.Head.A, 	--11
-		body=Merl.Body.FC, 			--12
-		hands="Acad. Bracers +3", 	--7
-		legs="Psycloth Lappas", --7
-		feet="Peda. Loafers +3", 	--8
-		neck="Twilight Torque", 	
-		waist="Witful Belt",		--3
-	    left_ring="Kishar Ring",	--4
-	    right_ring="Weather. Ring",	--5
-		left_ear="Loquac. Earring", --2
-		right_ear="Enchntr. Earring +1",--2
-		back=SCHCape.FC,			--10
+
     }
 
 	sets.precast["Stun"] = {
-		main="Musa",
-		ammo="Incantor Stone",
-		head=Merl.Head.ACC,
-		body=Amal.Body.A,
-		hands="Acad. Bracers +3",
-		legs="Psycloth Lappas", --7
-		feet="Acad. loafers +3",
-		neck="Erra Pendant",
-		waist="Porous Rope",
-		left_ear="Barkaro. Earring",
-		right_ear="Enchntr. Earring +1",
-		left_ring="Stikini Ring +1",
-		right_ring="Weather. Ring",
-		back=SCHCape.FC,	
+	
 	}
 
     -- When spell school is aligned with grimoire, swap relevent pieces -- Can also use Arbatel +1 set here if you value 1% quickcast procs per piece. (2+ pieces)  
@@ -378,161 +275,52 @@ function get_sets()
 	-----------------------------------------------------------------------------------------------
     -- Make sure you have a non weather obi in this set. Helix get bonus naturally no need Obi.	
     sets.midcast.DarkHelix = {
-		head="Pixie Hairpin +1",
-    	-- Amalric Nails +1 are beating Arbatel Loafers +1 for Helix atm, YMMV
-		feet=Amal.Feet.A,
-		waist="Refoccilation Stone",
+
     }
     -- Make sure you have a non weather obi in this set. Helix get bonus naturally no need Obi.	
     sets.midcast.Helix = {
-		-- Amalric Nails +1 are beating Arbatel Loafers +1 for Helix atm, YMMV
-		feet=Amal.Feet.A,
-		waist="Refoccilation Stone",
+
     }	
 
     -- Whatever you want to equip mid-cast as a catch all for all spells, and we'll overwrite later for individual spells
     sets.midcast.casting = {
-		main={ name="Akademos", augments={'INT+15','"Mag.Atk.Bns."+15','Mag. Acc.+15',}},   		
-		sub="Enki Strap",    
-		ammo="Pemphredo Tathlum",
-		head= Merl.Head.ACC,
-		body=Amal.Body.A,
-		hands=Amal.Hands.D,
-		legs=Chiro.Pants.ACC,
-		feet=Amal.Feet.A,
-		neck="Mizu. Kubikazari",
-		waist="Refoccilation Stone",
-		left_ear="Barkaro. Earring",
-		right_ear="Friomisi Earring",
-		left_ring="Shiva Ring",
-		right_ring="Shiva Ring",
-		back=SCHCape.NUKE,	
+	
     }
 
 	sets.midcast["Sublimation"] = {head="Acad. Mortar. +1", body="Peda. Gown +3"}
     
     sets.midcast.nuking.normal = {
-		main={ name="Akademos", augments={'INT+15','"Mag.Atk.Bns."+15','Mag. Acc.+15',}},   		
-		sub="Enki Strap",  
-		ammo="Pemphredo Tathlum",
-		head= Merl.Head.ACC,
-		body=Amal.Body.A,
-		hands=Amal.Hands.D,
-		legs=Amal.Pants.A,
-		feet=Amal.Feet.A,
-		neck="Sanctity Necklace",
-		waist="Refoccilation Stone",
-		left_ear="Barkaro. Earring",
-		right_ear="Friomisi Earring",
-		left_ring="Shiva Ring",
-		right_ring="Shiva Ring",
-		back=SCHCape.NUKE,
+
     }
     -- used with toggle, default: F10
     -- Pieces to swap from freen nuke to Magic Burst
     sets.midcast.MB.normal = set_combine(sets.midcast.nuking.normal, {
-		head= Merl.Head.MB,
-		neck="Mizu. Kubikazari",		
-		left_ring="Locus Ring",
-		right_ring="Mujin Band",
+
     })
 	
     sets.midcast.nuking.acc = {
-		main={ name="Akademos", augments={'INT+15','"Mag.Atk.Bns."+15','Mag. Acc.+15',}},   		
-		sub="Enki Strap",  
-		ammo="Pemphredo Tathlum",
-		head= Merl.Head.ACC,
-		body=Amal.Body.A,
-		hands=Amal.Hands.D,
-		legs=Chiro.Pants.ACC,
-		feet=Amal.Feet.A,
-		neck="Sanctity Necklace",
-		waist="Refoccilation Stone",
-		left_ear="Barkaro. Earring",
-		right_ear="Friomisi Earring",
-		left_ring="Shiva Ring",
-		right_ring="Shiva Ring",
-		back=SCHCape.NUKE,
+
     }
     -- used with toggle, default: F10
     -- Pieces to swap from freen nuke to Magic Burst
     sets.midcast.MB.acc = set_combine(sets.midcast.nuking.normal, {
-	    head="Peda. M.Board +3",
-	    legs=Merl.Pants.MB,
-	    neck="Mizu. Kubikazari",
-	    waist="Refoccilation Stone",
-	    left_ear="Barkaro. Earring",
-	    right_ear="Friomisi Earring",
-	    left_ring="Locus Ring",
-	    right_ring="Mujin Band",
+
     })	
 	
     -- Enfeebling
 	sets.midcast["Stun"] = {
-		main="Musa",
-		ammo="Ghastly Tathlum +1",
-		head=Merl.Head.ACC,
-		body=Amal.Body.A,
-		hands="Acad. Bracers +3",
-		legs=Chiro.Pants.ACC,
-		feet="Acad. loafers +3",
-		neck="Erra Pendant",
-		waist="Porous Rope",
-		left_ear="Barkaro. Earring",
-		right_ear="Enchntr. Earring +1",
-		left_ring="Stikini Ring +1",
-		right_ring="Weather. Ring",
-		back=SCHCape.FC,	
+
 	}	
     sets.midcast.IntEnfeebling = {
-		main="Musa",    
-		ammo="Ghastly Tathlum +1",
-		head=Merl.Head.ACC,
-		body="Jhakri Robe +2",
-		hands="Jhakri Cuffs +1",
-		legs=Chiro.Pants.ACC,
-		feet="Acad. loafers +3",
-		neck="Imbodla Necklace",
-		waist="Porous Rope",
-		left_ear="Barkaro. Earring",
-		right_ear="Enchntr. Earring +1",
-		left_ring="Stikini Ring +1",
-		right_ring="Kishar Ring",
-		back=SCHCape.NUKE,
+
     }
     sets.midcast.MndEnfeebling = {
-		main="Musa",
-		ammo="Ghastly Tathlum +1",
-		head=Merl.Head.ACC,
-		body=Amal.Body.A,
-		hands="Jhakri Cuffs",
-		legs=Chiro.Pants.ACC,
-		feet="Acad. loafers +3",
-		neck="Imbodla Necklace",
-		waist="Porous Rope",
-		left_ear="Barkaro. Earring",
-		right_ear="Enchntr. Earring +1",
-		left_ring="Stikini Ring +1",
-		right_ring="Kishar Ring",
-		back=SCHCape.FC,	
+	
     }
 	
     -- Enhancing
     sets.midcast.enhancing = set_combine(sets.midcast.casting,{
-		main="Musa",  
-	    ammo="Ghastly Tathlum +1",
-		head="Telchine Cap",
-		body="Peda. Gown +3",
-		hands="Telchine Gloves", 
-		legs="Telchine Braconi",
-		feet="Telchine Pigaches", 
-		neck="Melic Torque",
-		waist="Porous Rope",
-		left_ear="Enchntr. Earring +1",
-		right_ear="Loquac. Earring",
-		left_ring="Stikini Ring +1",
-		right_ring="Stikini Ring",
-		back="Perimede Cape",
+
     })
     sets.midcast.storm = set_combine(sets.midcast.enhancing,{
 		feet="Peda. Loafers +3",
@@ -556,20 +344,7 @@ function get_sets()
  	sets.midcast.cure = {} -- Leave This Empty
     -- Cure Potency
     sets.midcast.cure.normal = set_combine(sets.midcast.casting,{
-		main="Musa",
-		ammo="Ghastly Tathlum +1",
-		head="Gende. Caubeen +1",
-		body="Gende. Bilaut +1",
-		hands="Telchine Gloves",
-		legs="Gyve Trousers",
-		feet="Regal Pumps +1",
-		neck="Fylgja Torque +1",
-		waist="Porous Rope",
-		left_ear="Mendi. Earring",
-		right_ear="Loquac. Earring",
-		right_ring="Stikini Ring +1",
-		left_ring="Lebeche Ring", 	
-		back="Pahtli Cape",
+
     })
     sets.midcast.cure.weather = set_combine(sets.midcast.cure.normal,{
 		main="Chatoyant Staff",
@@ -582,24 +357,11 @@ function get_sets()
 	sets.midcast.regen = {} 	-- leave this empty
 	-- Normal hybrid well rounded Regen
     sets.midcast.regen.hybrid = {
-		main="Musa",
-	    ammo="Ghastly Tathlum +1",
-		head="Arbatel Bonnet +1",
-		body="Telchine Chas.",
-		hands="Telchine Gloves", 
-		legs="Telchine Braconi",
-		feet="Telchine Pigaches", 
-		neck="Melic Torque",
-		waist="Porous Rope",
-		left_ear="Enchntr. Earring +1",
-		right_ear="Loquac. Earring",
-		left_ring="Stikini Ring +1",
-		right_ring="Stikini Ring",
-		back=SCHCape.NUKE,
+
     }
 	-- Focus on Regen Duration 	
     sets.midcast.regen.duration = set_combine(sets.midcast.regen.hybrid,{
-		head="Telchine Cap",
+
     }) 
 	-- Focus on Regen Potency 	
     sets.midcast.regen.potency = set_combine(sets.midcast.regen.hybrid,{
