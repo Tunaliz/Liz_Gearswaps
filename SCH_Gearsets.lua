@@ -140,9 +140,6 @@ function get_sets()
     sets.buff = {} 				-- leave this empty
     sets.me.idle = {}			-- leave this empty
 
-    -- Optional 
-	include('AugGear.lua') -- I list all my Augmented gears in a sidecar file since it's shared across many jobs. 
-
     -- Your idle set
     sets.me.idle.refresh = {
 
