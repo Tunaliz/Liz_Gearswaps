@@ -96,7 +96,7 @@ hud_font = 'Impact'
 --[[
     This gets passed in when the Keybinds is turned on.
     Each one matches to a given variable within the text object
-    IF you changed the Default Keybind above, Edit the ones below so it can be reflected in the hud using showmybinds command
+    IF you changed the Default Keybind above, Edit the ones below so it can be reflected in the hud using "//gs c hud keybinds" command
 ]]
 keybinds_on = {}
 keybinds_on['key_bind_idle'] = '(F9)'
