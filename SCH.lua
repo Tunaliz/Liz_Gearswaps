@@ -179,7 +179,10 @@ hud_font_size_og = hud_font_size
 hud_padding_og = hud_padding
 hud_transparency_og = hud_transparency
 
-hub_mode_std = [[ \cs(255, 115, 0)Modes: ------------------------- \cr              
+pName = player.name
+
+hub_mode_std = [[\cs(255, 200, 32)Hi, ${player_name|DEFAULT}, enjoy this Lua!\cr
+\cs(255, 115, 0)Modes: ------------------------- \cr              
 \cs(255, 64, 64)${key_bind_idle} \cs(200, 200, 200)Idle:\cr \cs(125,125,255)${player_current_idle|Refresh}              
 \cs(255, 64, 64)${key_bind_regen} \cs(200, 200, 200)Regen:\cr \cs(125,125,255)${player_current_regen|Hybrid}            
 \cs(255, 64, 64)${key_bind_casting} \cs(200, 200, 200)Casting:\cr \cs(125,125,255)${player_current_casting|Normal}              
@@ -226,6 +229,7 @@ function validateTextInformation()
     main_text_hub.player_current_casting = nukeModes.current
     main_text_hub.toggle_element_cycle = elements.current
     main_text_hub.toggle_sc_level = wantedSc
+    main_text_hub.player_name = pName
 
     if mBurst.value then
         main_text_hub.player_current_mb = const_on
