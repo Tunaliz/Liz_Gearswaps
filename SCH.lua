@@ -231,7 +231,7 @@ function validateTextInformation()
     main_text_hub.toggle_sc_level = wantedSc
     main_text_hub.player_name = pName
     if (refreshType == "sublimation") then
-        main_text_hub.player_current_idle = idleModes.current.." + Sublimation"
+        main_text_hub.player_current_idle = idleModes.current.." + \\cs(32, 255, 32)Sublimation\\cr"
     end
     if mBurst.value then
         main_text_hub.player_current_mb = const_on
