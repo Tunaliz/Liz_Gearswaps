@@ -197,9 +197,9 @@ hub_mode_std = [[\cs(255, 115, 0)Modes: ------------------------- \cr
 \cs(255, 64, 64)${key_bind_regen} \cs(200, 200, 200)Regen:\cr \cs(125,125,255)${player_current_regen|Hybrid}
 \cs(255, 64, 64)${key_bind_casting} \cs(200, 200, 200)Casting:\cr \cs(125,125,255)${player_current_casting|Normal}
 \cs(255, 64, 64)${key_bind_mburst} \cs(200, 200, 200)Magic Burst:\cr ${player_current_mb}
+\cs(255, 64, 64)${key_bind_matchsc}\cs(200, 200, 200)Match SC Element:\cr ${player_match_sc}
 \cs(255, 64, 64)${key_bind_lock_weapon} \cs(200, 200, 200)Lock Weapon:\cr ${toggle_lock_weapon}
 \cs(255, 64, 64)${key_bind_movespeed_lock}\cs(200, 200, 200)Herald's Gaiters Lock:\cr ${toggle_movespeed_lock}
-\cs(255, 64, 64)${key_bind_matchsc}\cs(200, 200, 200)Match SC Element:\cr ${player_match_sc}
 ]]
 
 hub_mode_lte = [[ \cs(255, 115, 0) == Modes: \cr              \cs(255, 64, 64)${key_bind_idle} \cs(200, 200, 200)Idle:\cr \cs(125,125,255)${player_current_idle|Refresh}              \cs(255, 64, 64)${key_bind_regen} \cs(200, 200, 200)Regen:\cr \cs(125,125,255)${player_current_regen|Hybrid}            \cs(255, 64, 64)${key_bind_casting} \cs(200, 200, 200)Casting:\cr \cs(125,125,255)${player_current_casting|Normal}              \cs(255, 64, 64)${key_bind_mburst} \cs(200, 200, 200)Magic Burst:\cr \cs(125,125,255)${player_current_mb|OFF}           \cs(255, 64, 64)${key_bind_matchsc} \cs(200, 200, 200)Match SC Element:\cr \cs(125,125,255)${player_match_sc|OFF}           \cs(255, 64, 64)${key_bind_lock_weapon} \cs(200, 200, 200)Lock Weapon:\cr \cs(125,125,255)${toggle_lock_weapon|OFF}             \cs(255, 64, 64)${key_bind_movespeed_lock} \cs(200, 200, 200)Herald's Gaiters Lock:\cr \cs(125,125,255)${toggle_movespeed_lock|OFF}             ]]
