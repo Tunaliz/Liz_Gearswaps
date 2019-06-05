@@ -82,22 +82,24 @@ hud_font = 'Impact'
 
 -- Setup your Key Bindings here:
     windower.send_command('bind insert gs c nuke cycle')        -- insert to Cycles Nuke element
-    windower.send_command('bind delete gs c nuke cycledown')    -- delete to Cycles Nuke element in reverse order    
+    windower.send_command('bind delete gs c nuke cycledown')    -- delete to Cycles Nuke element in reverse order   
+    windower.send_command('bind f9 gs c toggle idlemode')       -- F9 to change Idle Mode    
     windower.send_command('bind !f9 gs c toggle runspeed') 		-- Alt-F9 toggles locking on / off Herald's Gaiters
-    windower.send_command('bind f10 gs c toggle mb')			-- F10 toggles Magic Burst Mode on / off.
     windower.send_command('bind f12 gs c toggle melee')			-- F12 Toggle Melee mode on / off and locking of weapons
     windower.send_command('bind !` input /ma Stun <t>') 		-- Alt-` Quick Stun Shortcut.
     windower.send_command('bind home gs c sc tier')				-- home to change SC tier between Level 1 or Level 2 SC
     windower.send_command('bind end gs c toggle regenmode')		-- end to change Regen Mode	
-    windower.send_command('bind !f10 gs c toggle nukemode')		-- Alt-F10 to change Nuking Mode	
-    windower.send_command('bind f9 gs c toggle idlemode')		-- F9 to change Idle Mode	
-    windower.send_command('bind !end gs c hud lite')           -- Alt-End to toggle light hud version   
+    windower.send_command('bind f10 gs c toggle mb')            -- F10 toggles Magic Burst Mode on / off.
+    windower.send_command('bind !f10 gs c toggle nukemode')		-- Alt-F10 to change Nuking Mode
+    windower.send_command('bind ^F10 gs c toggle matchsc')      -- CTRL-F10 to change Match SC Mode      	
+    windower.send_command('bind !end gs c hud lite')            -- Alt-End to toggle light hud version   
 
 --[[
     This gets passed in when the Keybinds is turned on.
     Each one matches to a given variable within the text object
     IF you changed the Default Keybind above, Edit the ones below so it can be reflected in the hud using "//gs c hud keybinds" command
 ]]
+keybinds_on = {}
 keybinds_on = {}
 keybinds_on['key_bind_idle'] = '(F9)'
 keybinds_on['key_bind_regen'] = '(END)'
@@ -108,6 +110,7 @@ keybinds_on['key_bind_element_cycle'] = '(INSERT)'
 keybinds_on['key_bind_sc_level'] = '(HOME)'
 keybinds_on['key_bind_lock_weapon'] = '(F12)'
 keybinds_on['key_bind_movespeed_lock'] = '(ALT-F9)'
+keybinds_on['key_bind_matchsc'] = '(CTRL-F10)'
 
 
 -- Remember to unbind your keybinds on job change.
@@ -121,8 +124,9 @@ function user_unload()
     send_command('unbind home')
     send_command('unbind end')
     send_command('unbind !f10')	
+    send_command('unbind `f10')
     send_command('unbind !f9')	
-    send_command('unbind !end')      	
+    send_command('unbind !end')        	
 end
 
 -- Optional. Swap to your sch macro sheet / book
