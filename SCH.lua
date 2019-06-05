@@ -210,14 +210,14 @@ hub_options_std = [[ \cs(255, 115, 0)Scholar: ------------------------\cr
 ]]
 
 hub_battle_std = [[ \cs(255, 115, 0)Battle: ------------------------\cr             
-        \cs(200, 200, 200)Last SC:\cr ${last_sc_element_color}${last_sc|nil} \cr           
+        \cs(200, 200, 200)Last SC:\cr ${last_sc_element_color}${last_sc|No SC yet} \cr           
         \cs(200, 200, 200)Burst Window:\cr ${last_sc_element_color}${burst_window|0} \cr     
 ]]
 
 hub_options_lte = [[ \cs(255, 115, 0) == Scholar: \cr             \cs(255, 64, 64)${key_bind_element_cycle} \cs(200, 200, 200)Element:\cr ${element_color|\\cs(0, 204, 204)}${toggle_element_cycle|Ice} \cr           \cs(255, 64, 64)${key_bind_sc_level} \cs(200, 200, 200)Skillchain:\cr ${element_color|\\cs(0, 204, 204)}${toggle_sc_level|Induration} ]]
 
 
-hub_battle_lte = [[ \cs(255, 115, 0) == Battle: \cr             \cs(200, 200, 200)Last SC:\cr ${last_sc_element_color}${last_sc|nil} \cr             \cs(200, 200, 200)Burst Window:\cr ${last_sc_element_color}${burst_window|0} \cr ]]
+hub_battle_lte = [[ \cs(255, 115, 0) == Battle: \cr             \cs(200, 200, 200)Last SC:\cr ${last_sc_element_color}${last_sc|No SC yet} \cr             \cs(200, 200, 200)Burst Window:\cr ${last_sc_element_color}${burst_window|0} \cr ]]
 
 -- init style
 hub_mode = hub_mode_std
