@@ -23,7 +23,8 @@
         gs c toggle idlemode            Toggles between Refresh and DT idle mode. Activating Sublimation JA will auto replace refresh set for sublimation set. DT set will superceed both.        
         gs c toggle regenmode           Toggles between Hybrid, Duration and Potency mode for regen set  
         gs c toggle nukemode            Toggles between Normal and Accuracy mode for midcast Nuking sets (MB included)  
-        
+        gs c toggle matchsc             Toggles auto swapping element to match the last SC that just happenned.
+
         Casting functions:
         these are to set fewer macros (1 cycle, 5 cast) to save macro space when playing lazily with controler
         
@@ -44,6 +45,7 @@
         gs c hud hide                   Toggles the Hud entirely on or off
         gs c hud hidemode               Toggles the Modes section of the HUD on or off
         gs c hud hidescholar            Toggles the Scholar section of the HUD on or off
+        gs c hud hidebattle             Toggles the Battle section of the HUD on or off
         gs c hud lite                   Toggles the HUD in lightweight style for less screen estate usage. Also on ALT-END
         gs c hud keybinds               Toggles Display of the HUD keybindings (my defaults) You can change just under the binds in the Gearsets file.
 
@@ -148,6 +150,9 @@ hud_font = 'Impact'
 
 include('SCH_Gearsets.lua')
 
+pName = player.name
+-- Saying hello
+windower.add_to_chat(8,'----- Welcome back to your SCH.lua, '..pName..' -----')
 
 --------------------------------------------------------------------------------------------------------------
 -- HUD STUFF
@@ -164,11 +169,16 @@ Colors = {
     ['Dark']="\\cs(92, 92, 92)"
 }
 
+scColor = "\\cs(0, 204, 204)"
+
 textHideMode = M(false)
 textHideOptions = M(false)
+textHideBattle = M(false)
 textHideHUB = M(false)
 useLightMode = M(false)
 hud_bottom = false
+useLightMode = M(false)
+matchsc = M(false)
 
 const_on = "\\cs(32, 255, 32)ON\\cr"
 const_off = "\\cs(255, 32, 32)OFF\\cr"
@@ -179,32 +189,40 @@ hud_font_size_og = hud_font_size
 hud_padding_og = hud_padding
 hud_transparency_og = hud_transparency
 
-pName = player.name
+MB_Window = 0
+time_start = 0
 
-hub_mode_std = [[\cs(255, 200, 32)Hi, ${player_name|DEFAULT}, enjoy this Lua!\cr
-\cs(255, 115, 0)Modes: ------------------------- \cr              
-\cs(255, 64, 64)${key_bind_idle} \cs(200, 200, 200)Idle:\cr \cs(125,125,255)${player_current_idle|Refresh}              
-\cs(255, 64, 64)${key_bind_regen} \cs(200, 200, 200)Regen:\cr \cs(125,125,255)${player_current_regen|Hybrid}            
-\cs(255, 64, 64)${key_bind_casting} \cs(200, 200, 200)Casting:\cr \cs(125,125,255)${player_current_casting|Normal}              
-\cs(255, 64, 64)${key_bind_mburst} \cs(200, 200, 200)Magic Burst:\cr \cs(125,125,255)${player_current_mb|OFF}           
-\cs(255, 64, 64)${key_bind_lock_weapon} \cs(200, 200, 200)Lock Weapon:\cr \cs(125,125,255)${toggle_lock_weapon|OFF}
-\cs(255, 64, 64)${key_bind_movespeed_lock}\cs(200, 200, 200)Herald's Gaiters Lock:\cr \cs(125,125,255)${toggle_movespeed_lock|OFF} 
+hub_mode_std = [[\cs(255, 115, 0)Modes: ------------------------- \cr              
+\cs(255, 64, 64)${key_bind_idle} \cs(200, 200, 200)Idle:\cr \cs(125,125,255)${player_current_idle|Refresh}
+\cs(255, 64, 64)${key_bind_regen} \cs(200, 200, 200)Regen:\cr \cs(125,125,255)${player_current_regen|Hybrid}
+\cs(255, 64, 64)${key_bind_casting} \cs(200, 200, 200)Casting:\cr \cs(125,125,255)${player_current_casting|Normal}
+\cs(255, 64, 64)${key_bind_mburst} \cs(200, 200, 200)Magic Burst:\cr ${player_current_mb}
+\cs(255, 64, 64)${key_bind_lock_weapon} \cs(200, 200, 200)Lock Weapon:\cr ${toggle_lock_weapon}
+\cs(255, 64, 64)${key_bind_movespeed_lock}\cs(200, 200, 200)Herald's Gaiters Lock:\cr ${toggle_movespeed_lock}
+\cs(255, 64, 64)${key_bind_matchsc}\cs(200, 200, 200)Match SC Element:\cr ${player_match_sc}
 ]]
 
-hub_mode_lte = [[ \cs(255, 115, 0) == Modes: \cr              \cs(255, 64, 64)${key_bind_idle} \cs(200, 200, 200)Idle:\cr \cs(125,125,255)${player_current_idle|Refresh}              \cs(255, 64, 64)${key_bind_regen} \cs(200, 200, 200)Regen:\cr \cs(125,125,255)${player_current_regen|Hybrid}            \cs(255, 64, 64)${key_bind_casting} \cs(200, 200, 200)Casting:\cr \cs(125,125,255)${player_current_casting|Normal}              \cs(255, 64, 64)${key_bind_mburst} \cs(200, 200, 200)Magic Burst:\cr \cs(125,125,255)${player_current_mb|OFF}           \cs(255, 64, 64)${key_bind_lock_weapon} \cs(200, 200, 200)Lock Weapon:\cr \cs(125,125,255)${toggle_lock_weapon|OFF}             \cs(255, 64, 64)${key_bind_movespeed_lock} \cs(200, 200, 200)Herald's Gaiters Lock:\cr \cs(125,125,255)${toggle_movespeed_lock|OFF}             ]]
+hub_mode_lte = [[ \cs(255, 115, 0) == Modes: \cr              \cs(255, 64, 64)${key_bind_idle} \cs(200, 200, 200)Idle:\cr \cs(125,125,255)${player_current_idle|Refresh}              \cs(255, 64, 64)${key_bind_regen} \cs(200, 200, 200)Regen:\cr \cs(125,125,255)${player_current_regen|Hybrid}            \cs(255, 64, 64)${key_bind_casting} \cs(200, 200, 200)Casting:\cr \cs(125,125,255)${player_current_casting|Normal}              \cs(255, 64, 64)${key_bind_mburst} \cs(200, 200, 200)Magic Burst:\cr \cs(125,125,255)${player_current_mb|OFF}           \cs(255, 64, 64)${key_bind_matchsc} \cs(200, 200, 200)Match SC Element:\cr \cs(125,125,255)${player_match_sc|OFF}           \cs(255, 64, 64)${key_bind_lock_weapon} \cs(200, 200, 200)Lock Weapon:\cr \cs(125,125,255)${toggle_lock_weapon|OFF}             \cs(255, 64, 64)${key_bind_movespeed_lock} \cs(200, 200, 200)Herald's Gaiters Lock:\cr \cs(125,125,255)${toggle_movespeed_lock|OFF}             ]]
 
 hub_options_std = [[ \cs(255, 115, 0)Scholar: ------------------------\cr             
 \cs(255, 64, 64)${key_bind_element_cycle} \cs(200, 200, 200)Element:\cr ${element_color|\\cs(0, 204, 204)}${toggle_element_cycle|Ice} \cr           
-\cs(255, 64, 64)${key_bind_sc_level} \cs(200, 200, 200)Skillchain:\cr ${element_color|\\cs(0, 204, 204)}${toggle_sc_level|Induration} 
+\cs(255, 64, 64)${key_bind_sc_level} \cs(200, 200, 200)Skillchain:\cr ${sc_element_color|\\cs(0, 204, 204)}${toggle_sc_level|Induration} 
 ]]
 
+hub_battle_std = [[ \cs(255, 115, 0)Battle: ------------------------\cr             
+        \cs(200, 200, 200)Last SC:\cr ${last_sc_element_color}${last_sc|nil} \cr           
+        \cs(200, 200, 200)Burst Window:\cr ${last_sc_element_color}${burst_window|0} \cr     
+]]
 
 hub_options_lte = [[ \cs(255, 115, 0) == Scholar: \cr             \cs(255, 64, 64)${key_bind_element_cycle} \cs(200, 200, 200)Element:\cr ${element_color|\\cs(0, 204, 204)}${toggle_element_cycle|Ice} \cr           \cs(255, 64, 64)${key_bind_sc_level} \cs(200, 200, 200)Skillchain:\cr ${element_color|\\cs(0, 204, 204)}${toggle_sc_level|Induration} ]]
+
+
+hub_battle_lte = [[ \cs(255, 115, 0) == Battle: \cr             \cs(200, 200, 200)Last SC:\cr ${last_sc_element_color}${last_sc|nil} \cr             \cs(200, 200, 200)Burst Window:\cr ${last_sc_element_color}${burst_window|0} \cr ]]
 
 -- init style
 hub_mode = hub_mode_std
 hub_options = hub_options_std
-
+hub_battle = hub_battle_std
 --[[
     This gets passed in when the Keybinds are turned off.
     For not it simply sets the variable to an empty string
@@ -220,6 +238,7 @@ keybinds_off['key_bind_element_cycle'] = '       '
 keybinds_off['key_bind_sc_level'] = '       '
 keybinds_off['key_bind_lock_weapon'] = '       '
 keybinds_off['key_bind_movespeed_lock'] = '        '
+keybinds_off['key_bind_matchsc'] = '        '
 
 function validateTextInformation()
 
@@ -229,8 +248,13 @@ function validateTextInformation()
     main_text_hub.player_current_casting = nukeModes.current
     main_text_hub.toggle_element_cycle = elements.current
     main_text_hub.toggle_sc_level = wantedSc
-    main_text_hub.player_name = pName
-    if (refreshType == "sublimation") then
+
+	if last_skillchain ~= nil then
+		main_text_hub.last_sc = last_skillchain.english
+		main_text_hub.burst_window = tostring(MB_Window)
+		main_text_hub.last_sc_element_color = Colors[last_skillchain.elements[1]]
+    end
+	if (refreshType == "sublimation") then
         main_text_hub.player_current_idle = idleModes.current.." + \\cs(32, 255, 32)Sublimation\\cr"
     end
     if mBurst.value then
@@ -238,7 +262,11 @@ function validateTextInformation()
     else
         main_text_hub.player_current_mb = const_off
     end
-
+    if matchsc.value then
+        main_text_hub.player_match_sc = const_on
+    else
+        main_text_hub.player_match_sc = const_off
+    end
     if meleeing.value then
         main_text_hub.toggle_lock_weapon = const_off
     else
@@ -257,6 +285,7 @@ function validateTextInformation()
         texts.update(main_text_hub, keybinds_off)
     end
     main_text_hub.element_color = Colors[elements.current]
+    main_text_hub.sc_element_color = scColor
 end
 
 --Default To Set Up the Text Window
@@ -296,12 +325,15 @@ function setupTextWindow()
     default_settings.text.stroke.blue = 0
 
     --Creates the initial Text Object will use to create the different sections in
+    if not (main_text_hub == nil) then
+        texts.destroy(main_text_hub)
+    end
     main_text_hub = texts.new('', default_settings, default_settings)
 
     --Appends the different sections to the main_text_hub
     texts.append(main_text_hub, hub_mode)
     texts.append(main_text_hub, hub_options)
-
+	texts.append(main_text_hub, hub_battle)
     --We then do a quick validation
     validateTextInformation()
 
@@ -325,13 +357,11 @@ function hideTextSections()
     if not textHideOptions.value then
         texts.append(main_text_hub, hub_options)
     end
+    if not textHideBattle.value then
+        texts.append(main_text_hub, hub_battle)
+    end
     validateTextInformation()
 
-end
-
-function hudStyle()
-
-    setupTextWindow(hud_x_pos, hud_y_pos)
 end
 
 function toggleHudStyle( useLightMode )
@@ -345,6 +375,7 @@ function toggleHudStyle( useLightMode )
         hud_strokewidth = 2
         hub_options = hub_options_lte
         hub_mode = hub_mode_lte
+        hub_battle = hub_battle_lte
     else
         hud_x_pos = hud_x_pos_og
         hud_y_pos = hud_y_pos_og
@@ -354,6 +385,7 @@ function toggleHudStyle( useLightMode )
         hud_strokewidth = 1
         hub_options = hub_options_std
         hub_mode = hub_mode_std
+        hub_battle = hub_battle_std
     end
     texts.pos(main_text_hub, hud_x_pos, hud_y_pos)
     texts.size(main_text_hub, hud_font_size)
@@ -397,15 +429,13 @@ tier2sc['Water'] = 'Distortion'
 tier2sc['Fire'] = 'Fusion'
 
 wantedSc = tier1sc[elements.current]
+oldElement = elements.current
 
 scTier2 = M(false)
 meleeing = M(true)
 mBurst = M(false)
 runspeed = M(false)
 keybinds = M(false)
-
--- Saying hello
-windower.add_to_chat(8,'----- Welcome back to your SCH.lua -----')
 
 
 if use_UI == true then
@@ -617,7 +647,7 @@ end
 function idle()
     -- This function is called after every action, and handles which set to equip depending on what we're doing
     -- We check if we're meleeing because we don't want to idle in melee gear when we're only engaged for trusts
-    if meleeing and player.status=='Engaged' then   
+    if (meleeing.current and player.status=='Engaged') then   
         -- We're engaged and meleeing
         equip(sets.me.melee)               
     else
@@ -684,7 +714,10 @@ function self_command(command)
                 end
 
                 hideTextSections()
-            elseif commandArgs[2]:lower() == "hidescholar" then --Hides/Show Options
+            elseif commandArgs[2]:lower() == "hidescholar" then --Hides/Show Scholar sectio
+                textHideOptions:toggle()
+                hideTextSections()
+            elseif commandArgs[2]:lower() == "hidebattle" then --Hides/Show Battle section
                 textHideOptions:toggle()
                 hideTextSections()
             elseif commandArgs[2]:lower() == "lite" then --Hides/Show Options
@@ -741,7 +774,14 @@ function self_command(command)
                     validateTextInformation()
                 else
                     windower.add_to_chat(8,"----- Nuking Mode is now: "..tostring(nukeModes.current)) 
-                end     
+                end   
+            elseif commandArgs[2] == 'matchsc' then
+                matchsc:toggle()               
+                if use_UI == true then                    
+                    validateTextInformation()
+                else
+                    windower.add_to_chat(8,"----- Matching SC Mode is now: "..tostring(matchsc.current)) 
+                end
             end
         end
         
@@ -759,8 +799,10 @@ function self_command(command)
             if (nuke == 'cycle' or nuke == 'cycledown') then
                 if nuke == 'cycle' then
                     elements:cycle()
+                    oldElement = elements.current
                 elseif nuke == 'cycledown' then 
                     elements:cycleback() 
+                    oldElement = elements.current
                 end         
                 updateSC(elements.current, scTier2.value)  
                 if use_UI == true then                    
@@ -835,7 +877,7 @@ function updateSC( element , scTier )
     else
         wantedSc = tier1sc[element]
     end
-
+    scColor = Colors[element]
     if use_UI == true then                    
         validateTextInformation()
     else
@@ -1021,4 +1063,144 @@ function get_current_strategem_count()
     local currentCharges = math.floor(maxStrategems - maxStrategems * stratsRecast / fullRechargeTime)
 
     return currentCharges
+end
+
+local skillchains = {
+	[288] = {id=288,english='Light',elements={'Light','Fire','Lightning','Wind'}, color=Colors[4]},
+	[289] = {id=289,english='Darkness',elements={'Dark','Earth','Water','Ice'}, color=Colors[8]},
+	[290] = {id=290,english='Gravitation',elements={'Earth', 'Dark'}, color=Colors[5]},
+	[291] = {id=291,english='Fragmentation',elements={'Lightning','Wind'}, color=Colors[7]},
+	[292] = {id=292,english='Distortion',elements={'Ice', 'Water'}, color=Colors[6]},
+	[293] = {id=293,english='Fusion',elements={'Fire', 'Light'}, color=Colors[1]},
+	[294] = {id=294,english='Compression',elements={'Dark'}, color=Colors[8]},
+	[295] = {id=295,english='Liquefaction',elements={'Fire'}, color=Colors[1]},
+	[296] = {id=296,english='Induration',elements={'Ice'}, color=Colors[6]},
+	[297] = {id=297,english='Reverberation',elements={'Water'}, color=Colors[2]},
+	[298] = {id=298,english='Transfixion', elements={'Light'}, color=Colors[4]},
+	[299] = {id=299,english='Scission',elements={'Earth'}, color=Colors[5]},
+	[300] = {id=300,english='Detonation',elements={'Wind'}, color=Colors[3]},
+	[301] = {id=301,english='Impaction',elements={'Lightning'}, color=Colors[7]}
+}
+windower.register_event('action', function(act)
+	for _, target in pairs(act.targets) do
+		local battle_target = windower.ffxi.get_mob_by_target("t")
+		if battle_target ~= nil and target.id == battle_target.id then
+			for _, action in pairs(target.actions) do
+				if action.add_effect_message > 287 and action.add_effect_message < 302 then
+					last_skillchain = skillchains[action.add_effect_message]
+					MB_Window = 10
+					MB_Time = os.time()
+					validateTextInformation()
+				end
+			end
+		end
+	end
+end)
+
+windower.register_event('prerender', function()
+	--Items we want to check every second
+	if os.time() > time_start then
+		time_start = os.time()
+		if MB_Window > 0 then
+			MB_Window = 10 - (os.time() - MB_Time)
+            if matchsc.value then
+                selectSCElement()
+            end
+			validateTextInformation()
+        else
+            elements:set(oldElement)
+            validateTextInformation()
+		end
+	end
+end)
+
+function selectSCElement()
+    -- Tier 3 SC we favor element already chosen, then day (our weather likely match our set element as a sch) then swap for bad day. 
+    if last_skillchain.english == "Light" then
+        if elements.current == "Fire" or elements.current == "Lightning" or elements.current == "Wind" then
+            return
+        -- Favor Fire if its Fire's Day or Earth's day (thunder weak on E-Day)
+        elseif world.day_element == "Fire" or world.day_element == "Earth" then
+            selectedElement = "Fire"
+            elements:set(selectedElement)
+        -- Favor Wind if its Wind's Day or Earth's day (thunder weak on E-Day)
+        elseif world.day_element == "Wind" or world.day_element == "Earth" then
+            selectedElement = "Wind"
+            elements:set(selectedElement)
+        else
+            selectedElement = "Lightning"
+            elements:set(selectedElement)
+        end
+    elseif last_skillchain.english == "Darkness" then
+        if elements.current == "Earth" or elements.current == "Water" or elements.current == "Ice" then
+            return
+        -- Favor Water if its Water's Day or Fire's day (Ice weak on F-Day)
+        elseif world.day_element == "Water" or world.day_element == "Fire" then
+            selectedElement = "Water"
+            elements:set(selectedElement)
+        -- Favor Earth if its Earth's Day or Fire's day (Ice weak on F-Day)
+        elseif world.day_element == "Earth" or world.day_element == "Fire" then
+            selectedElement = "Earth"
+            elements:set(selectedElement)        
+        else
+            selectedElement = "Ice"
+            elements:set(selectedElement)
+        end
+    -- Tier 2 SC we favor element already chosen, then day (our weather likely match our set element as a sch) then swap for bad day. 
+    -- In case of Fusion and Grav, we avoid light / dark cause outside of helix, no good nukes,
+    -- Also, we more than likely premeditated the helix we stuck on a mob, so unlikely we want to randomly burst a random helix.
+    elseif last_skillchain.english == "Gravitation" then
+        selectedElement = "Earth"
+        elements:set(selectedElement)
+    elseif last_skillchain.english == "Fusion" then
+        selectedElement = "Fire"
+        elements:set(selectedElement)
+    elseif last_skillchain.english == "Fragmentation" then
+        if elements.current == "Lightning" or elements.current == "Wind" then
+            return
+        -- Favor Wind if its Wind's Day or Earth's day (thunder weak on E-Day)
+        elseif world.day_element == "Wind" or world.day_element == "Earth" then
+            selectedElement = "Wind"
+            elements:set(selectedElement)
+        else
+            selectedElement = "Lightning"
+            elements:set(selectedElement)
+        end
+    elseif last_skillchain.english == "Distortion" then
+        if elements.current == "Ice" or elements.current == "Water" then
+            return
+        -- Favor Water is its Water's Day or Earth's day (Ice weak on F-Day)
+        elseif world.day_element == "Water" or world.day_element == "Fire" then
+            selectedElement = "Water"
+            elements:set(selectedElement)
+        else
+            selectedElement = "Ice"
+            elements:set(selectedElement)
+        end
+    -- Tier 1 SC we go straight to Busrt Element
+    elseif last_skillchain.english == "Compression" then
+        selectedElement = "Dark"
+        elements:set(selectedElement)
+    elseif last_skillchain.english == "Liquefaction" then
+        selectedElement = "Fire"
+        elements:set(selectedElement)
+    elseif last_skillchain.english == "Induration" then
+        selectedElement = "Ice"
+        elements:set(selectedElement)
+    elseif last_skillchain.english == "Reverberation" then
+        selectedElement = "Water"
+        elements:set(selectedElement)
+    elseif last_skillchain.english == "Transfixion" then
+        selectedElement = "Light"
+        elements:set(selectedElement)
+    elseif last_skillchain.english == "Scission" then
+        selectedElement = "Earth"
+        elements:set(selectedElement)
+    elseif last_skillchain.english == "Detonation" then
+        selectedElement = "Wind"
+        elements:set(selectedElement)
+    elseif last_skillchain.english == "Impaction" then
+        selectedElement = "Lightning"
+        elements:set(selectedElement)
+    end
 end
