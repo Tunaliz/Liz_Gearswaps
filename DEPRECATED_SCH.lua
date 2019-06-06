@@ -593,7 +593,7 @@ function midcast(spell)
     elseif spell.skill == 'Enfeebling Magic' and spell.type == 'WhiteMagic' then -- to do: better rule for this.
         equip(sets.midcast.MndEnfeebling)
     elseif spell.type == 'BlackMagic' then
-        if mBurst then
+        if mBurst.value == true then
             equip(sets.midcast.MB[nukeModes.current])
         else
             equip(sets.midcast.nuking[nukeModes.current])
