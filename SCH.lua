@@ -44,8 +44,9 @@
         HUD Functions:
         gs c hud hide                   Toggles the Hud entirely on or off
         gs c hud hidemode               Toggles the Modes section of the HUD on or off
-        gs c hud hidescholar            Toggles the Scholar section of the HUD on or off
-        gs c hud lite                  Toggles the HUD in lightweight style for less screen estate usage. Also on ALT-END
+        gs c hud hidejob                Toggles the job section of the HUD on or off
+        gs c hud hidebattle             Toggles the Battle section of the HUD on or off
+        gs c hud lite                   Toggles the HUD in lightweight style for less screen estate usage. Also on ALT-END
         gs c hud keybinds               Toggles Display of the HUD keybindings (my defaults) You can change just under the binds in the Gearsets file.
 
         // OPTIONAL IF YOU WANT / NEED to skip the cycles...  
