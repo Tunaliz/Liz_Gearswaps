@@ -120,7 +120,7 @@ MB_Window = 0
 time_start = 0
 
 -- Standard Mode
-hub_mode_std = [[\cs(255, 115, 0)Modes: \cr              
+hub_mode_std = [[ \cs(255, 115, 0)Modes: \cr              
 \cs(255, 64, 64)${key_bind_idle} \cs(200, 200, 200)Idle:\cr \cs(125,125,255)${player_current_idle|Refresh}
 \cs(255, 64, 64)${key_bind_casting} \cs(200, 200, 200)Casting:\cr \cs(125,125,255)${player_current_casting|Normal}
 ]]
@@ -144,14 +144,10 @@ hub_battle_std = [[ \cs(255, 115, 0)Battle: \cr
 ]]
 
 -- LITE Mode
-hub_mode_lte = [[ \cs(255, 115, 0) == Modes: \cr              \cs(255, 64, 64)${key_bind_idle} \cs(200, 200, 200)Idle:\cr \cs(125,125,255)${player_current_idle|Refresh              \cs(255, 64, 64)${key_bind_casting} \cs(200, 200, 200)Casting:\cr \cs(125,125,255)${player_current_casting|Normal} ]]
-
-hub_options_lte = [[ \cs(255, 115, 0)== Options: \cr              \cs(255, 64, 64)${key_bind_mburst} \cs(200, 200, 200)Magic Burst:\cr \cs(125,125,255)${player_current_mb|OFF}\cs(255, 64, 64)${key_bind_matchsc}\cs(200, 200, 200)Match SC Element:\cr ${player_match_sc}            \cs(255, 64, 64)${key_bind_lock_weapon} \cs(200, 200, 200)Lock Weapon:\cr ${toggle_lock_weapon}            \cs(255, 64, 64)${key_bind_movespeed_lock}\cs(200, 200, 200)Herald Gaiters Lock:\cr ${toggle_movespeed_lock} ]]
-
-hub_job_lte = [[ \cs(255, 115, 0) == ${player_job}: \cr             \cs(255, 64, 64)${key_bind_element_cycle} \cs(200, 200, 200)Element:\cr ${element_color|\\cs(0, 204, 204)}${toggle_element_cycle|Ice} \cr           \cs(255, 64, 64)${key_bind_sc_level} \cs(200, 200, 200)Skillchain:\cr ${element_color|\\cs(0, 204, 204)}${toggle_sc_level|Induration} ]]
-
-hub_battle_lte = [[ \cs(255, 115, 0) == Battle: \cr             \cs(200, 200, 200)Last SC:\cr ${last_sc_element_color}${last_sc|No SC yet} \cr             \cs(200, 200, 200)Burst Window:\cr ${last_sc_element_color}${burst_window|0} \cr ]]
-
+hub_mode_lte = [[ \cs(255, 115, 0)     == Modes: \cr     \cs(255, 64, 64)${key_bind_idle} \cs(200, 200, 200)Idle:\cr \cs(125,125,255)${player_current_idle|Refresh}      \cs(255, 64, 64)${key_bind_casting} \cs(200, 200, 200)Casting:\cr \cs(125,125,255)${player_current_casting|Normal} ]]
+hub_options_lte = [[ \cs(255, 115, 0)      == Options: \cr   \cs(255, 64, 64)${key_bind_mburst} \cs(200, 200, 200)Magic Burst:\cr ${player_current_mb}   \cs(255, 64, 64)${key_bind_matchsc}\cs(200, 200, 200)Match SC Element:\cr ${player_match_sc}    \cs(255, 64, 64)${key_bind_lock_weapon} \cs(200, 200, 200)Lock Weapon:\cr ${toggle_lock_weapon}     \cs(255, 64, 64)${key_bind_movespeed_lock}\cs(200, 200, 200)MoveSpeed Lock:\cr ${toggle_movespeed_lock} ]]
+hub_job_lte = [[ \cs(255, 115, 0)      == ${player_job}: \cr     \cs(255, 64, 64)${key_bind_element_cycle} \cs(200, 200, 200)Element:\cr ${element_color|\\cs(0, 204, 204)}${toggle_element_cycle|Ice} \cr   \cs(255, 64, 64)${key_bind_geo_cycle} \cs(200, 200, 200)Geo-Spell:\cr \cs(125,125,255)${toggle_geo_cycle|Ice} \cr   \cs(255, 64, 64)${key_bind_indi_cycle} \cs(200, 200, 200)Indi-Spell:\cr \cs(125,125,255)${toggle_indi_cycle|Ice} \cr ]]
+hub_battle_lte = [[ \cs(255, 115, 0)       == Battle: \cr     \cs(200, 200, 200)Last SC:\cr ${last_sc_element_color}${last_sc|No SC yet} \cr  \cs(200, 200, 200)Burst Window:\cr ${last_sc_element_color}${burst_window|0} \cr ]]
 
 -- init style
 hub_mode = hub_mode_std
@@ -306,7 +302,7 @@ end
 function toggleHudStyle( useLightMode )
     texts.clear(main_text_hub)
     if useLightMode then
-        hud_x_pos = 0     
+        hud_x_pos = 0
         hud_y_pos = 0
         hud_font_size = 8
         hud_padding = 2
