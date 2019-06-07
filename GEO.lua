@@ -25,12 +25,12 @@
         gs c nuke ra2                   Cast tier 2 -ra nuke of saved element 
         gs c nuke ra3                   Cast tier 3 -ra nuke of saved element 	
 		
-		    gs c geo geocycle				Cycles Geomancy Spell
-		    gs c geo geocycledown			Cycles Geomancy Spell in reverse order
-		    gs c geo indicycle				Cycles IndiColure Spell
-		    gs c geo indicycledown			Cycles IndiColure Spell in reverse order
-		    gs c geo geo					Cast saved Geo Spell
-		    gs c geo indi					Cast saved Indi Spell
+	gs c geo geocycle				Cycles Geomancy Spell
+	gs c geo geocycledown			Cycles Geomancy Spell in reverse order
+	gs c geo indicycle				Cycles IndiColure Spell
+	gs c geo indicycledown			Cycles IndiColure Spell in reverse order
+	gs c geo geo					Cast saved Geo Spell
+	gs c geo indi					Cast saved Indi Spell
 
         HUD Functions:
         gs c hud hide                   Toggles the Hud entirely on or off
@@ -97,7 +97,18 @@ hud_font = 'Impact'
     Each one matches to a given variable within the text object
     IF you changed the Default Keybind above, Edit the ones below so it can be reflected in the hud using "//gs c hud keybinds" command
 ]]																	-- or between Full Pet Regen+DT or Hybrid PetDT and MasterDT when a Luopan is out
+keybinds_on = {}
+keybinds_on['key_bind_idle'] = '(F9)'
+keybinds_on['key_bind_regen'] = '(END)'
+keybinds_on['key_bind_casting'] = '(ALT-F10)'
+keybinds_on['key_bind_mburst'] = '(F10)'
+keybinds_on['key_bind_matchsc'] = '(CTRL-F10)'
 
+keybinds_on['key_bind_element_cycle'] = '(INS + DEL)'
+keybinds_on['key_bind_geo_cycle'] = '(HOME + PgUP)'
+keybinds_on['key_bind_indi_cycle'] = '(End + PgDOWN)'
+keybinds_on['key_bind_lock_weapon'] = '(F12)'
+keybinds_on['key_bind_movespeed_lock'] = '(ALT-F9)'
 
 -- Remember to unbind your keybinds on job change.
 function user_unload()
