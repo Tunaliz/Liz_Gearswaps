@@ -133,7 +133,7 @@ geomancy:set('Geo-Frailty')     -- Geo Spell Default      (when you first load l
 indicolure:set('Indi-Haste')    -- Indi Spell Default     (when you first load lua / change jobs the saved spells is this one)
 validateTextInformation()
 
--- Optional. Swap to your sch macro sheet / book
+-- Optional. Swap to your geo macro sheet / book
 set_macros(1,5) -- Sheet, Book   
     
 -- Setup your Gear Sets below:
