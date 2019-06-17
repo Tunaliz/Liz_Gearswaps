@@ -63,7 +63,7 @@ spell_maps = {
     ['Water Maneuver']='Maneuver',['Light Maneuver']='Maneuver',['Dark Maneuver']='Maneuver',
 }
                 
--- Set Macros for your SMN's macro page, book.
+-- Set Macros to your wanted macro page, book.
 function set_macros(sheet,book)
     if book then 
         send_command('@input /macro book '..tostring(book)..';wait .1;input /macro set '..tostring(sheet))
