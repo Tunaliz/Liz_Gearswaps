@@ -63,7 +63,7 @@ spell_maps = {
     ['Water Maneuver']='Maneuver',['Light Maneuver']='Maneuver',['Dark Maneuver']='Maneuver',
 }
                 
--- Set Macros to your wanted macro page, book.
+-- Set Macros for your SMN's macro page, book.
 function set_macros(sheet,book)
     if book then 
         send_command('@input /macro book '..tostring(book)..';wait .1;input /macro set '..tostring(sheet))
@@ -79,6 +79,11 @@ pName = player.name
 
 -- Saying hello
 windower.add_to_chat(8,'----- Welcome back to your GEO.lua, '..pName..' -----')
+
+
+--------------------------------------------------------------------------------------------------------------
+local geo_maths = require 'GEO_Maths' -- Vectors and Maths
+--------------------------------------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------------------------------------
 -- HUD STUFF
@@ -118,36 +123,39 @@ hud_transparency_og = hud_transparency
 
 MB_Window = 0
 time_start = 0
+cChant = "No Target"
+ccColor = Colors["Fire"]
 
 -- Standard Mode
 hub_mode_std = [[ \cs(255, 115, 0)Modes: \cr              
-\cs(255, 64, 64)${key_bind_idle} \cs(200, 200, 200)Idle:\cr \cs(125,125,255)${player_current_idle|Refresh}
-\cs(255, 64, 64)${key_bind_casting} \cs(200, 200, 200)Casting:\cr \cs(125,125,255)${player_current_casting|Normal}
+\cs(128, 128, 128)${key_bind_idle} \cs(200, 200, 200)Idle:\cr \cs(125,125,255)${player_current_idle|Refresh}
+\cs(128, 128, 128)${key_bind_casting} \cs(200, 200, 200)Casting:\cr \cs(125,125,255)${player_current_casting|Normal}
 ]]
 
 hub_options_std = [[ \cs(255, 115, 0)Options: \cr             
-\cs(255, 64, 64)${key_bind_mburst} \cs(200, 200, 200)Magic Burst:\cr ${player_current_mb}
-\cs(255, 64, 64)${key_bind_matchsc}\cs(200, 200, 200)Match SC Element:\cr ${player_match_sc}
-\cs(255, 64, 64)${key_bind_lock_weapon} \cs(200, 200, 200)Lock Weapon:\cr ${toggle_lock_weapon}
-\cs(255, 64, 64)${key_bind_movespeed_lock}\cs(200, 200, 200)MoveSpeed Lock:\cr ${toggle_movespeed_lock}
+\cs(128, 128, 128)${key_bind_mburst} \cs(200, 200, 200)Magic Burst:\cr ${player_current_mb}
+\cs(128, 128, 128)${key_bind_matchsc}\cs(200, 200, 200)Match SC Element:\cr ${player_match_sc}
+\cs(128, 128, 128)${key_bind_lock_weapon} \cs(200, 200, 200)Lock Weapon:\cr ${toggle_lock_weapon}
+\cs(128, 128, 128)${key_bind_movespeed_lock}\cs(200, 200, 200)MoveSpeed Lock:\cr ${toggle_movespeed_lock}
 ]]
 
 hub_job_std = [[ \cs(255, 115, 0)${player_job}: \cr             
-\cs(255, 64, 64)${key_bind_element_cycle} \cs(200, 200, 200)Element:\cr ${element_color|\\cs(0, 204, 204)}${toggle_element_cycle|Ice} \cr           
-\cs(255, 64, 64)${key_bind_geo_cycle} \cs(200, 200, 200)Geo-Spell:\cr \cs(125,125,255)${toggle_geo_cycle|Ice} \cr    
-\cs(255, 64, 64)${key_bind_indi_cycle} \cs(200, 200, 200)Indi-Spell:\cr \cs(125,125,255)${toggle_indi_cycle|Ice} \cr    
+\cs(128, 128, 128)${key_bind_element_cycle} \cs(200, 200, 200)Element:\cr ${element_color|\\cs(0, 204, 204)}${toggle_element_cycle|Ice} \cr           
+\cs(128, 128, 128)${key_bind_geo_cycle} \cs(200, 200, 200)Geo-Spell:\cr \cs(125,125,255)${toggle_geo_cycle|Ice} \cr    
+\cs(128, 128, 128)${key_bind_indi_cycle} \cs(200, 200, 200)Indi-Spell:\cr \cs(125,125,255)${toggle_indi_cycle|Ice} \cr    
 ]]
 
 hub_battle_std = [[ \cs(255, 115, 0)Battle: \cr             
         \cs(200, 200, 200)Last SC:\cr ${last_sc_element_color}${last_sc|No SC yet} \cr           
         \cs(200, 200, 200)Burst Window:\cr ${last_sc_element_color}${burst_window|0} \cr       
+        \cs(200, 200, 200)Cardinal Chant:\cr ${card_chant_color}${card_chant|No Target} \cr      
 ]]
 
 -- LITE Mode
-hub_mode_lte = [[ \cs(255, 115, 0)     == Modes: \cr     \cs(255, 64, 64)${key_bind_idle} \cs(200, 200, 200)Idle:\cr \cs(125,125,255)${player_current_idle|Refresh}      \cs(255, 64, 64)${key_bind_casting} \cs(200, 200, 200)Casting:\cr \cs(125,125,255)${player_current_casting|Normal} ]]
-hub_options_lte = [[ \cs(255, 115, 0)      == Options: \cr   \cs(255, 64, 64)${key_bind_mburst} \cs(200, 200, 200)Magic Burst:\cr ${player_current_mb}   \cs(255, 64, 64)${key_bind_matchsc}\cs(200, 200, 200)Match SC Element:\cr ${player_match_sc}    \cs(255, 64, 64)${key_bind_lock_weapon} \cs(200, 200, 200)Lock Weapon:\cr ${toggle_lock_weapon}     \cs(255, 64, 64)${key_bind_movespeed_lock}\cs(200, 200, 200)MoveSpeed Lock:\cr ${toggle_movespeed_lock} ]]
-hub_job_lte = [[ \cs(255, 115, 0)      == ${player_job}: \cr     \cs(255, 64, 64)${key_bind_element_cycle} \cs(200, 200, 200)Element:\cr ${element_color|\\cs(0, 204, 204)}${toggle_element_cycle|Ice} \cr   \cs(255, 64, 64)${key_bind_geo_cycle} \cs(200, 200, 200)Geo-Spell:\cr \cs(125,125,255)${toggle_geo_cycle|Ice} \cr   \cs(255, 64, 64)${key_bind_indi_cycle} \cs(200, 200, 200)Indi-Spell:\cr \cs(125,125,255)${toggle_indi_cycle|Ice} \cr ]]
-hub_battle_lte = [[ \cs(255, 115, 0)       == Battle: \cr     \cs(200, 200, 200)Last SC:\cr ${last_sc_element_color}${last_sc|No SC yet} \cr  \cs(200, 200, 200)Burst Window:\cr ${last_sc_element_color}${burst_window|0} \cr ]]
+hub_mode_lte = [[ \cs(255, 115, 0)     == Modes: \cr     \cs(128, 128, 128)${key_bind_idle} \cs(200, 200, 200)Idle:\cr \cs(125,125,255)${player_current_idle|Refresh}      \cs(128, 128, 128)${key_bind_casting} \cs(200, 200, 200)Casting:\cr \cs(125,125,255)${player_current_casting|Normal} ]]
+hub_options_lte = [[ \cs(255, 115, 0)      == Options: \cr   \cs(128, 128, 128)${key_bind_mburst} \cs(200, 200, 200)Magic Burst:\cr ${player_current_mb}   \cs(128, 128, 128)${key_bind_matchsc}\cs(200, 200, 200)Match SC Element:\cr ${player_match_sc}    \cs(128, 128, 128)${key_bind_lock_weapon} \cs(200, 200, 200)Lock Weapon:\cr ${toggle_lock_weapon}     \cs(128, 128, 128)${key_bind_movespeed_lock}\cs(200, 200, 200)MoveSpeed Lock:\cr ${toggle_movespeed_lock} ]]
+hub_job_lte = [[ \cs(255, 115, 0)      == ${player_job}: \cr     \cs(128, 128, 128)${key_bind_element_cycle} \cs(200, 200, 200)Element:\cr ${element_color|\\cs(0, 204, 204)}${toggle_element_cycle|Ice} \cr   \cs(128, 128, 128)${key_bind_geo_cycle} \cs(200, 200, 200)Geo-Spell:\cr \cs(125,125,255)${toggle_geo_cycle|Ice} \cr   \cs(128, 128, 128)${key_bind_indi_cycle} \cs(200, 200, 200)Indi-Spell:\cr \cs(125,125,255)${toggle_indi_cycle|Ice} \cr ]]
+hub_battle_lte = [[ \cs(255, 115, 0)       == Battle: \cr     \cs(200, 200, 200)Last SC:\cr ${last_sc_element_color}${last_sc|No SC yet} \cr  \cs(200, 200, 200)Burst Window:\cr ${last_sc_element_color}${burst_window|0} \cr      \cs(200, 200, 200)Cardinal Chant:\cr ${card_chant_color}${card_chant|No Target} \cr ]]
 
 -- init style
 hub_mode = hub_mode_std
@@ -182,6 +190,8 @@ function validateTextInformation()
     main_text_hub.toggle_indi_cycle = indicolure.current
     main_text_hub.toggle_sc_level = wantedSc
     main_text_hub.player_job = player.job
+    main_text_hub.card_chant = cChant
+    main_text_hub.card_chant_color = ccColor
     
     if last_skillchain ~= nil then
         main_text_hub.last_sc = last_skillchain.english
@@ -812,21 +822,35 @@ end)
 
 windower.register_event('prerender', function()
     --Items we want to check every second
+
     if os.time() > time_start then
         time_start = os.time()
+        
+        --handleChant()
+
         if MB_Window > 0 then
             MB_Window = 10 - (os.time() - MB_Time)
             if matchsc.value then
                 selectSCElement()
                 mBurst:set(true)
             end
-            validateTextInformation()
         else
             elements:set(oldElement)
             mBurst:set(mBurstOldValue)
-            validateTextInformation()
         end
+    validateTextInformation()
     end
+end)
+
+windower.register_event('prerender', function()
+    --Items we want to check every frame
+    if textHideBattle.value == true then
+        return
+    else
+        handleChant()
+        validateTextInformation()
+    end
+
 end)
 
 function selectSCElement()
@@ -917,5 +941,45 @@ function selectSCElement()
     elseif last_skillchain.english == "Impaction" then
         selectedElement = "Lightning"
         elements:set(selectedElement)
+    end
+end
+
+function handleChant()
+    target = windower.ffxi.get_mob_by_target('t')
+    if target ~= nil and target.name ~= player.name then
+        pPos = geo_maths.vector(windower.ffxi.get_mob_by_target('me').x, windower.ffxi.get_mob_by_target('me').y, windower.ffxi.get_mob_by_target('me').z)
+        tPos = geo_maths.vector(windower.ffxi.get_mob_by_target('t').x, windower.ffxi.get_mob_by_target('t').y, windower.ffxi.get_mob_by_target('t').z)
+
+        temp = pPos:sub(tPos)
+        temp = temp:normalize(temp)
+
+        if temp.y > 0 then
+            colorY = geo_maths.vector(0,255,0)
+        else
+            colorY = geo_maths.vector(0,0,255)
+        end
+
+        if temp.x > 0 then
+            colorX = geo_maths.vector(255,255,0)
+        else
+            colorX = geo_maths.vector(255,0,0)
+        end
+        color = colorX*temp.x*temp.x + colorY*temp.y*temp.y
+
+        if color.z > 128 then
+            cChant = "Magic Crit"
+        elseif color.y > 128 and color.x < 128 then
+            cChant = "Magic ACC"
+        elseif color.x > 128 and color.y < 128 then   
+            cChant = "Magic Atk"
+        elseif color.x > 128 and color.y > 128 then  
+            cChant = "M.Burst Bonus"
+        end
+
+        ccColor = "\\cs("..math.floor(color.x)..", "..math.floor(color.y)..", "..math.floor(color.z)..")  "
+
+    else
+        cChant = "No Target"
+        ccColor = "\\cs(255,255,255)"
     end
 end
