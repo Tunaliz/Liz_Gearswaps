@@ -826,7 +826,9 @@ windower.register_event('prerender', function()
     if os.time() > time_start then
         time_start = os.time()
         
-        --handleChant()
+        if textHideBattle.value == false then
+            handleChant()
+        end
 
         if MB_Window > 0 then
             MB_Window = 10 - (os.time() - MB_Time)
@@ -840,17 +842,6 @@ windower.register_event('prerender', function()
         end
     validateTextInformation()
     end
-end)
-
-windower.register_event('prerender', function()
-    --Items we want to check every frame
-    if textHideBattle.value == true then
-        return
-    else
-        handleChant()
-        validateTextInformation()
-    end
-
 end)
 
 function selectSCElement()
