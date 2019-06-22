@@ -1135,7 +1135,7 @@ function selectSCElement()
     -- Tier 3 SC we favor element already chosen, then day (our weather likely match our set element as a sch) then swap for bad day. 
     if last_skillchain.english == "Light" then
         -- First we always prefer the selected element if that element can burst, if not we move on.
-        if elements.current == "Fire" or elements.current == "Lightning" or elements.current == "Wind" then
+        if elements.current == "Fire" or elements.current == "Lightning" or elements.current == "Air" then
             return
         -- Favor Fire if its Fire's Day or Earth's day (thunder weak on E-Day)
         elseif world.day_element == "Fire" or world.day_element == "Earth" then
