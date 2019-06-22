@@ -1130,9 +1130,11 @@ windower.register_event('prerender', function()
 	end
 end)
 
+
 function selectSCElement()
     -- Tier 3 SC we favor element already chosen, then day (our weather likely match our set element as a sch) then swap for bad day. 
     if last_skillchain.english == "Light" then
+        -- First we always prefer the selected element if that element can burst, if not we move on.
         if elements.current == "Fire" or elements.current == "Lightning" or elements.current == "Wind" then
             return
         -- Favor Fire if its Fire's Day or Earth's day (thunder weak on E-Day)
@@ -1140,14 +1142,15 @@ function selectSCElement()
             selectedElement = "Fire"
             elements:set(selectedElement)
         -- Favor Wind if its Wind's Day or Earth's day (thunder weak on E-Day)
-        elseif world.day_element == "Wind" or world.day_element == "Earth" then
-            selectedElement = "Wind"
+        elseif world.day_element == "Air" or world.day_element == "Earth" then
+            selectedElement = "Air"
             elements:set(selectedElement)
         else
             selectedElement = "Lightning"
             elements:set(selectedElement)
         end
     elseif last_skillchain.english == "Darkness" then
+        -- First we always prefer the selected element if that element can burst, if not we move on.
         if elements.current == "Earth" or elements.current == "Water" or elements.current == "Ice" then
             return
         -- Favor Water if its Water's Day or Fire's day (Ice weak on F-Day)
@@ -1172,11 +1175,11 @@ function selectSCElement()
         selectedElement = "Fire"
         elements:set(selectedElement)
     elseif last_skillchain.english == "Fragmentation" then
-        if elements.current == "Lightning" or elements.current == "Wind" then
+        if elements.current == "Lightning" or elements.current == "Air" then
             return
         -- Favor Wind if its Wind's Day or Earth's day (thunder weak on E-Day)
-        elseif world.day_element == "Wind" or world.day_element == "Earth" then
-            selectedElement = "Wind"
+        elseif world.day_element == "Air" or world.day_element == "Earth" then
+            selectedElement = "Air"
             elements:set(selectedElement)
         else
             selectedElement = "Lightning"
@@ -1213,7 +1216,7 @@ function selectSCElement()
         selectedElement = "Earth"
         elements:set(selectedElement)
     elseif last_skillchain.english == "Detonation" then
-        selectedElement = "Wind"
+        selectedElement = "Air"
         elements:set(selectedElement)
     elseif last_skillchain.english == "Impaction" then
         selectedElement = "Lightning"
