@@ -673,7 +673,7 @@ function idle()
 		else
 			equip(sets.me.melee[meleeModes.value..'dw'])
 		end
-		if mainWeapon.value == "Crocea Mors" then
+		if mainWeapon.value == "Crocea Mors" or "Vitiation Sword" then
     		EnspellCheck()
 		end
     else
