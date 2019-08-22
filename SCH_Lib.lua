@@ -1,65 +1,4 @@
 
---[[
-        Custom commands:
-        Shorthand versions for each strategem type that uses the version appropriate for
-        the current Arts.
-                                        Light Arts              Dark Arts
-        gs c scholar light              Light Arts/Addendum
-        gs c scholar dark                                       Dark Arts/Addendum
-        gs c scholar cost               Penury                  Parsimony
-        gs c scholar speed              Celerity                Alacrity
-        gs c scholar aoe                Accession               Manifestation
-        gs c scholar power              Rapture                 Ebullience
-        gs c scholar duration           Perpetuance
-        gs c scholar accuracy           Altruism                Focalization
-        gs c scholar enmity             Tranquility             Equanimity
-        gs c scholar skillchain                                 Immanence
-        gs c scholar addendum           Addendum: White         Addendum: Black
-    
-        Toggle Function: 
-        gs c toggle melee               Toggle Melee mode on / off and locking of weapons
-        gs c toggle mb                  Toggles Magic Burst Mode on / off.
-        gs c toggle runspeed            Toggles locking on / off Herald's Gaiters
-        gs c toggle idlemode            Toggles between Refresh and DT idle mode. Activating Sublimation JA will auto replace refresh set for sublimation set. DT set will superceed both.        
-        gs c toggle regenmode           Toggles between Hybrid, Duration and Potency mode for regen set  
-        gs c toggle nukemode            Toggles between Normal and Accuracy mode for midcast Nuking sets (MB included)  
-        gs c toggle matchsc             Toggles auto swapping element to match the last SC that just happenned.
-
-        Casting functions:
-        these are to set fewer macros (1 cycle, 5 cast) to save macro space when playing lazily with controler
-        
-        gs c nuke cycle                 Cycles element type for nuking & SC
-        gs c nuke cycledown             Cycles element type for nuking & SC in reverse order    
-        gs c nuke t1                    Cast tier 1 nuke of saved element 
-        gs c nuke t2                    Cast tier 2 nuke of saved element 
-        gs c nuke t3                    Cast tier 3 nuke of saved element 
-        gs c nuke t4                    Cast tier 4 nuke of saved element 
-        gs c nuke t5                    Cast tier 5 nuke of saved element 
-        gs c nuke helix                 Cast helix2 nuke of saved element 
-        gs c nuke storm                 Cast Storm II buff of saved element  
-                    
-        gs c sc tier                    Cycles SC Tier (1 & 2)
-        gs c sc castsc                  Cast All the stuff to create a SC burstable by the nuke element set with '/console gs c nuke element'.
-
-        HUD Functions:
-        gs c hud hide                   Toggles the Hud entirely on or off
-        gs c hud hidemode               Toggles the Modes section of the HUD on or off
-        gs c hud hidescholar            Toggles the Scholar section of the HUD on or off
-        gs c hud hidebattle             Toggles the Battle section of the HUD on or off
-        gs c hud lite                   Toggles the HUD in lightweight style for less screen estate usage. Also on ALT-END
-        gs c hud keybinds               Toggles Display of the HUD keybindings (my defaults) You can change just under the binds in the Gearsets file.
-
-        // OPTIONAL IF YOU WANT / NEED to skip the cycles...  
-        gs c nuke Ice                   Set Element Type to Ice DO NOTE the Element needs a Capital letter. 
-        gs c nuke Air                   Set Element Type to Air DO NOTE the Element needs a Capital letter. 
-        gs c nuke Dark                  Set Element Type to Dark DO NOTE the Element needs a Capital letter. 
-        gs c nuke Light                 Set Element Type to Light DO NOTE the Element needs a Capital letter. 
-        gs c nuke Earth                 Set Element Type to Earth DO NOTE the Element needs a Capital letter. 
-        gs c nuke Lightning             Set Element Type to Lightning DO NOTE the Element needs a Capital letter. 
-        gs c nuke Water                 Set Element Type to Water DO NOTE the Element needs a Capital letter. 
-        gs c nuke Fire                  Set Element Type to Fire DO NOTE the Element needs a Capital letter. 
---]]
-
 -------------------------------------------------------------------------------------------------------------------
 -- Spell mappings allow defining a general category or description that each of sets of related
 -- spells all fall under.
@@ -185,6 +124,7 @@ time_start = 0
 hub_mode_std = [[\cs(255, 115, 0)Modes: \cr              
 \cs(255, 64, 64)${key_bind_idle} \cs(200, 200, 200)Idle:\cr \cs(125,125,255)${player_current_idle|Refresh}
 \cs(255, 64, 64)${key_bind_casting} \cs(200, 200, 200)Casting:\cr \cs(125,125,255)${player_current_casting|Normal}
+\cs(255, 64, 64)${key_bind_regen} \cs(200, 200, 200)Regen:\cr \cs(125,125,255)${player_current_regen|Hybrid}
 ]]
 
 hub_options_std = [[ \cs(255, 115, 0)Options: \cr             
@@ -205,13 +145,13 @@ hub_battle_std = [[ \cs(255, 115, 0)Battle: \cr
 ]]
 
 -- LITE Mode
-hub_mode_lte = [[ \cs(255, 115, 0) == Modes: \cr              \cs(255, 64, 64)${key_bind_idle} \cs(200, 200, 200)Idle:\cr \cs(125,125,255)${player_current_idle|Refresh              \cs(255, 64, 64)${key_bind_casting} \cs(200, 200, 200)Casting:\cr \cs(125,125,255)${player_current_casting|Normal} ]]
+hub_mode_lte = [[ \cs(255, 115, 0)      == Modes: \cr              \cs(255, 64, 64)${key_bind_idle} \cs(200, 200, 200)Idle:\cr \cs(125,125,255)${player_current_idle|Refresh              \cs(255, 64, 64)${key_bind_casting} \cs(200, 200, 200)Casting:\cr \cs(125,125,255)${player_current_casting|Normal}              \cs(255, 64, 64)${key_bind_regen} \cs(200, 200, 200)Regen:\cr \cs(125,125,255)${player_current_regen|Hybrid} ]]
 
-hub_options_lte = [[ \cs(255, 115, 0)== Options: \cr              \cs(255, 64, 64)${key_bind_mburst} \cs(200, 200, 200)Magic Burst:\cr \cs(125,125,255)${player_current_mb|OFF}\cs(255, 64, 64)${key_bind_matchsc}\cs(200, 200, 200)Match SC Element:\cr ${player_match_sc}            \cs(255, 64, 64)${key_bind_lock_weapon} \cs(200, 200, 200)Lock Weapon:\cr ${toggle_lock_weapon}            \cs(255, 64, 64)${key_bind_movespeed_lock}\cs(200, 200, 200)Herald Gaiters Lock:\cr ${toggle_movespeed_lock} ]]
+hub_options_lte = [[ \cs(255, 115, 0)       == Options: \cr              \cs(255, 64, 64)${key_bind_mburst} \cs(200, 200, 200)Magic Burst:\cr \cs(125,125,255)${player_current_mb|OFF}\cs(255, 64, 64)${key_bind_matchsc}\cs(200, 200, 200)Match SC Element:\cr ${player_match_sc}            \cs(255, 64, 64)${key_bind_lock_weapon} \cs(200, 200, 200)Lock Weapon:\cr ${toggle_lock_weapon}            \cs(255, 64, 64)${key_bind_movespeed_lock}\cs(200, 200, 200)Herald Gaiters Lock:\cr ${toggle_movespeed_lock} ]]
 
-hub_job_lte = [[ \cs(255, 115, 0) == ${player_job}: \cr             \cs(255, 64, 64)${key_bind_element_cycle} \cs(200, 200, 200)Element:\cr ${element_color|\\cs(0, 204, 204)}${toggle_element_cycle|Ice} \cr           \cs(255, 64, 64)${key_bind_sc_level} \cs(200, 200, 200)Skillchain:\cr ${element_color|\\cs(0, 204, 204)}${toggle_sc_level|Induration} ]]
+hub_job_lte = [[ \cs(255, 115, 0)       == ${player_job}: \cr             \cs(255, 64, 64)${key_bind_element_cycle} \cs(200, 200, 200)Element:\cr ${element_color|\\cs(0, 204, 204)}${toggle_element_cycle|Ice} \cr           \cs(255, 64, 64)${key_bind_sc_level} \cs(200, 200, 200)Skillchain:\cr ${element_color|\\cs(0, 204, 204)}${toggle_sc_level|Induration} ]]
 
-hub_battle_lte = [[ \cs(255, 115, 0) == Battle: \cr             \cs(200, 200, 200)Last SC:\cr ${last_sc_element_color}${last_sc|No SC yet} \cr             \cs(200, 200, 200)Burst Window:\cr ${last_sc_element_color}${burst_window|0} \cr ]]
+hub_battle_lte = [[ \cs(255, 115, 0)        == Battle: \cr             \cs(200, 200, 200)Last SC:\cr ${last_sc_element_color}${last_sc|No SC yet} \cr             \cs(200, 200, 200)Burst Window:\cr ${last_sc_element_color}${burst_window|0} \cr ]]
 
 
 -- init style
@@ -228,7 +168,7 @@ keybinds_off = {}
 keybinds_off['key_bind_idle'] = '       '
 keybinds_off['key_bind_casting'] = '       '
 keybinds_off['key_bind_mburst'] = '       '
-
+keybinds_off['key_bind_regen'] = '       '
 keybinds_off['key_bind_element_cycle'] = '       '
 keybinds_off['key_bind_sc_level'] = '       '
 keybinds_off['key_bind_lock_weapon'] = '       '
@@ -238,9 +178,14 @@ keybinds_off['key_bind_matchsc'] = '        '
 function validateTextInformation()
 
     --Mode Information
-    main_text_hub.player_current_idle = idleModes.current
+    if refreshType == "sublimation" then
+        main_text_hub.player_current_idle = tostring(idleModes.current..' + \\cs(32, 255, 32)Sublimation\\cr')
+    else
+        main_text_hub.player_current_idle = idleModes.current
+    end
     main_text_hub.player_current_casting = nukeModes.current
     main_text_hub.toggle_element_cycle = elements.current
+    main_text_hub.player_current_regen = regenModes.current    
     main_text_hub.toggle_sc_level = wantedSc
     main_text_hub.player_job = player.job
 
@@ -635,6 +580,8 @@ function midcast(spell)
             equip(sets.midcast.regen[regenModes.current])
         elseif spell.name:match('Aquaveil') then
             equip(sets.midcast.aquaveil)
+        elseif spell.name:match('Stoneskin') then
+            equip(sets.midcast.stoneskin)
         end
     elseif spell.skill == 'Enfeebling Magic' and spell.type == 'BlackMagic' then -- to do: better rule for this.
         equip(sets.midcast.IntEnfeebling)
@@ -646,7 +593,6 @@ function midcast(spell)
         else
             equip(sets.midcast.nuking[nukeModes.current])
         end
-    -- casting is basically enfeeble set.
     else
         equip(sets.midcast.casting)
     end
@@ -667,15 +613,13 @@ function midcast(spell)
     end
 
     -- Obi up for matching weather / day
-    if spell.element == world.weather_element and spellMap ~= 'Helix'then
+    if spell.element == world.weather_element and spell.skill ~= 'Enhancing Magic' and spellMap ~= 'Helix' then
         equip(sets.midcast.Obi)
     end
-    if spell.element == world.day_element and spellMap ~= 'Helix'then
+    if spell.element == world.day_element and spell.skill ~= 'Enhancing Magic' and spellMap ~= 'Helix' then
         equip(sets.midcast.Obi)
     end
-    if spell.name:match('Stoneskin') then
-        equip(sets.midcast.stoneskin)
-    end
+
     -- Dark based Helix gets "pixie hairpin +1"
     if spellMap == 'DarkHelix'then
         equip(sets.midcast.DarkHelix)
@@ -1130,11 +1074,9 @@ windower.register_event('prerender', function()
 	end
 end)
 
-
 function selectSCElement()
     -- Tier 3 SC we favor element already chosen, then day (our weather likely match our set element as a sch) then swap for bad day. 
     if last_skillchain.english == "Light" then
-        -- First we always prefer the selected element if that element can burst, if not we move on.
         if elements.current == "Fire" or elements.current == "Lightning" or elements.current == "Air" then
             return
         -- Favor Fire if its Fire's Day or Earth's day (thunder weak on E-Day)
@@ -1150,7 +1092,6 @@ function selectSCElement()
             elements:set(selectedElement)
         end
     elseif last_skillchain.english == "Darkness" then
-        -- First we always prefer the selected element if that element can burst, if not we move on.
         if elements.current == "Earth" or elements.current == "Water" or elements.current == "Ice" then
             return
         -- Favor Water if its Water's Day or Fire's day (Ice weak on F-Day)
@@ -1175,7 +1116,7 @@ function selectSCElement()
         selectedElement = "Fire"
         elements:set(selectedElement)
     elseif last_skillchain.english == "Fragmentation" then
-        if elements.current == "Lightning" or elements.current == "Air" then
+        if elements.current == "Lightning" or elements.current == "Wind" then
             return
         -- Favor Wind if its Wind's Day or Earth's day (thunder weak on E-Day)
         elseif world.day_element == "Air" or world.day_element == "Earth" then
