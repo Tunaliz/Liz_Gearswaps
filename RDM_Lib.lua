@@ -61,7 +61,7 @@ spell_maps = {
     ['Firestorm']='Storm',['Hailstorm']='Storm',['Windstorm']='Storm',['Sandstorm']='Storm',['Thunderstorm']='Storm',['Rainstorm']='Storm',['Aurorastorm']='Storm',['Voidstorm']='Storm',
     ['Firestorm II']='Storm',['Hailstorm II']='Storm',['Windstorm II']='Storm',['Sandstorm II']='Storm',['Thunderstorm II']='Storm',['Rainstorm II']='Storm',['Aurorastorm II']='Storm',['Voidstorm II']='Storm',
     ['Fire Maneuver']='Maneuver',['Ice Maneuver']='Maneuver',['Wind Maneuver']='Maneuver',['Earth Maneuver']='Maneuver',['Thunder Maneuver']='Maneuver',['Water Maneuver']='Maneuver',['Light Maneuver']='Maneuver',['Dark Maneuver']='Maneuver',
-	['Enstone']='Enspell',['Enwater']='Enspell',['Enaero']='Enspell',['Enfire']='Enspell',['Enblizzard']='Enspell',['Enthunder']='Enspell',
+    ['Enstone']='Enspell',['Enwater']='Enspell',['Enaero']='Enspell',['Enfire']='Enspell',['Enblizzard']='Enspell',['Enthunder']='Enspell',
 }
 
 enfeeb_maps = {
@@ -78,8 +78,8 @@ enfeeb_maps = {
     ['Bind']='macc', 
     ['Blind']='intpot', ['Blind II']='intpot', 
     ['Gravity']='potency', ['Gravity II']='potency',
-	-- We leave Fazzle and FrazzleII as pure macc to help land it in cases its a high resist. 
-	-- This lets us follow up with a high potency Frazzle3 
+    -- We leave Fazzle and FrazzleII as pure macc to help land it in cases its a high resist. 
+    -- This lets us follow up with a high potency Frazzle3 
     ['Frazzle']='macc', ['Frazzle II']='macc', ['Frazzle III']='skillmndpot', 
     ['Distract']='skillmndpot', ['Distract II']='skillmndpot', ['Distract III']='skillmndpot', 
     ['Poison']='skillpot', ['Poison II']='skillpot', ['Poisonga']='skillpot',
@@ -208,8 +208,8 @@ function validateTextInformation()
     --Mode Information
     main_text_hub.player_current_idle = idleModes.current
     main_text_hub.player_current_melee = meleeModes.current
-	main_text_hub.player_current_mainweapon = mainWeapon.current
-	main_text_hub.player_current_subweapon = subWeapon.current
+    main_text_hub.player_current_mainweapon = mainWeapon.current
+    main_text_hub.player_current_subweapon = subWeapon.current
     main_text_hub.player_current_casting = nukeModes.current
     main_text_hub.toggle_element_cycle = elements.current
     main_text_hub.toggle_enspell_cycle = enspellElements.current
@@ -509,17 +509,17 @@ function precast(spell)
     if spell.action_type  == 'Magic' and spell_recasts[spell.recast_id] > 0 then
         cancel_spell()
         downgradenuke(spell)
-		add_to_chat(8, '****** ['..spell.name..' CANCELED - Spell on Cooldown, Downgrading spell] ******')
+        add_to_chat(8, '****** ['..spell.name..' CANCELED - Spell on Cooldown, Downgrading spell] ******')
         return
     end   
-	-- Auto downgrade Phalanx II to Pahalanx I when casting on self, saves macro space so you can set your phalanx macro to cast phalanx2 on <stpt>
+    -- Auto downgrade Phalanx II to Pahalanx I when casting on self, saves macro space so you can set your phalanx macro to cast phalanx2 on <stpt>
     if spell.target.type == 'SELF' and spell.name == "Phalanx II" then
         cancel_spell()
         send_command('input /ma "Phalanx" <me>')  
     end
 
     -- Moving on to other types of magic
-    if spell.type == 'WhiteMagic' or spell.type == 'BlackMagic' then
+    if spell.type == 'WhiteMagic' or spell.type == 'BlackMagic' or spell.type == 'Ninjutsu' then
      
         -- Stoneskin Precast
         if spell.name == 'Stoneskin' then
@@ -538,6 +538,15 @@ function precast(spell)
             if spell.name == 'Sneak' then
                 windower.ffxi.cancel_buff(71)--[[Cancels Sneak]]
             end
+        elseif spellMap == 'Utsusemi' then
+            if buffactive['Copy Image (3)'] or buffactive['Copy Image (4+)'] then
+                cancel_spell()
+                add_to_chat(123, '**!! '..spell.english..' Canceled: [3+ IMAGES] !!**')
+            elseif buffactive['Copy Image'] or buffactive['Copy Image (2)'] then
+                send_command('cancel 66; cancel 444; cancel Copy Image; cancel Copy Image (2)')
+            end
+            equip(sets.precast.casting)
+
         else       
             -- For everything else we go with max fastcast
             equip(sets.precast.casting)                
@@ -632,15 +641,15 @@ function midcast(spell)
     if sets.me[spell.name] then
         equip(sets.me[spell.name])
 
-		-- Sanguine BBlade belt optim
+        -- Sanguine BBlade belt optim
         if spell.name == 'Sanguine Blade' then
-			-- Dark day and dark weather
+            -- Dark day and dark weather
             if spell.element == world.day_element and spell.element == world.weather_element then
                 equip(sets.midcast.Obi)
-			-- Double dark weather aka Dynamis
+            -- Double dark weather aka Dynamis
             elseif spell.element == world.weather_element and get_weather_intensity() == 2 then
                 equip(sets.midcast.Obi)
-			else
+            else
                 equip(sets.midcast.Orpheus)                
             end
         end
@@ -668,14 +677,14 @@ function idle()
     -- This function is called after every action, and handles which set to equip depending on what we're doing
     -- We check if we're meleeing because we don't want to idle in melee gear when we're only engaged for trusts
     if player.status=='Engaged' then
-		if subWeapon.current:match('Shield') or subWeapon.current:match('Bulwark') or subWeapon.current:match('Buckler') then
-			equip(sets.me.melee[meleeModes.value..'sw'])
-		else
-			equip(sets.me.melee[meleeModes.value..'dw'])
-		end
-		if mainWeapon.value == "Crocea Mors" or "Vitiation Sword" then
-    		EnspellCheck()
-		end
+        if subWeapon.current:match('Shield') or subWeapon.current:match('Bulwark') or subWeapon.current:match('Buckler') then
+            equip(sets.me.melee[meleeModes.value..'sw'])
+        else
+            equip(sets.me.melee[meleeModes.value..'dw'])
+        end
+        if mainWeapon.value == "Crocea Mors" or "Vitiation Sword" then
+            EnspellCheck()
+        end
     else
         equip(sets.me.idle[idleModes.value])
         -- Checks MP for Fucho-no-Obi
@@ -683,7 +692,7 @@ function idle()
             equip(sets.me.latent_refresh)          
         end       
     end
-	equip({main = mainWeapon.current, sub = subWeapon.current})
+    equip({main = mainWeapon.current, sub = subWeapon.current})
 end
  
 function EnspellCheck()
@@ -691,8 +700,8 @@ function EnspellCheck()
     -- Enspell matches double weather
     if Buff['En-Weather'] and get_weather_intensity() == 2 then
         equip(sets.midcast.Obi)
-	-- Enspell matches day AND weather
-	elseif Buff['En-Weather'] and Buff['En-Day'] then
+    -- Enspell matches day AND weather
+    elseif Buff['En-Weather'] and Buff['En-Day'] then
         equip(sets.midcast.Obi)
     -- Enspell is there but doesnt match a double weather
     elseif Buff['Enspell'] then
@@ -749,7 +758,7 @@ function self_command(command)
                 else
                     windower.add_to_chat(4,"----- Idle mode Now focus on: "..tostring(idleModes.value))
                 end
-			elseif commandArgs[2] == 'mainweapon' then
+            elseif commandArgs[2] == 'mainweapon' then
                 mainWeapon:cycle()
                 idle()
                 if use_UI == true then
@@ -757,7 +766,7 @@ function self_command(command)
                 else
                     windower.add_to_chat(4,"----- Main Weapon set now: "..tostring(mainWeapon.value))
                 end
-			elseif commandArgs[2] == 'subweapon' then
+            elseif commandArgs[2] == 'subweapon' then
                 subWeapon:cycle()
                 idle()
                 if use_UI == true then
@@ -866,16 +875,16 @@ function updateRunspeedGear( value )
             windower.add_to_chat(8,"----- Locking Off Carmine Cuisses +1 -----")   
         end
         enable('legs')
-		idle()
+        idle()
     else
-		if use_UI == true then
+        if use_UI == true then
             validateTextInformation()
         else
             windower.add_to_chat(8,"----- Locking On Carmine Cuisses +1 -----")
         end
         equip({legs="Carmine Cuisses +1"})
         disable('legs')
-		idle()
+        idle()
     end
 end
 
@@ -998,111 +1007,111 @@ local skillchains = {
 }
 if player and player.index and windower.ffxi.get_mob_by_index(player.index) then
 
-	windower.register_event('action', function(act)
-		for _, target in pairs(act.targets) do
-			local battle_target = windower.ffxi.get_mob_by_target("t")
-			if battle_target ~= nil and target.id == battle_target.id then
-				for _, action in pairs(target.actions) do
-					if action.add_effect_message > 287 and action.add_effect_message < 302 then
-						last_skillchain = skillchains[action.add_effect_message]
-						mBurstOldValue = mBurst.value
-						MB_Window = 11
-						MB_Time = os.time()
-						validateTextInformation()
-					end
-				end
-			end
-		end
-	end)
+    windower.register_event('action', function(act)
+        for _, target in pairs(act.targets) do
+            local battle_target = windower.ffxi.get_mob_by_target("t")
+            if battle_target ~= nil and target.id == battle_target.id then
+                for _, action in pairs(target.actions) do
+                    if action.add_effect_message > 287 and action.add_effect_message < 302 then
+                        last_skillchain = skillchains[action.add_effect_message]
+                        mBurstOldValue = mBurst.value
+                        MB_Window = 11
+                        MB_Time = os.time()
+                        validateTextInformation()
+                    end
+                end
+            end
+        end
+    end)
 
-	mov = {counter=0}
-	if player and player.index and windower.ffxi.get_mob_by_index(player.index) then
-		mov.x = windower.ffxi.get_mob_by_index(player.index).x
-		mov.y = windower.ffxi.get_mob_by_index(player.index).y
-		mov.z = windower.ffxi.get_mob_by_index(player.index).z
-	end
-	moving = false
+    mov = {counter=0}
+    if player and player.index and windower.ffxi.get_mob_by_index(player.index) then
+        mov.x = windower.ffxi.get_mob_by_index(player.index).x
+        mov.y = windower.ffxi.get_mob_by_index(player.index).y
+        mov.z = windower.ffxi.get_mob_by_index(player.index).z
+    end
+    moving = false
 
-	windower.raw_register_event('prerender',function()
-		mov.counter = mov.counter + 1;
-		if mov.counter>30 then
-			local pl = windower.ffxi.get_mob_by_index(player.index)
-			if pl and pl.x and mov.x then
-				local movement = math.sqrt( (pl.x-mov.x)^2 + (pl.y-mov.y)^2 + (pl.z-mov.z)^2 ) > 0.1
-				if movement and not moving then
-					send_command('gs c toggle runspeed')
-					moving = true
-				elseif not movement and moving then
-					send_command('gs c toggle runspeed')
-					moving = false
-				end
-			end
+    windower.raw_register_event('prerender',function()
+        mov.counter = mov.counter + 1;
+        if mov.counter>30 then
+            local pl = windower.ffxi.get_mob_by_index(player.index)
+            if pl and pl.x and mov.x then
+                local movement = math.sqrt( (pl.x-mov.x)^2 + (pl.y-mov.y)^2 + (pl.z-mov.z)^2 ) > 0.1
+                if movement and not moving then
+                    send_command('gs c toggle runspeed')
+                    moving = true
+                elseif not movement and moving then
+                    send_command('gs c toggle runspeed')
+                    moving = false
+                end
+            end
 
-			if pl and pl.x then
-				mov.x = pl.x
-				mov.y = pl.y
-				mov.z = pl.z
-			end
-			mov.counter = 0
-		end
-	end)
+            if pl and pl.x then
+                mov.x = pl.x
+                mov.y = pl.y
+                mov.z = pl.z
+            end
+            mov.counter = 0
+        end
+    end)
 
-	windower.register_event('prerender', function()
-		--Items we want to check every second
-		if os.time() > time_start then
-			time_start = os.time()
-			auto_cp()
-			if MB_Window > 0 then
-				MB_Window = 11 - (os.time() - MB_Time)
-				if matchsc.value then
-					selectSCElement()
-					mBurst:set(true)
-				end
-				validateTextInformation()
-			else
-				elements:set(oldElement)
-				mBurst:set(false)
-				validateTextInformation()
-			end
-		end
-	end)
+    windower.register_event('prerender', function()
+        --Items we want to check every second
+        if os.time() > time_start then
+            time_start = os.time()
+            auto_cp()
+            if MB_Window > 0 then
+                MB_Window = 11 - (os.time() - MB_Time)
+                if matchsc.value then
+                    selectSCElement()
+                    mBurst:set(true)
+                end
+                validateTextInformation()
+            else
+                elements:set(oldElement)
+                mBurst:set(false)
+                validateTextInformation()
+            end
+        end
+    end)
 
-	function movingCheck()
-		pSpeed = (player.x+player.y) - (pX+pY)
-		if pSpeed ~= 0.0 or pSpeed > 0.25 or pSpeed < 0.25 then
-			moving = true
-		else
-			moving = false
-		end
-	end
+    function movingCheck()
+        pSpeed = (player.x+player.y) - (pX+pY)
+        if pSpeed ~= 0.0 or pSpeed > 0.25 or pSpeed < 0.25 then
+            moving = true
+        else
+            moving = false
+        end
+    end
 
-	function auto_cp()
+    function auto_cp()
 
-	--Now we check if we need to lock our back for CP
-		if player and player.index and windower.ffxi.get_mob_by_index(player.index) then
-			jobpoints = windower.ffxi.get_player().job_points[player.main_job:lower()].jp_spent -- check if we are master
-		end
-		if jobpoints ~= 2100 and jobpoints ~= nil then -- Basically if not master
-			monsterToCheck = windower.ffxi.get_mob_by_target('t')
-			if windower.ffxi.get_mob_by_target('t') then -- Sanity Check 
-				if #monsterToCheck.name:split(' ') >= 2 then
-					monsterName = T(monsterToCheck.name:split(' '))
-					if monsterName[1] == "Apex" then
-						if monsterToCheck.hpp < 15 then --Check mobs HP Percentage if below 25 then equip CP cape 
-							equip({ back = CP_CAPE }) 
-							disable("back") --Lock back
-						else
-							enable("back") --Else make sure the back is enabled
-						end 
-					end
-				end
-			else
-				enable("back") --Else make sure the back is enabled
-			end
-		else
-			enable("back") --Else make sure the back is enabled
-		end
-	end
+    --Now we check if we need to lock our back for CP
+        if player and player.index and windower.ffxi.get_mob_by_index(player.index) then
+            jobpoints = windower.ffxi.get_player().job_points[player.main_job:lower()].jp_spent -- check if we are master
+        end
+        if jobpoints ~= 2100 and jobpoints ~= nil then -- Basically if not master
+            monsterToCheck = windower.ffxi.get_mob_by_target('t')
+            if windower.ffxi.get_mob_by_target('t') then -- Sanity Check 
+                if #monsterToCheck.name:split(' ') >= 2 then
+                    monsterName = T(monsterToCheck.name:split(' '))
+                    if monsterName[1] == "Apex" then
+                        if monsterToCheck.hpp < 15 then --Check mobs HP Percentage if below 25 then equip CP cape 
+                            equip({ back = CP_CAPE }) 
+                            disable("back") --Lock back
+                        else
+                            enable("back") --Else make sure the back is enabled
+                        end 
+                    end
+                end
+            else
+                enable("back") --Else make sure the back is enabled
+            end
+        else
+            enable("back") --Else make sure the back is enabled
+        end
+    end
 end
 
 function selectSCElement()
