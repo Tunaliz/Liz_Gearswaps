@@ -1181,7 +1181,7 @@ function selectSCElement()
         end
     -- Tier 1 SC we go straight to Busrt Element
     elseif last_skillchain.english == "Compression" then
-        selectedElement = "Dark"
+        -- selectedElement = "Dark"
         elements:set(selectedElement)
     elseif last_skillchain.english == "Liquefaction" then
         selectedElement = "Fire"
@@ -1193,7 +1193,7 @@ function selectSCElement()
         selectedElement = "Water"
         elements:set(selectedElement)
     elseif last_skillchain.english == "Transfixion" then
-        selectedElement = "Light"
+        -- selectedElement = "Light"
         elements:set(selectedElement)
     elseif last_skillchain.english == "Scission" then
         selectedElement = "Earth"
