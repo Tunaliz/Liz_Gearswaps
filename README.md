@@ -31,17 +31,3 @@ More info: https://www.ffxiah.com/forum/topic/52995/a-sch-gearswap/
 * Auto Sublimation or Refresh Idle, can be overridden with a toggle for DT Idle
 * Cycle functions to go through and save an Element
 * All in one SC function
-
-### Gearswap SMN template
-*Requires Shortcuts Add-On*
-
-This Lua branched off Aeyela's.
-
-More Info: http://www.ffxiah.com/forum/topic/47412/barebones-summoner-gearswap/
-
-*Notable Features*
-
-* Keybind and support for cycling through avatar modes with 1 key.
-* Keybind for toggling autoBP
-* Keybind for toggling melee weapon lock
-* Avatar-agnostic Blood Pacts handling.
