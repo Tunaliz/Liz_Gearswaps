@@ -62,6 +62,7 @@ spell_maps = {
     ['Firestorm II']='Storm',['Hailstorm II']='Storm',['Windstorm II']='Storm',['Sandstorm II']='Storm',['Thunderstorm II']='Storm',['Rainstorm II']='Storm',['Aurorastorm II']='Storm',['Voidstorm II']='Storm',
     ['Fire Maneuver']='Maneuver',['Ice Maneuver']='Maneuver',['Wind Maneuver']='Maneuver',['Earth Maneuver']='Maneuver',['Thunder Maneuver']='Maneuver',['Water Maneuver']='Maneuver',['Light Maneuver']='Maneuver',['Dark Maneuver']='Maneuver',
     ['Enstone']='Enspell',['Enwater']='Enspell',['Enaero']='Enspell',['Enfire']='Enspell',['Enblizzard']='Enspell',['Enthunder']='Enspell',
+	['Gain-AGI']='Gain',['Gain-CHR']='Gain',['Gain-DEX']='Gain',['Gain-INT']='Gain',['Gain-MND']='Gain',['Gain-STR']='Gain',['Gain-VIT']='Gain',
 }
 
 enfeeb_maps = {
@@ -590,7 +591,7 @@ function midcast(spell)
             equip(sets.midcast.phalanx)
         elseif spell.name:match('Stoneskin') then
             equip(sets.midcast.stoneskin)
-        elseif spell.name:match('Temper') or spellMap == "Enspell" then
+        elseif spell.name:match('Temper') or spellMap == "Enspell" or spellMap == "Gain" then
             equip(sets.midcast.enhancing.potency)
         else
             equip(sets.midcast.enhancing.duration) -- fall back to duration if not specified above 
@@ -1181,7 +1182,7 @@ function selectSCElement()
         end
     -- Tier 1 SC we go straight to Busrt Element
     elseif last_skillchain.english == "Compression" then
-        -- selectedElement = "Dark"
+        selectedElement = "Dark"
         elements:set(selectedElement)
     elseif last_skillchain.english == "Liquefaction" then
         selectedElement = "Fire"
@@ -1193,7 +1194,7 @@ function selectSCElement()
         selectedElement = "Water"
         elements:set(selectedElement)
     elseif last_skillchain.english == "Transfixion" then
-        -- selectedElement = "Light"
+        selectedElement = "Light"
         elements:set(selectedElement)
     elseif last_skillchain.english == "Scission" then
         selectedElement = "Earth"
