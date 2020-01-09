@@ -250,7 +250,7 @@ function get_sets()
 	------------------------------------------------------------------------------------------------------
 	-- Dual Wield sets
 	------------------------------------------------------------------------------------------------------
-    sets.me.melee.normaldw = set_combine(sets.me.idle.normal,{   
+    sets.me.melee.normaldw = set_combine(sets.me.idle.refresh,{   
         ammo		=	"Ginsen",
         --head		=	Taeon.Head.TP,
         body		=	"Ayanmo Corazza +2",
@@ -265,13 +265,13 @@ function get_sets()
         right_ring	=	{name="Chirich Ring +1", bag="wardrobe3"},
         back		=	RDMCape.TP,   
     })
-    sets.me.melee.accdw = set_combine(sets.me.melee.normal,{
+    sets.me.melee.accdw = set_combine(sets.me.melee.normaldw,{
         --head		=	Carm.Head.D,
         neck		=	"Sanctity Necklace",
         right_ear	=	"Mache Earring +1",
         waist		=	"Grunfeld Rope",
     })
-    sets.me.melee.dtdw = set_combine(sets.me.melee.normal,{
+    sets.me.melee.dtdw = set_combine(sets.me.melee.normaldw,{
         neck		=	"Twilight Torque",
         head		=	"Aya. Zucchetto +2",
         body		=	"Ayanmo Corazza +2",
@@ -281,7 +281,7 @@ function get_sets()
 	left_ring	=	"Ayanmo Ring",
         right_ring	=	"Defending Ring",
     })
-    sets.me.melee.mdtdw = set_combine(sets.me.melee.normal,{
+    sets.me.melee.mdtdw = set_combine(sets.me.melee.normaldw,{
 
     })
 	------------------------------------------------------------------------------------------------------
