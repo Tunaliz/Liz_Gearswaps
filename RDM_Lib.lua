@@ -580,6 +580,7 @@ function midcast(spell)
     elseif spell.skill == 'Enhancing Magic' then
 
         if spell.name:match('Protect') or spell.name:match('Shell') then
+	    equip(sets.midcast.enhancing.duration)		
             equip({rring="Sheltered Ring"})
         elseif spell.name:match('Refresh') then
             equip(sets.midcast.refresh)
