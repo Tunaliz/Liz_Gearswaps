@@ -288,7 +288,7 @@ function get_sets()
 	-- Single Wield sets. -- combines from DW sets
 	-- So canjust put what will be changing when off hand is a shield
  	------------------------------------------------------------------------------------------------------   
-    sets.me.melee.normalsw = set_combine(sets.me.idle.normaldw,{   
+    sets.me.melee.normalsw = set_combine(sets.me.melee.normaldw,{   
         legs		=	RELIC.Legs,
     })
     sets.me.melee.accsw = set_combine(sets.me.melee.accdw,{
