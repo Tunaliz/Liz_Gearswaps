@@ -70,7 +70,7 @@ enfeeb_maps = {
     ['Bio']='potency', ['Bio II']='potency', ['Bio III']='potency',
     ['Paralyze']='mndpot', ['Paralyze II']='mndpot', 
     ['Slow']='mndpot', ['Slow II']='mndpot', 
-    ['Adle']='mndpot', ['Adle II']='mndpot',
+    ['Addle']='mndpot', ['Addle II']='mndpot',
     ['Sleep']='macc', ['Sleep II']='macc', ['Sleepga']='macc', 
     ['Silence']='macc', 
     ['Inundation']='macc', 
