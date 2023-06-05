@@ -1226,7 +1226,7 @@ function downgradenuke( spell )
         elseif spell.name == nukes.t2[elements.current] then
             newspell = nukes.t1[elements.current]
         end
-        send_command('input /ma "'..newspell..'"')
+        send_command('input /ma "'..newspell..'" <t>')
     end
 
 end
